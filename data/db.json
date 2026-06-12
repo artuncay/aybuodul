@@ -1,0 +1,556 @@
+{
+  "users": [
+    {
+      "id": "u1",
+      "email": "admin@aybu.edu.tr",
+      "username": "artuncay",
+      "password": "$2a$10$Rv42bZ2WaFgCDue0nciCRuIg10uEqpOot3iSMBb8MREjdmtRLAPwq",
+      "name": "Ali Rıza TUNÇAY",
+      "faculty": "Rektörlük",
+      "department": "Akademik Değerlendirme Komisyonu",
+      "title": "Sistem Yöneticisi",
+      "role": "admin",
+      "adminScope": "system"
+    },
+    {
+      "id": "admin_1781252849916_601",
+      "password": "$2a$10$UuQBjCpnLMHR2kLi9UCLCOPDWq.ligbApxKi40oPLdZdDPoSRBuWW",
+      "name": "Diş Hekimliği Fakültesi Ödül Komisyonu",
+      "faculty": "Diş Hekimliği Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.dishekimligi"
+    },
+    {
+      "id": "admin_1781252850099_41",
+      "password": "$2a$10$75JNP75kcvYGrtaF7fi8VeQoaD7xpnUaZjW0o0OOs9agNb61jdLnO",
+      "name": "Fen Bilimleri Enstitüsü Ödül Komisyonu",
+      "faculty": "Fen Bilimleri Enstitüsü",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.fenbilimlerienstitusu"
+    },
+    {
+      "id": "admin_1781252850185_824",
+      "password": "$2a$10$i43./RlEDBX08LIhlYhUOuKqWE6GxE3EaQL6GADIc.gjc0DS/mTWm",
+      "name": "Halk Sağlığı Enstitüsü Ödül Komisyonu",
+      "faculty": "Halk Sağlığı Enstitüsü",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.halksagligienstitusu"
+    },
+    {
+      "id": "admin_1781252850273_657",
+      "password": "$2a$10$jiF6Xq2.nDz265OXnJhS3.EOFSpTARg7wbZbiyg1pZ71.h19vydey",
+      "name": "Havacılık ve Uzay Bilimleri Fakültesi Ödül Komisyonu",
+      "faculty": "Havacılık ve Uzay Bilimleri Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.havacilikveuzaybilimleri"
+    },
+    {
+      "id": "admin_1781252850372_905",
+      "password": "$2a$10$ifSMM9su0wAze4Bph/VoheN.n942K.4N9Hivl1vEKxOKXRqeXp3He",
+      "name": "Hukuk Fakültesi Ödül Komisyonu",
+      "faculty": "Hukuk Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.hukuk"
+    },
+    {
+      "id": "admin_1781252850457_70",
+      "password": "$2a$10$SxjtxaW9FjhHQmlUsuHTFOleOqgvqYGAUKOWRvoWIIODDE/JNXPBu",
+      "name": "İlahiyat Fakültesi Ödül Komisyonu",
+      "faculty": "İlahiyat Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.ilahiyat"
+    },
+    {
+      "id": "admin_1781252850553_643",
+      "password": "$2a$10$v7sPMHzQpiyBpQ/RgwHxjuPDA3t6nSQs/w6vMyizUIipdXbJFED4u",
+      "name": "İletişim Fakültesi Ödül Komisyonu",
+      "faculty": "İletişim Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.iletisim"
+    },
+    {
+      "id": "admin_1781252850645_759",
+      "password": "$2a$10$mfqa3HkxoSYAu10QQE9v0u2B493Y656htYjabT2WhTTVLiOQEl2lG",
+      "name": "İnsan ve Toplum Bilimleri Fakültesi Ödül Komisyonu",
+      "faculty": "İnsan ve Toplum Bilimleri Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.insanvetoplumbilimleri"
+    },
+    {
+      "id": "admin_1781252850737_744",
+      "password": "$2a$10$arjCXWIwkCAnkXPnugO1gej.XhWFnfC8ieqLxO4CL4.ojDVXZtwIC",
+      "name": "İşletme Fakültesi Ödül Komisyonu",
+      "faculty": "İşletme Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.isletme"
+    },
+    {
+      "id": "admin_1781252850824_958",
+      "password": "$2a$10$opM25yPV60t9.zUCX/dUmecTlANbFRIAjVDEfL/ehcbzyGlqMNXGW",
+      "name": "Mimarlık ve Güzel Sanatlar Fakültesi Ödül Komisyonu",
+      "faculty": "Mimarlık ve Güzel Sanatlar Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.mimarlikveguzelsanatlarfakultesi"
+    },
+    {
+      "id": "admin_1781252851004_907",
+      "password": "$2a$10$77stOlRNMVkYBMjikypmtOXWbhwpCGsU4iz4ryREUnROot//.RTCu",
+      "name": "Mühendislik ve Doğa Bilimleri Fakültesi Ödül Komisyonu",
+      "faculty": "Mühendislik ve Doğa Bilimleri Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.muhendislikvedogabilimleri"
+    },
+    {
+      "id": "admin_1781252851090_626",
+      "password": "$2a$10$pk3Ih5PKxnc0GlfZnFxXF.tK4.sAGHXT6kdev7jCVSjgUmQSfkJlW",
+      "name": "Sağlık Bilimleri Enstitüsü Ödül Komisyonu",
+      "faculty": "Sağlık Bilimleri Enstitüsü",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.saglikbilimlerienstitusu"
+    },
+    {
+      "id": "admin_1781252851179_106",
+      "password": "$2a$10$d8rx72YU.wIqzZX8XR/s9.nt/9vgq.0m3KgmcXYyKBdiiKkom2J5K",
+      "name": "Sağlık Bilimleri Fakültesi Ödül Komisyonu",
+      "faculty": "Sağlık Bilimleri Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.saglikbilimlerifakultesi"
+    },
+    {
+      "id": "admin_1781252851279_9",
+      "password": "$2a$10$7du6BWQp.aiZMQtVMvFIY.HWYxswoQkiSYxZm4kvQdpDE4oEhs2Ay",
+      "name": "Sağlık Hizmetleri Meslek Yüksekokulu Ödül Komisyonu",
+      "faculty": "Sağlık Hizmetleri Meslek Yüksekokulu",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.saglikhizmetlerimyo"
+    },
+    {
+      "id": "admin_1781252851370_957",
+      "password": "$2a$10$n238fdP267HRYTDvvPxoG.y53Mvw7y.RvQWXQAvVcI/n8CXCtux86",
+      "name": "Siyasal Bilgiler Fakültesi Ödül Komisyonu",
+      "faculty": "Siyasal Bilgiler Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.siyasalbilgiler"
+    },
+    {
+      "id": "admin_1781252851462_918",
+      "password": "$2a$10$0h8MvA3LLa9mGs6XXFFoWuDJb5k3L8HCMo0sWElGUeBqup9EO7Ld.",
+      "name": "Sosyal Bilimler Enstitüsü Ödül Komisyonu",
+      "faculty": "Sosyal Bilimler Enstitüsü",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.sosyalbilimlerenstitusu"
+    },
+    {
+      "id": "admin_1781252851551_331",
+      "password": "$2a$10$Lge1WviDHXM9ky7bWrkMw.Tr3gkZ0NN6uyN4iPq.a/iBSxScxf2WK",
+      "name": "Sosyal Bilimler Meslek Yüksekokulu Ödül Komisyonu",
+      "faculty": "Sosyal Bilimler Meslek Yüksekokulu",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.sosyalbilimlermyo"
+    },
+    {
+      "id": "admin_1781252851636_511",
+      "password": "$2a$10$0RSW5bUHFIM8qNrZMLf4Keo3DOH0OtQOQ5zwagH6rp4Aou7ECNxDG",
+      "name": "Spor Bilimleri Fakültesi Ödül Komisyonu",
+      "faculty": "Spor Bilimleri Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.sporbilimleri"
+    },
+    {
+      "id": "admin_1781252851738_4",
+      "password": "$2a$10$Yrue7Tg/n5RJMUSxjWa3JucCnWg7qQ9uT1NCyzSt0nsxfEZui5D1.",
+      "name": "Şereflikoçhisar Berat Cömertoğlu Meslek Yüksekokulu Ödül Komisyonu",
+      "faculty": "Şereflikoçhisar Berat Cömertoğlu Meslek Yüksekokulu",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.sereflikochisarberatcomertoglumyo"
+    },
+    {
+      "id": "admin_1781252851827_825",
+      "password": "$2a$10$Rinrw6Z7qJz5tY8hT162.OdssxiwzORxwtzhaAfT2m.PEpMHQxuKS",
+      "name": "Şereflikoçhisar Uygulamalı Bilimler Fakültesi Ödül Komisyonu",
+      "faculty": "Şereflikoçhisar Uygulamalı Bilimler Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.sereflikochisaruygulamalibilimler"
+    },
+    {
+      "id": "admin_1781252851927_507",
+      "password": "$2a$10$2hk2cU.Igy3D5mXYVbgB4ebC4ieYHK4yfynbY7RmLvVr1UXQooKSy",
+      "name": "Teknik Bilimler Meslek Yüksekokulu Ödül Komisyonu",
+      "faculty": "Teknik Bilimler Meslek Yüksekokulu",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.teknikbilimlermyo"
+    },
+    {
+      "id": "admin_1781252852058_971",
+      "password": "$2a$10$5u7x6ZyRevH6uYC6ZHW4a.tIrbX8Q8.SUVSmvvikEuYu5CrL96Tdu",
+      "name": "Tıp Fakültesi Ödül Komisyonu",
+      "faculty": "Tıp Fakültesi",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.tip"
+    },
+    {
+      "id": "admin_1781252852154_687",
+      "password": "$2a$10$c6tLKMRiIq6wxDHKEOVP8eVpDllNKtj1ISEosUhuMTgkrO.XcfIPy",
+      "name": "Türk Sanat Müziği ve Devlet Konservatuvarı Ödül Komisyonu",
+      "faculty": "Türk Sanat Müziği ve Devlet Konservatuvarı",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.konservatuvar"
+    },
+    {
+      "id": "admin_1781252852248_342",
+      "password": "$2a$10$X19FNBBx11PdK/L72QL7F.HTTqMCgLk6gC/OxwHtxZnJlJ3MDdqje",
+      "name": "Uluslararası İlişkiler ve Stratejik Araştırmalar Enstitüsü Ödül Komisyonu",
+      "faculty": "Uluslararası İlişkiler ve Stratejik Araştırmalar Enstitüsü",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.ulisa"
+    },
+    {
+      "id": "admin_1781252852341_29",
+      "password": "$2a$10$4xzqRJ9C4k83mBbZ3vVMIuoIwJ.yfoPwSGbg5I/rogM5ocE6kbzIu",
+      "name": "Yabancı Diller Yüksekokulu Ödül Komisyonu",
+      "faculty": "Yabancı Diller Yüksekokulu",
+      "department": "Ödül Değerlendirme Komisyonu",
+      "title": "Komisyon",
+      "role": "admin",
+      "adminScope": "faculty",
+      "username": "odulkomisyon.yabancidilleryuksekokulu"
+    }
+  ],
+  "applications": [],
+  "categories": {
+    "kat1": {
+      "id": "kat1",
+      "name": "Kategori 1: Araştırma, Yayın, Etkinlik ve Yenilikçi Tasarım",
+      "items": [
+        {
+          "id": "kat1_row1",
+          "label": "Araştırma: Yurt Dışı / Research Abroad (Taban Puan * Ay)",
+          "baseScore": 10,
+          "maxScore": 120,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row2",
+          "label": "Araştırma: Yurt İçi / Research Domestic (Taban Puan * Ay)",
+          "baseScore": 5,
+          "maxScore": 60,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row3",
+          "label": "Makale: Q1 dergiler (SCI, SCI-E, SSCI, AHCI) / Q1 Journals",
+          "baseScore": 100,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row4",
+          "label": "Makale: WoS Q2 dergiler (SCI, SCI-E, SSCI, AHCI) / Q2 Journals",
+          "baseScore": 80,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row5",
+          "label": "Makale: WoS Q3 dergiler (SCI, SCI-E, SSCI, AHCI) / Q3 Journals",
+          "baseScore": 60,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row6",
+          "label": "Makale: WoS Q4 dergiler (SCI, SCI-E, SSCI, AHCI) / Q4 Journals",
+          "baseScore": 40,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row7",
+          "label": "Makale: Scopus, SPORT Discus, ESCI Dergileri / Scopus, SPORT Discus, ESCI-Index Journals",
+          "baseScore": 30,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row8",
+          "label": "Makale: TR-Dizin Dergileri / TR-Index Journals",
+          "baseScore": 20,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row9",
+          "label": "Makale: Diğer Uluslararası/Ulusal Hakemli Dergiler / Other Peer-Reviewed Journals",
+          "baseScore": 5,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row10",
+          "label": "Uluslararası Bilimsel Kitap (BKCI) / Intl. Scientific Book (BKCI)",
+          "baseScore": 100,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row11",
+          "label": "Uluslararası Bilimsel Kitap Bölümü (BKCI) / Intl. Book Chapter (BKCI)",
+          "baseScore": 50,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row12",
+          "label": "Diğer Ulusl./Ulusal Bilimsel Kitap / Other Scientific Book",
+          "baseScore": 20,
+          "maxScore": 40,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row13",
+          "label": "Diğer Ulusl./Ulusal Bilimsel Kitap Bölümü / Other Book Chapter",
+          "baseScore": 10,
+          "maxScore": 20,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row14",
+          "label": "Özgün Eğitim Modeli, Yenilikçi İş Akışı, Kurumsal Yazılım / Original Education Model, Innovative Workflow, Institutional Software",
+          "baseScore": 75,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row15",
+          "label": "Uluslararası Kişisel Sergi, Özgün Tasarım, Birincilik Ödülü / Intl. Solo Exhibition, Original Design, First Place Award",
+          "baseScore": 100,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row16",
+          "label": "Ulusal Kişisel Sergi, Özgün Tasarım, Birincilik Ödülü / National Solo Exhibition, Original Design, First Place Award",
+          "baseScore": 75,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row17",
+          "label": "Uluslararası Karma Sergi, Bienal vb. Katılım / Intl. Group Exhibition, Biennial, etc. Participation",
+          "baseScore": 50,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat1_row18",
+          "label": "Ulusal Karma Sergi, Alanlara Özgü Grup Etkinliği / National Group Exhibition or Discipline-Specific Group Event",
+          "baseScore": 30,
+          "maxScore": 0,
+          "requiresRatio": true
+        }
+      ]
+    },
+    "kat2": {
+      "id": "kat2",
+      "name": "Kategori 2: Proje (Tamamlanmış)",
+      "items": [
+        {
+          "id": "kat2_row1",
+          "label": "Projede Yürütücü / Project Principal Investigator",
+          "baseScore": 100,
+          "maxScore": 0,
+          "requiresRatio": false
+        },
+        {
+          "id": "kat2_row2",
+          "label": "Projede Araştırmacı / Co-Investigator",
+          "baseScore": 70,
+          "maxScore": 0,
+          "requiresRatio": false
+        },
+        {
+          "id": "kat2_row3",
+          "label": "Projede Danışman / Consultant",
+          "baseScore": 50,
+          "maxScore": 0,
+          "requiresRatio": false
+        },
+        {
+          "id": "kat2_row4",
+          "label": "Projede Bursiyer / Project Scholar",
+          "baseScore": 20,
+          "maxScore": 0,
+          "requiresRatio": false
+        }
+      ]
+    },
+    "kat3": {
+      "id": "kat3",
+      "name": "Kategori 3: Patent ve Faydalı Model",
+      "items": [
+        {
+          "id": "kat3_row1",
+          "label": "Uluslararası Tescillenmiş Patent / International Registered Patent",
+          "baseScore": 100,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat3_row2",
+          "label": "Ulusal Tescillenmiş Patent / National Registered Patent",
+          "baseScore": 75,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat3_row3",
+          "label": "Uluslararası Faydalı Model / International Utility Model",
+          "baseScore": 75,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat3_row4",
+          "label": "Ulusal Faydalı Model / National Utility Model",
+          "baseScore": 50,
+          "maxScore": 0,
+          "requiresRatio": true
+        }
+      ]
+    },
+    "kat4": {
+      "id": "kat4",
+      "name": "Kategori 4: Akademik Danışmanlık, Eğitim ve Kurumsal Katkı",
+      "items": [
+        {
+          "id": "kat4_row1",
+          "label": "Mezun Edilen Doktora Öğrencisi / Graduated PhD Student",
+          "baseScore": 50,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row2",
+          "label": "Mezun Edilen Y. Lisans Öğrencisi / Graduated MA/MS Student",
+          "baseScore": 25,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row3",
+          "label": "Öğrenci Yarışma Derecesi/Proje Danışmanlığı / Student Competition Award/Project Advising",
+          "baseScore": 20,
+          "maxScore": 40,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row4",
+          "label": "Mesleki Gelişim (Eğitim Veren Rolü) / Professional Development (Instructor Role)",
+          "baseScore": 20,
+          "maxScore": 40,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row5",
+          "label": "Mesleki Gelişim (Eğitim Alan Rolü) / Professional Development (Learner Role)",
+          "baseScore": 10,
+          "maxScore": 20,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row6",
+          "label": "Ders Yükü (Taban Puan * Yıllık Toplam Ders Saati) / Course Load (Base Score * Total Annual Course Hours)",
+          "baseScore": 1,
+          "maxScore": 0,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row7",
+          "label": "Öğrenci Anketleri (Taban Puan * Anket Ort Puan) / Student Surveys (Base Score * Survey Avr Score)",
+          "baseScore": 20,
+          "maxScore": 100,
+          "requiresRatio": true
+        },
+        {
+          "id": "kat4_row8",
+          "label": "Kurumsal Koordinatörlük-Komite Görevi / Institutional Coord.-Committee Roles",
+          "baseScore": 30,
+          "maxScore": 60,
+          "requiresRatio": true
+        }
+      ]
+    }
+  }
+}

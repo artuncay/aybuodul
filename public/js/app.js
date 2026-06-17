@@ -385,7 +385,12 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   }
 
   try {
-    await apiCall('/api/auth/register', 'POST', { name, email, title, password, faculty, department });
+    const res = await apiCall('/api/auth/register', 'POST', { name, email, title, password, faculty, department });
+    if (res.verificationRequired === false) {
+      showToast(res.message || 'Kayıt başarılı! Lütfen giriş yapın.', 'success');
+      setTimeout(() => showView('login-view'), 1500);
+      return;
+    }
     pendingVerificationEmail = email;
     showToast('Doğrulama kodu e-posta adresinize gönderildi.', 'success');
     showView('verify-view');

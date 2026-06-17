@@ -368,6 +368,11 @@ function requireSystemAdmin(req, res, next) {
 // 1. Auth API
 const VERIFICATION_CODE_TTL_MS = 15 * 60 * 1000;
 
+// E-posta doğrulaması: SMTP yapılandırılmamışsa veya EMAIL_VERIFICATION=off ise devre dışı kalır.
+// Devre dışıyken kayıt, kod adımı olmadan doğrudan tamamlanır (demo/SMTP'siz ortamlar için).
+const EMAIL_VERIFICATION_ENABLED =
+  process.env.EMAIL_VERIFICATION !== 'off' && !!process.env.SMTP_USER;
+
 function generateVerificationCode() {
   return String(crypto.randomInt(0, 1000000)).padStart(6, '0');
 }
@@ -399,6 +404,26 @@ app.post('/api/auth/register', async (req, res) => {
 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
+
+  // E-posta doğrulaması kapalıysa kullanıcıyı doğrudan oluştur.
+  if (!EMAIL_VERIFICATION_ENABLED) {
+    db.users.push({
+      id: 'u_' + Date.now(),
+      email: lowerEmail,
+      password: hashedPassword,
+      name,
+      faculty,
+      department,
+      title,
+      role: 'user'
+    });
+    writeDb(db);
+    return res.status(201).json({
+      message: 'Kayıt işlemi başarıyla tamamlandı. Lütfen giriş yapın.',
+      verificationRequired: false
+    });
+  }
+
   const code = generateVerificationCode();
 
   db.pendingRegistrations = db.pendingRegistrations.filter(p => p.email !== lowerEmail);
@@ -421,7 +446,11 @@ app.post('/api/auth/register', async (req, res) => {
     return res.status(500).json({ message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
   }
 
-  res.status(200).json({ message: 'Doğrulama kodu e-posta adresinize gönderildi.', email: lowerEmail });
+  res.status(200).json({
+    message: 'Doğrulama kodu e-posta adresinize gönderildi.',
+    email: lowerEmail,
+    verificationRequired: true
+  });
 });
 
 app.post('/api/auth/register/verify', (req, res) => {

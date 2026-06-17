@@ -1,4 +1,4 @@
-# ATOSIS — Akademik Teşvik ve Ödül Sistemi
+# AYBÜ — Akademik Teşvik ve Ödül Sistemi
 
 Ankara Yıldırım Beyazıt Üniversitesi akademik ödül başvurularının çevrim içi alınması, puanlanması ve komisyon tarafından değerlendirilmesi için geliştirilmiş web uygulaması.
 

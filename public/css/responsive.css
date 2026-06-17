@@ -1,0 +1,199 @@
+﻿/* Responsive Design - Mobile & Tablet Support */
+
+/* Tablet & Mobile Breakpoint (900px) */
+@media (max-width: 900px) {
+  /* Header buttons */
+  .btn-desktop {
+    display: none !important;
+  }
+  
+  .btn-mobile {
+    display: inline-flex !important;
+  }
+  
+  /* Sidebar drawer */
+  #sidebar-drawer {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    width: 70%;
+    max-width: 280px;
+    height: 100vh;
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+    transition: left 0.3s ease;
+    z-index: 999;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  
+  #sidebar-drawer.show {
+    left: 0;
+  }
+  
+  /* Overlay when drawer is open */
+  body.sidebar-open {
+    overflow: hidden;
+  }
+  
+  /* Tables - stack rows */
+  .calc-table,
+  .submissions-table,
+  .admin-config-table,
+  .users-management-table {
+    display: block;
+    width: 100%;
+  }
+  
+  .calc-table thead,
+  .submissions-table thead,
+  .admin-config-table thead,
+  .users-management-table thead {
+    display: none;
+  }
+  
+  .calc-table tbody,
+  .submissions-table tbody,
+  .admin-config-table tbody,
+  .users-management-table tbody {
+    display: block;
+    width: 100%;
+  }
+  
+  .calc-table tr,
+  .submissions-table tr,
+  .admin-config-table tr,
+  .users-management-table tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background: var(--white);
+  }
+  
+  .calc-table th,
+  .calc-table td,
+  .submissions-table th,
+  .submissions-table td,
+  .admin-config-table th,
+  .admin-config-table td,
+  .users-management-table th,
+  .users-management-table td {
+    display: block;
+    text-align: left;
+    padding: 0.5rem 0;
+    border: none;
+  }
+  
+  .calc-table td::before,
+  .submissions-table td::before,
+  .admin-config-table td::before,
+  .users-management-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Icon buttons */
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.2rem;
+  }
+  
+  .btn-icon:hover {
+    background: var(--accent-surface);
+  }
+}
+
+/* Small Mobile Breakpoint (576px) */
+@media (max-width: 576px) {
+  #sidebar-drawer {
+    width: 85%;
+    max-width: none;
+  }
+  
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .action-buttons-right {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+  
+  .action-buttons-right .btn {
+    width: 100%;
+  }
+  
+  .stats-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .admin-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tab-btn {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Extra Small Mobile (max 360px) */
+@media (max-width: 360px) {
+  #sidebar-drawer {
+    width: 90%;
+  }
+  
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+  
+  .card {
+    padding: 0.75rem;
+  }
+  
+  .form-group {
+    margin-bottom: 0.75rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+  }
+}
+

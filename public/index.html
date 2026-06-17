@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AYBÜ Akademik Ödül Sistemi</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/select-fix.css">
+</head>
+<body class="login-screen-active">
+
+  <a href="#main-content" class="skip-link">Ana içeriğe atla</a>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Header / Navigation -->
+  <header id="main-header" class="hidden" role="banner">
+    <div class="header-container">
+      <div class="logo" aria-label="AYBÜ Akademik Ödül Sistemi">
+        <img src="/img/aybu-logo.png" alt="" class="header-logo-mark" aria-hidden="true">
+        <span>AYBÜ <strong>Akademik Ödül Sistemi</strong></span>
+      </div>
+      <button id="btn-header-menu" type="button" class="btn btn-icon hidden" aria-label="Menü">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+      <nav aria-label="Kullanıcı menüsü" class="header-nav">
+        <span id="nav-user-info" class="user-badge" aria-live="polite"></span>
+        <button type="button" id="btn-change-password" class="btn btn-secondary btn-sm btn-desktop" aria-label="Şifre değiştir">
+          <i class="fa-solid fa-key" aria-hidden="true"></i> <span class="btn-text">Şifre Değiştir</span>
+        </button>
+        <button id="btn-logout" type="button" class="btn btn-secondary btn-sm btn-desktop" aria-label="Oturumu kapat">
+          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="btn-text">Çıkış Yap</span>
+        </button>
+        <button type="button" id="btn-change-password-mobile" class="btn btn-icon btn-mobile hidden" aria-label="Şifre değiştir">
+          <i class="fa-solid fa-key" aria-hidden="true"></i>
+        </button>
+        <button type="button" id="btn-logout-mobile" class="btn btn-icon btn-mobile hidden" aria-label="Oturumu kapat">
+          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main id="main-content" class="main-content" tabindex="-1">
+
+    <!-- 1. LOGIN VIEW -->
+    <section id="login-view" class="view active" aria-labelledby="login-heading">
+      <div class="login-shell">
+        <div class="login-panel">
+          <div class="login-card">
+            <div class="login-identity-mark" aria-hidden="true">
+              <img src="/img/aybu-logo.png" alt="">
+            </div>
+
+            <div class="login-header login-header-centered">
+              <h1 id="login-heading">Ankara Yıldırım Beyazıt Üniversitesi</h1>
+              <p>Akademik Ödül Sistemi</p>
+            </div>
+
+            <form id="login-form" class="auth-form login-form-panel" method="post" action="/api/auth/login" novalidate>
+              <div class="form-group">
+                <label for="login-id"><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-posta</label>
+                <div class="login-input login-input-plain">
+                  <input type="text" id="login-id" name="login" autocomplete="username"
+                    placeholder="E-posta adresinizi girin" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="login-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre</label>
+                <div class="login-input login-input-password">
+                  <input type="password" id="login-password" name="password" autocomplete="current-password"
+                    placeholder="Şifrenizi girin" required>
+                  <button type="button" class="login-password-toggle" id="login-password-toggle" aria-label="Şifreyi göster veya gizle" aria-pressed="false">
+                    <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-block login-submit">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Giriş Yap
+              </button>
+              <a href="#" id="link-go-register" class="login-register-link-large">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Kayıt olun
+              </a>
+              <p class="login-register-note">İlk defa giriş yapıyorsanız kayıt olun</p>
+            </form>
+
+            <div class="login-links login-links-stacked">
+              <a href="mailto:artuncay@aybu.edu.tr?subject=Akademik%20%C3%96d%C3%BCl%20Sistemi%20Giri%C5%9F%20Sorunu" class="login-inline-link login-inline-link-accent"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Giriş sorunu mu yaşıyorsunuz?</a>
+            </div>
+
+            <p class="login-card-footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. REGISTER VIEW -->
+    <section id="register-view" class="view hidden" aria-labelledby="register-heading">
+      <div class="login-shell register-shell">
+        <div class="login-panel register-panel">
+          <div class="login-card register-login-card">
+            <div class="login-identity-mark" aria-hidden="true">
+              <img src="/img/aybu-logo.png" alt="">
+            </div>
+
+            <div class="login-header login-header-centered">
+              <h1 id="register-heading">Ankara Yıldırım Beyazıt Üniversitesi</h1>
+              <p>Akademik Ödül Sistemi Kayıt Formu</p>
+            </div>
+
+            <form id="register-form" class="auth-form login-form-panel register-form-panel" method="post" action="/api/auth/register" novalidate>
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label for="reg-firstname"><i class="fa-solid fa-user" aria-hidden="true"></i> Ad</label>
+                  <div class="login-input login-input-plain">
+                    <input type="text" id="reg-firstname" name="firstname" autocomplete="given-name"
+                      placeholder="Adınız" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reg-lastname"><i class="fa-solid fa-user" aria-hidden="true"></i> Soyad</label>
+                  <div class="login-input login-input-plain">
+                    <input type="text" id="reg-lastname" name="lastname" autocomplete="family-name"
+                      placeholder="Soyadınız" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reg-title"><i class="fa-solid fa-award" aria-hidden="true"></i> Unvan</label>
+                  <div class="login-input login-input-plain">
+                    <select id="reg-title" name="title" required>
+                      <option value="" disabled selected>Unvan seçin</option>
+                      <option value="Prof. Dr.">Prof. Dr.</option>
+                      <option value="Doç. Dr.">Doç. Dr.</option>
+                      <option value="Dr. Öğr. Üyesi">Dr. Öğr. Üyesi</option>
+                      <option value="Öğr. Gör. Dr.">Öğr. Gör. Dr.</option>
+                      <option value="Öğr. Gör.">Öğr. Gör.</option>
+                      <option value="Arş. Gör. Dr.">Arş. Gör. Dr.</option>
+                      <option value="Arş. Gör.">Arş. Gör.</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row form-row-3">
+                <div class="form-group">
+                  <label for="reg-email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-posta</label>
+                  <div class="login-input login-input-plain">
+                    <input type="email" id="reg-email" name="email" autocomplete="email"
+                      placeholder="@aybu.edu.tr"
+                      pattern="[^\s@]+@aybu\.edu\.tr"
+                      title="Sadece @aybu.edu.tr uzantılı e-posta adresleri kabul edilir." required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reg-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre</label>
+                  <div class="login-input login-input-plain">
+                    <input type="password" id="reg-password" name="password" autocomplete="new-password"
+                      placeholder="En az 6 karakter" minlength="6" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reg-password-confirm"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre (Tekrar)</label>
+                  <div class="login-input login-input-plain">
+                    <input type="password" id="reg-password-confirm" name="password_confirm" autocomplete="new-password"
+                      placeholder="Şifreyi tekrar girin" minlength="6" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="reg-faculty"><i class="fa-solid fa-building-columns" aria-hidden="true"></i> Fakülte / Birim</label>
+                  <div class="login-input login-input-plain">
+                    <select id="reg-faculty" name="faculty" required>
+                      <option value="" disabled selected>Fakülte seçin</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="reg-dept"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> Bölüm</label>
+                  <div class="login-input login-input-plain">
+                    <select id="reg-dept" name="department" required>
+                      <option value="" disabled selected>Seçiniz</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-block login-submit">
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Kayıt Ol
+              </button>
+            </form>
+
+            <div class="login-links login-links-stacked register-login-links">
+              <a href="#" id="link-go-login" class="login-inline-link login-inline-link-accent">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Zaten hesabınız var mı? Giriş yapın
+              </a>
+            </div>
+
+            <p class="login-card-footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2b. EMAIL VERIFICATION -->
+    <section id="verify-view" class="view hidden" aria-labelledby="verify-heading">
+      <div class="login-shell register-shell">
+        <div class="login-panel register-panel">
+          <div class="login-card register-login-card">
+            <div class="login-identity-mark" aria-hidden="true">
+              <img src="/img/aybu-logo.png" alt="">
+            </div>
+
+            <div class="login-header login-header-centered">
+              <h1 id="verify-heading">E-posta Doğrulama</h1>
+              <p>Kayıt e-postanıza gönderdiğimiz 6 haneli kodu girin.</p>
+            </div>
+
+            <form id="verify-form" class="auth-form login-form-panel register-form-panel" novalidate>
+              <div class="form-group">
+                <label for="verify-code"><i class="fa-solid fa-key" aria-hidden="true"></i> Doğrulama Kodu</label>
+                <div class="login-input login-input-plain">
+                  <input type="text" id="verify-code" name="code" inputmode="numeric" pattern="[0-9]{6}"
+                    maxlength="6" placeholder="123456" autocomplete="one-time-code" required>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-block login-submit">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Doğrula ve Kaydı Tamamla
+              </button>
+            </form>
+
+            <div class="login-links login-links-stacked register-login-links">
+              <a href="#" id="link-resend-code" class="login-inline-link login-inline-link-accent">
+                <i class="fa-solid fa-rotate" aria-hidden="true"></i> Kodu yeniden gönder
+              </a>
+              <a href="#" id="link-back-to-register" class="login-inline-link">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Kayıt formuna geri dön
+              </a>
+            </div>
+
+            <p class="login-card-footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ACADEMICIAN DASHBOARD -->
+    <section id="academic-view" class="view hidden">
+      <div class="dashboard-container">
+        <!-- Sidebar profile -->
+        <button id="btn-sidebar-toggle" type="button" class="btn btn-icon hidden sidebar-toggle-btn" aria-label="Sidebar aç/kapat">
+          <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <aside class="dashboard-sidebar" id="sidebar-drawer">
+          <div class="profile-card">
+            <div class="avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+            <p id="user-profile-title" class="profile-title">Prof. Dr.</p>
+            <h3 id="user-profile-name">Yükleniyor...</h3>
+            <p id="user-profile-faculty" class="faculty-label">Mühendislik Fakültesi</p>
+            <p id="user-profile-title-dept" class="title-dept">Bilgisayar Müh.</p>
+          </div>
+          <div class="sidebar-nav" aria-label="Panel menüsü">
+            <button type="button" id="btn-sidebar-dashboard" class="sidebar-btn active"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Genel Bakış</button>
+            <button type="button" id="btn-sidebar-new-app" class="sidebar-btn btn-accent"><i class="fa-solid fa-plus" aria-hidden="true"></i> Yeni Başvuru Oluştur</button>
+            <button type="button" id="btn-sidebar-my-apps" class="sidebar-btn btn-accent"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Başvurularım</button>
+          </div>
+        </aside>
+
+        <!-- Main dashboard content -->
+        <div class="dashboard-main">
+          <div class="card" id="dashboard-info-guide" style="padding: 0.7rem 0.9rem;">
+            <h3><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Hesaplama Rehberi ve Uygulama Esasları</h3>
+            <div class="table-responsive mt-3">
+              <table class="table table-mobile-stack" aria-describedby="info-guide-desc" style="font-size: 0.82rem; line-height: 1.4;">
+                <caption id="info-guide-desc" class="sr-only">Hesaplama rehberi ve uygulama esasları tablosu</caption>
+                <thead>
+                  <tr>
+                    <th style="width: 22%;">Konu</th>
+                    <th style="width: 78%;">Açıklama</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Konu"><strong>Genel İşleyiş</strong></td>
+                    <td data-label="Açıklama">
+                      <p>Bu web portalı; Ankara Yıldırım Beyazıt Üniversitesi Akademik Yükseltilme ve Atanma Kriterleri Yönergesi, Akademik Teşvik Ödeneği Yönetmeliği ve ilgili yıl Uygulama Usul ve İlkeleri esas alınarak hazırlanmış olup başvuru sürecinizi dijital ortamda otomatik puan hesaplamasıyla yönetmenizi sağlar.</p>
+                      <ul>
+                        <li>Sol menüden <strong>"Yeni Başvuru"</strong> seçeneğine tıklayarak başvurunuzu oluşturunuz; sisteme girdiğiniz faaliyet bilgileri otomatik olarak puanlanır.</li>
+                        <li>Puanlamaya esas alınacak tüm faaliyetlerin AVESİS sistemine eksiksiz olarak girilmiş olması zorunludur. Aksi takdirde başvurular değerlendirmeye alınmayacaktır.</li>
+                        <li>Her başvuru sahibi sadece bir kategoriden başvuru yapabilir.</li>
+                        <li>Başvuru yapabilmek için en az 3 yıl AYBÜ'de çalışmış olmak gerekmektedir.</li>
+                        <li>Ödül Sistemi fakülte bazlı değerlendirme yapmaktadır.</li>
+                        <li>Aynı akademik faaliyet (aynı yayın, aynı eser, aynı patent, aynı etkinlik vb.) birden fazla kez puanlandırılamaz.</li>
+                        <li>Çok yazarlı / çok yürütücülü çalışmalarda ilgili satırda <strong>"Katkı Oranı"</strong> alanını doldurunuz.</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td data-label="Konu"><strong>Kanıt Belgeleri</strong></td>
+                    <td data-label="Açıklama">
+                      <p>Komisyon, kanıt belgesi değerlendirmesinde öncelikle <strong>2025 yılı Akademik Teşvik Ödeneği başvurusunda ibraz edilen belgeler</strong>i esas almaktadır. Akademik Teşvik başvurusunda belgelerini eksiksiz ibraz etmiş başvuruculardan ayrıca kanıt talep edilmeyecektir.</p>
+                      <p>Ancak aşağıdaki durumlarda ilgili faaliyete ait kanıt belgesini yüklemeniz <strong>zorunludur</strong>:</p>
+                      <ul>
+                        <li>2025 yılında <strong>Akademik Teşvik Ödeneği başvurusu yapmadıysanız</strong>, veya</li>
+                        <li>Akademik Teşvik başvurusunda bu ödül hesaplamasında kullandığınız <strong>ilgili faaliyet için kanıt ibraz etmediyseniz</strong>.</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr style="background-color: #fff5f5;">
+                    <td data-label="Konu" style="color: #c0392b;"><strong>⚠️ Önemli Not</strong></td>
+                    <td data-label="Açıklama" style="color: #c0392b;">
+                      Başvuru öncesinde <strong>AVESİS profilinizin güncel ve eksiksiz</strong> olduğundan emin olunuz. Profil eksiklikleri veya hatalı bilgiler başvurunuzun geçersiz sayılmasına yol açabilir.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td data-label="Konu"><strong>Taban Puan</strong></td>
+                    <td data-label="Açıklama">Her faaliyetin yönergede belirlenmiş standart bir taban puanı vardır. Sistem bu değerleri otomatik olarak uygular; herhangi bir değişiklik yapmanıza gerek yoktur.</td>
+                  </tr>
+                  <tr>
+                    <td data-label="Konu"><strong>Katkı Oranı</strong></td>
+                    <td data-label="Açıklama">
+                      <p>Ortak çalışmalarda (çok yazarlı/çok yürütücülü çalışmalarda) ilgili faaliyet satırında <strong>"Katkı Oranı"</strong> alanına payınızı giriniz (0.01 – 1.00).</p>
+                      <p>Katkı oranı hesabında Akademik Yükseltilme ve Atanma Kriterleri Yönergesi, Sayfa 26'da yer alan Tablo 2 dikkate alınmaktadır. Örneğin, 3 yazarlı bir makalede katkı oranları sırasıyla 1. yazar %90, 2. yazar %85, 3. yazar %80 şeklindedir.</p>
+                      <p><strong>Formül:</strong> Taban Puan × Adet × Katkı Oranı (Maksimum puan sınırı sistem tarafından otomatik uygulanır.)</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td data-label="Konu"><strong>Maks Puan</strong></td>
+                    <td data-label="Açıklama">Her faaliyet türü için alınabilecek maksimum puan üst sınırı sistem tarafından otomatik olarak uygulanır. Bu sınırı aşan girişler otomatik olarak kırpılır; herhangi bir müdahalede bulunmanıza gerek yoktur.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="dashboard-applications-section" class="hidden">
+            <button type="button" id="btn-back-to-info-from-apps" class="btn btn-secondary btn-sm mb-3"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Panele Dön</button>
+            <div class="section-header">
+              <h2>Başvurularım</h2>
+              <p id="my-apps-desc">Akademik ödül başvuru geçmişiniz ve güncel durumunuz.</p>
+            </div>
+
+            <!-- Applications list -->
+            <div class="card">
+              <div class="table-responsive">
+                <table class="table table-mobile-stack" id="my-applications-table" aria-describedby="my-apps-desc">
+                  <caption class="sr-only">Akademisyen başvuru geçmişi tablosu</caption>
+                  <thead>
+                    <tr>
+                      <th>Başvuru Yılı</th>
+                      <th>Başvurulan Kategori</th>
+                    <th>Hesaplanan Puan</th>
+                    <th>Onaylanan Puan</th>
+                    <th>Son Güncelleme</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                  </tr>
+                </thead>
+                <tbody id="my-applications-list">
+                  <!-- Dynamic rows go here -->
+                </tbody>
+              </table>
+            </div>
+            <div id="no-applications-msg" class="empty-state hidden" role="status">
+              <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+              <p>Henüz bir başvurunuz bulunmamaktadır. Puanınızı hesaplamak ve başvuru yapmak için "Yeni Başvuru Oluştur" butonunu kullanabilirsiniz.</p>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. NEW/EDIT APPLICATION FORM (THE EXCEL CALCULATOR) -->
+    <!-- Hidden data source for the per-category info shown during application Step 1 (see CATEGORY_INFO_ROW_IDS in app.js) -->
+    <table class="hidden" aria-hidden="true">
+      <tbody>
+        <tr id="info-row-kat1">
+          <td data-label="Konu"><strong>Kategori 1<br>Araştırma, Yayın, Etkinlik ve Yenilikçi Tasarım</strong></td>
+          <td data-label="Açıklama">
+            <p><strong>Araştırma:</strong> Araştırmanın üniversite yönetim kurulunun izin kararıyla, en az 1 ay süreyle araştırmacının kadrosunun bulunduğu kurum dışında yürütülmüş olması ve sonuç raporunun hem üniversite hem de ilgili kurum tarafından onaylanmış olması gerekir. Yurt içi ve yurt dışı araştırmalar en fazla 12 ay üzerinden puanlanır; yurt dışı için aylık 10 puan (maks. 120), yurt içi için aylık 5 puan (maks. 60) verilir.</p>
+            <p><strong>Yayın:</strong> SCI, SCI Expanded, SSCI ve AHCI makalelerin Q değerleri (Q1–Q4) veya tarandığı indeks (Scopus, SPORT Discus, ESCI, TR-Dizin) esas alınır. Uluslararası kitaplar için BKCI şartı aranır; ders kitabı dışındaki özgün bilimsel kitaplar ile aynı kitaptaki bölümlerin en fazla ikisi puanlanabilir. Uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri belirleyicidir.</p>
+            <p><strong>Yenilikçi Tasarım:</strong> Özgün Eğitim Modeli, Yenilikçi İş Akışı ve Kurumsal Yazılım girdilerinde özgünlüğün ve katkının belgelenmesi zorunludur.</p>
+            <p><strong>Katkı Oranı:</strong> Ortak çalışmalarda (çok yazarlı/çok yürütücülü) ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Hesaplama Akademik Yükseltilme ve Atanma Kriterleri Yönergesi Tablo 2 esas alınarak yapılır (örn. 3 yazarlı makalede: 1. yazar %90, 2. yazar %85, 3. yazar %80).</p>
+            <p><strong>Formül:</strong> Taban Puan × Adet × Katkı Oranı — maksimum puan sınırı sistem tarafından otomatik uygulanır.</p>
+          </td>
+        </tr>
+        <tr id="info-row-kat2">
+          <td data-label="Konu"><strong>Kategori 2<br>Proje &amp; Fon</strong></td>
+          <td data-label="Açıklama">
+            <p>TÜBİTAK 1001, 1003, 1004, 1005, 1007, 1505, 2244, 3001, 3501, SAYEM, COST, Uluslararası İkili İşbirliği Programları, H2020 Projeleri ile ulusal veya uluslararası özel veya resmi kurum ve kuruluşlar tarafından desteklenmiş ve destek süresi dokuz aydan az olmayan Ar-Ge niteliğine haiz projeler bu kapsamda değerlendirilir.</p>
+            <p>Projelerin başarı ile sonuçlandırılmış ve sonuç raporunun onaylanmış olması zorunludur. Uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri esas alınır. Sisteme girdiğiniz proje bilgileri otomatik olarak puanlanır.</p>
+          </td>
+        </tr>
+        <tr id="info-row-kat3">
+          <td data-label="Konu"><strong>Kategori 3<br>Patent &amp; Faydalı Model</strong></td>
+          <td data-label="Açıklama">
+            <p>Tescillenmiş uluslararası patent, ulusal patent ve faydalı modeller sisteme ayrı ayrı girilmelidir. Tescil tarihi esas alınır.</p>
+            <p>Buluş uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri esas alınır.</p>
+            <ul>
+              <li><strong>Ulusal Patent:</strong> Ulusal mevzuat kapsamında başvurusu yapılan ve inceleme raporu sonucunda Türk Patent ve Marka Kurumu tarafından verilen patent.</li>
+              <li><strong>Uluslararası Patent:</strong> Patent İşbirliği Antlaşması kapsamında yapılan ve uluslararası araştırma raporunda en az bir istemin patentlenebilirlik kriterlerini (yenilik, buluş basamağı, sanayiye uygulanabilirlik) sağladığı ifade edilen başvuru ya da Avrupa Patent Sözleşmesi kapsamında Avrupa Patent Ofisi tarafından verilen patent.</li>
+            </ul>
+            <p><strong>Katkı Oranı:</strong> Birden fazla buluş sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Katkı oranı girilmemesi durumunda toplam puan, buluş sahibi sayısına bölünerek hesaplanır. Sisteme girdiğiniz bilgiler otomatik olarak puanlanır.</p>
+          </td>
+        </tr>
+        <tr id="info-row-kat4">
+          <td data-label="Konu"><strong>Kategori 4<br>Danışmanlık &amp; Katkı</strong></td>
+          <td data-label="Açıklama">
+            <p>Yüksek lisans ve doktora danışmanlıkları, yarışma/proje danışmanlığı, idari görevler ve mesleki gelişim faaliyetleri bu kategoride değerlendirilir. Uygunluk değerlendirmesinde Akademik Yükseltilme ve Atanma Kriterleri Yönergesi esas alınır; idari görevler için atama yazısı ve faaliyet raporu talep edilmektedir.</p>
+            <p><strong>Mesleki Gelişim:</strong> Üniversitelere bağlı merkezler, Ulusal Ajans, TÜBİTAK gibi kamu kurumlarına bağlı merkezler ya da protokol kapsamındaki kurumlar tarafından sunulan seminer, webinar veya kurslarda <em>eğitici</em> ya da <em>öğrenici</em> olarak görev almayı kapsar. Öğrenici rolünde sertifika alınmış olması zorunludur; uluslararası akredite kurumlar da kabul edilir. Alınan eğitim doğrultusunda yeni eğitim planlanıp yürütülmesi durumunda eğitici rolü için ayrıca girdi yapılabilir.</p>
+            <p><strong>Yarışma/Proje Danışmanlığı:</strong> TÜBİTAK 2209-A ve 2209-B, ÜNİDES, ESC30 (Avrupa Dayanışma Programı), Erasmus+ Gençlik Projeleri, TEKNOFEST vb. programlardaki danışmanlık faaliyetlerini kapsar.</p>
+            <p><strong>Ders Yükü:</strong> Yıllık toplam ders saatinizi "Adet" alanına giriniz. Sistem otomatik olarak puanlar (örn. 350 saat × 1 puan = 350 puan). Öğrenci/öğrenci grubuyla birebir çalışmayan ve haftalık programa yansımayan etkinlikler bu kapsamda değerlendirilemez.</p>
+            <p><strong>Öğrenci OBS Değerlendirme Formları:</strong> Yıl boyunca yürütülen derslere ait OBS değerlendirme formlarının 5 üzerinden genel ortalamasını "Katsayı" alanına giriniz (örn. ortalama 4/5 ise → 4 × 20 = 80 puan). Sistem puanı otomatik hesaplar.</p>
+            <p><strong>Katkı Oranı:</strong> Birden fazla katkı sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Girilmemesi durumunda toplam puan kişi sayısına bölünerek hesaplanır. Maksimum puan sınırı sistem tarafından otomatik uygulanır.</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section id="application-form-view" class="view hidden">
+      <div class="app-form-container">
+        <div class="app-form-header">
+          <button type="button" id="btn-back-to-dashboard" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Panele Dön</button>
+          <h2 id="app-form-title">Yeni Akademik Ödül Başvurusu</h2>
+          <span id="app-form-badge" class="badge badge-info">Yıl: 2025</span>
+        </div>
+
+        <div id="application-revision-note" class="alert alert-warning hidden" role="status" aria-live="polite">
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+          <div>
+            <strong>Revizyon Notu</strong>
+            <p id="application-revision-note-text" class="mt-1"></p>
+          </div>
+        </div>
+
+        <!-- 3-Step Progress Indicator -->
+        <nav class="progress-steps" aria-label="Başvuru adımları">
+          <div class="step active" data-step="1" aria-current="step">
+            <div class="step-num" aria-hidden="true">1</div>
+            <div class="step-text">Genel Bilgiler</div>
+          </div>
+          <div class="step" data-step="2">
+            <div class="step-num" aria-hidden="true">2</div>
+            <div class="step-text">Faaliyet Veri Girişi</div>
+          </div>
+          <div class="step" data-step="3">
+            <div class="step-num" aria-hidden="true">3</div>
+            <div class="step-text">Kanıt Belgeleri &amp; Onay</div>
+          </div>
+        </nav>
+
+        <!-- STEP 1: Applicant & Category selection -->
+        <div id="step-1-content" class="step-content">
+          <div class="card">
+            <h3><i class="fa-regular fa-address-card" aria-hidden="true"></i> Aday ve Kategori Bilgileri</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="app-year">Başvuru Yılı</label>
+                <select id="app-year" aria-describedby="app-year-help" required>
+                  <option value="2025" selected>2025</option>
+                  <option value="2026">2026</option>
+                </select>
+                <span id="app-year-help" class="field-help">Başvuru yapmak istediğiniz akademik yılı seçin.</span>
+              </div>
+              <div class="form-group">
+                <label for="app-category-select">Başvurulan Kategori</label>
+                <select id="app-category-select" aria-describedby="app-category-help" required>
+                  <option value="" disabled selected>Lütfen başvuru kategorinizi seçin</option>
+                  <option value="kat1">Kategori 1: Araştırma, Yayın, Etkinlik ve Yenilikçi Tasarım</option>
+                  <option value="kat2">Kategori 2: Proje (Tamamlanmış)</option>
+                  <option value="kat3">Kategori 3: Patent ve Faydalı Model</option>
+                  <option value="kat4">Kategori 4: Akademik Danışmanlık, Eğitim ve Kurumsal Katkı</option>
+                </select>
+                <span id="app-category-help" class="field-help">Her başvuru sahibi yalnızca bir kategori seçebilir.</span>
+              </div>
+            </div>
+            <div class="alert alert-warning" role="note">
+              <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+              <strong>Önemli Kural:</strong> Her başvuru sahibi yalnızca bir kategoriden başvuru yapabilir. Puanlama tablosundaki hesaplamalar sadece seçtiğiniz bu kategori için geçerli olacaktır.
+            </div>
+
+            <div id="category-info-inline" class="card hidden" style="background: var(--accent-surface); margin-top: 1.5rem; scroll-margin-top: 100px;">
+              <h3><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Seçtiğiniz Kategoriye Ait Bilgilendirme</h3>
+              <p>Devam etmeden önce kategorinize ait aşağıdaki hususları okuyunuz.</p>
+              <div id="category-info-inline-content" class="table-responsive"></div>
+              <div class="form-group mt-3">
+                <label for="category-info-ack-checkbox" style="display:flex; align-items:center; gap:0.6rem; font-weight:600; color: var(--primary-color); cursor:pointer;">
+                  <input type="checkbox" id="category-info-ack-checkbox" style="width:18px; height:18px;">
+                  Yukarıdaki bilgilendirmeyi okudum ve anladım.
+                </label>
+              </div>
+              <div class="form-group mt-2">
+                <label for="avesis-ack-checkbox" style="display:flex; align-items:flex-start; gap:0.6rem; font-weight:600; color: #c0392b; cursor:pointer;">
+                  <input type="checkbox" id="avesis-ack-checkbox" style="width:18px; height:18px; margin-top:2px; flex-shrink:0; accent-color:#c0392b;">
+                  AVESİS profilimde yer alan tüm akademik faaliyet bilgilerimin eksiksiz ve güncel olduğunu beyan ederim.
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="btn-back-to-dashboard-inline" class="btn btn-secondary btn-sm hidden"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Panele Dön</button>
+              <div class="action-buttons-right">
+                <button type="button" id="btn-step1-next" class="btn btn-primary">Sonraki Adım <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: The Excel Calculator -->
+        <div id="step-2-content" class="step-content hidden">
+          <div class="card">
+            <div class="calc-header-summary">
+              <div>
+                <h3 id="selected-category-title-display">Kategori Puanlama Tablosu</h3>
+                <p>Pembe alanları doldurunuz. Mavi alanlar otomatik hesaplanır.</p>
+              </div>
+              <div class="score-badge-large">
+                <span class="label">TOPLAM PUAN</span>
+                <span id="live-total-score" aria-live="polite" aria-atomic="true">0.00</span>
+              </div>
+            </div>
+
+            <!-- The Grid Table -->
+            <div class="table-responsive">
+              <table class="table calc-table" id="calculator-table" aria-describedby="calc-table-desc">
+                <caption class="sr-only">Akademik faaliyet puanlama tablosu. Açık pembe alanlara veri girin, koyu bordo alanlar otomatik hesaplanır.</caption>
+                <thead>
+                  <tr class="excel-header">
+                    <th style="width: 50%;">Faaliyet Türü (Kapsam)</th>
+                    <th style="width: 10%;">Taban Puan</th>
+                    <th style="width: 10%;">Maks Puan</th>
+                    <th style="width: 10%;">Değer</th>
+                    <th style="width: 10%;" id="th-ratio-header">
+                      Katkı Oranı (0.01-1.00)
+                      <button type="button" id="btn-katki-orani-help" class="btn-row-help" aria-label="Katkı oranı hesaplama tablosunu göster" title="Katkı oranını nasıl hesaplarım?">
+                        <i class="fa-solid fa-circle-question"></i>
+                      </button>
+                    </th>
+                    <th style="width: 10%;">Toplam Puan</th>
+                  </tr>
+                </thead>
+                <tbody id="calculator-table-body">
+                  <!-- Dynamically populated from config and selected category -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="btn-step2-prev" class="btn btn-secondary"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Önceki Adım</button>
+              <button type="button" id="btn-step2-next" class="btn btn-primary">Sonraki Adım (Belgeler) <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Evidence uploads & submission -->
+        <div id="step-3-content" class="step-content hidden">
+          <div class="card">
+            <h3><i class="fa-solid fa-cloud-arrow-up"></i> Başvuru Kanıtlayıcı Belgeleri</h3>
+
+
+            <!-- Akademik Teşvik sorusu -->
+            <div class="form-group" id="teşvik-question-section">
+              <label class="form-label" style="font-weight: 600;">2025 yılında Akademik Teşvik Ödeneği başvurusu yaptınız mı?</label>
+              <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-weight:500;">
+                  <input type="radio" name="teşvik-applied" id="teşvik-yes" value="yes"> Evet
+                </label>
+                <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer; font-weight:500;">
+                  <input type="radio" name="teşvik-applied" id="teşvik-no" value="no"> Hayır
+                </label>
+              </div>
+            </div>
+
+            <!-- Kanıt yükleme bölümü (soru cevaplanınca gösterilir) -->
+            <div class="form-group-file-upload hidden" id="evidence-upload-section">
+              <h4>Kanıt Belgeleri</h4>
+              <p class="help-text" id="evidence-help-text"></p>
+
+              <!-- Evet seçilince: hangi faaliyetler için kanıt yok? -->
+              <div id="teşvik-activity-checklist" class="hidden" style="margin-bottom: 1rem;">
+                <p style="font-weight:600; margin-bottom:0.5rem;">Aşağıdaki faaliyetlerden Akademik Teşvik başvurusunda <strong>kanıt ibraz etmediğiniz</strong> kalemleri işaretleyiniz:</p>
+                <div id="teşvik-checklist-items"></div>
+              </div>
+
+              <div id="dynamic-evidence-uploaders" aria-live="polite" aria-atomic="false">
+                <!-- Dynamically generated -->
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="btn-step3-prev" class="btn btn-secondary"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Önceki Adım</button>
+              <div class="action-buttons-right">
+                <button type="button" id="btn-save-draft" class="btn btn-outline-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Taslak Olarak Kaydet</button>
+                <button type="button" id="btn-submit-application" class="btn btn-success"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Başvuruyu Gönder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ADMIN DASHBOARD -->
+    <section id="admin-view" class="view hidden">
+      <div class="admin-container">
+        <div id="admin-faculty-banner" class="alert alert-warning hidden" role="status">
+          <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+          <span id="admin-faculty-banner-text"></span>
+        </div>
+        <!-- Stats cards -->
+        <div class="stats-row">
+          <div class="stats-card">
+            <div class="icon bg-primary"><i class="fa-solid fa-file-invoice"></i></div>
+            <div class="stats-info">
+              <span class="num" id="stat-total-apps">0</span>
+              <span class="label">Toplam Başvuru</span>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="icon bg-warning"><i class="fa-solid fa-clock"></i></div>
+            <div class="stats-info">
+              <span class="num" id="stat-pending-apps">0</span>
+              <span class="label">Değerlendirme Bekleyen</span>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="icon bg-success"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="stats-info">
+              <span class="num" id="stat-approved-apps">0</span>
+              <span class="label">Onaylanan Başvuru</span>
+            </div>
+          </div>
+          <div class="stats-card">
+            <div class="icon bg-danger"><i class="fa-solid fa-circle-xmark"></i></div>
+            <div class="stats-info">
+              <span class="num" id="stat-rejected-apps">0</span>
+              <span class="label">Reddedilen Başvuru</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-tabs" role="tablist" aria-label="Yönetici panel sekmeleri">
+          <button type="button" id="btn-tab-submissions" class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-submissions-content"><i class="fa-solid fa-list-check" aria-hidden="true"></i> Başvurular</button>
+          <button type="button" id="btn-tab-config" class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-config-content"><i class="fa-solid fa-gears" aria-hidden="true"></i> Puanlama Kriterleri</button>
+          <button type="button" id="btn-tab-users" class="tab-btn hidden" role="tab" aria-selected="false" aria-controls="tab-users-content"><i class="fa-solid fa-users-gear" aria-hidden="true"></i> Kullanıcı Yönetimi</button>
+        </div>
+
+        <!-- Admin submissions tab content -->
+        <div id="tab-submissions-content" class="tab-content card" role="tabpanel" aria-labelledby="btn-tab-submissions">
+          <p id="admin-apps-desc" class="sr-only">Yönetici panelinde tüm başvuruları listeleyin, arayın ve filtreleyin.</p>
+          <div class="table-filters" role="search" aria-label="Başvuru filtreleri">
+            <div class="filter-group">
+              <label for="admin-search" class="sr-only">İsim veya e-posta ile ara</label>
+              <input type="search" id="admin-search" placeholder="Lütfen isim veya e-posta ile arama yapın" aria-describedby="admin-search-help">
+              <span id="admin-search-help" class="field-help">Akademisyen adı veya e-posta adresine göre filtreleyin.</span>
+            </div>
+            <div class="filter-group">
+              <label for="admin-filter-status">Durum Filtresi</label>
+              <select id="admin-filter-status" aria-describedby="admin-status-help">
+                <option value="all">Tüm durumları göster</option>
+                <option value="draft">Taslak</option>
+                <option value="submitted">İncelenmeyi bekleyen</option>
+                <option value="approved">Onaylandı</option>
+                <option value="rejected">Reddedildi</option>
+                <option value="revision_requested">Revizyon istendi</option>
+                <option value="in_review">İtiraz / İncelemede</option>
+              </select>
+              <span id="admin-status-help" class="field-help">Başvuru durumuna göre listeyi filtreleyin.</span>
+            </div>
+            <div class="filter-group">
+              <label for="admin-filter-faculty">Fakülte Filtresi</label>
+              <select id="admin-filter-faculty" aria-describedby="admin-faculty-help">
+                <option value="all">Tüm fakülteleri göster</option>
+              </select>
+              <span id="admin-faculty-help" class="field-help">Fakülteye göre başvuruları filtreleyin.</span>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-mobile-stack" aria-describedby="admin-apps-desc">
+              <caption class="sr-only">Yönetici başvuru listesi</caption>
+              <thead>
+                <tr>
+                  <th>Akademisyen</th>
+                  <th>Fakülte / Bölüm</th>
+                  <th>Başvuru Yılı</th>
+                  <th>Kategori</th>
+                  <th>Hesaplanan Puan</th>
+                  <th>Onaylanan Puan</th>
+                  <th>Durum</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="admin-applications-list">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Admin config tab content -->
+        <div id="tab-config-content" class="tab-content card hidden" role="tabpanel" aria-labelledby="btn-tab-config">
+          <h3>Puanlama Kriterleri ve Limitleri</h3>
+          <p id="admin-config-desc">Aşağıdan kategorileri seçip taban puanları ve maksimum puan limitlerini canlı olarak güncelleyebilirsiniz.</p>
+          <div class="config-selector">
+            <label for="admin-config-cat-select">Puanlama Kategorisi</label>
+            <select id="admin-config-cat-select" class="form-control select-large" aria-describedby="admin-config-desc">
+              <option value="kat1">Kategori 1: Araştırma, Yayın, Etkinlik</option>
+              <option value="kat2">Kategori 2: Proje (Tamamlanmış)</option>
+              <option value="kat3">Kategori 3: Patent ve Faydalı Model</option>
+              <option value="kat4">Kategori 4: Akademik Danışmanlık ve Eğitim</option>
+            </select>
+          </div>
+
+          <form id="admin-config-form">
+            <div class="table-responsive">
+              <table class="table table-mobile-stack" aria-describedby="admin-config-desc">
+                <caption class="sr-only">Puanlama kriterleri yapılandırma tablosu</caption>
+                <thead>
+                  <tr>
+                    <th>Faaliyet Türü</th>
+                    <th style="width: 15%;">Taban Puan</th>
+                    <th style="width: 15%;">Maks Puan Sınırı (0 = Limit Yok)</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-config-items-list">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3"><i class="fa-solid fa-save"></i> Yapılandırmayı Kaydet</button>
+          </form>
+        </div>
+
+        <!-- System admin: user management tab -->
+        <div id="tab-users-content" class="tab-content card hidden" role="tabpanel" aria-labelledby="btn-tab-users">
+          <div class="users-panel-header">
+            <div>
+              <h3>Kullanıcı &amp; Hesap Yönetimi</h3>
+              <p id="admin-users-desc">Tüm akademisyen ve komisyon hesaplarını buradan ekleyebilir, düzenleyebilir, şifre sıfırlayabilir veya silebilirsiniz.</p>
+            </div>
+            <button type="button" id="btn-add-user" class="btn btn-primary">
+              <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Yeni Kullanıcı Ekle
+            </button>
+          </div>
+
+          <div class="stats-row users-stats-row">
+            <div class="stats-card">
+              <div class="icon bg-primary"><i class="fa-solid fa-users"></i></div>
+              <div class="stats-info">
+                <span class="num" id="stat-total-users">0</span>
+                <span class="label">Toplam Hesap</span>
+              </div>
+            </div>
+            <div class="stats-card">
+              <div class="icon bg-success"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="stats-info">
+                <span class="num" id="stat-academic-users">0</span>
+                <span class="label">Akademisyen</span>
+              </div>
+            </div>
+            <div class="stats-card">
+              <div class="icon bg-warning"><i class="fa-solid fa-user-shield"></i></div>
+              <div class="stats-info">
+                <span class="num" id="stat-faculty-admins">0</span>
+                <span class="label">Komisyon Yöneticisi</span>
+              </div>
+            </div>
+            <div class="stats-card">
+              <div class="icon bg-danger"><i class="fa-solid fa-file-lines"></i></div>
+              <div class="stats-info">
+                <span class="num" id="stat-all-applications">0</span>
+                <span class="label">Toplam Başvuru</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-filters" role="search" aria-label="Kullanıcı filtreleri">
+            <div class="filter-group">
+              <label for="users-search" class="sr-only">Kullanıcı ara</label>
+              <input type="search" id="users-search" placeholder="İsim, e-posta veya kullanıcı adı ile ara">
+            </div>
+            <div class="filter-group">
+              <label for="users-filter-role">Hesap Türü</label>
+              <select id="users-filter-role">
+                <option value="all">Tüm hesaplar</option>
+                <option value="academic">Akademisyen</option>
+                <option value="faculty_admin">Fakülte Komisyonu</option>
+                <option value="system_admin">Sistem Yöneticisi</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="users-filter-faculty">Fakülte</label>
+              <select id="users-filter-faculty">
+                <option value="all">Tüm fakülteler</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-mobile-stack" aria-describedby="admin-users-desc">
+              <caption class="sr-only">Sistem kullanıcı listesi</caption>
+              <thead>
+                <tr>
+                  <th>Ad Soyad</th>
+                  <th>Giriş Bilgisi</th>
+                  <th>Hesap Türü</th>
+                  <th>Fakülte / Birim</th>
+                  <th>Başvuru</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ADMIN DETAILED APPLICATION REVIEW -->
+    <section id="admin-detail-view" class="view hidden">
+      <div class="app-form-container">
+        <div class="app-form-header">
+          <button type="button" id="btn-back-to-admin-dashboard" class="btn btn-secondary btn-sm"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Panele Dön</button>
+          <h2>Başvuru Değerlendirme & İnceleme</h2>
+          <span id="admin-detail-badge" class="badge badge-warning">İnceleniyor</span>
+        </div>
+
+        <div class="detail-row">
+          <!-- Left side: Applicant Details & Data table -->
+          <div class="detail-main">
+            <!-- Applicant card -->
+            <div class="card applicant-detail-card">
+              <h3><i class="fa-regular fa-address-card"></i> Aday Bilgileri</h3>
+              <div class="info-grid">
+                <div><strong>Adı Soyadı:</strong> <span id="detail-name"></span></div>
+                <div><strong>Unvan / Kadro:</strong> <span id="detail-title"></span></div>
+                <div><strong>Fakülte:</strong> <span id="detail-faculty"></span></div>
+                <div><strong>Bölüm:</strong> <span id="detail-dept"></span></div>
+                <div><strong>Başvuru Yılı:</strong> <span id="detail-year"></span></div>
+                <div><strong>Kategori:</strong> <span id="detail-category"></span></div>
+              </div>
+            </div>
+
+            <!-- Entered activities table -->
+            <div class="card">
+              <h3 id="detail-activities-desc">Beyan Edilen Akademik Faaliyetler</h3>
+              <div class="table-responsive">
+                <table class="table calc-table table-mobile-stack" aria-describedby="detail-activities-desc">
+                  <caption class="sr-only">Başvuruda beyan edilen akademik faaliyetler ve hesaplanan puanlar</caption>
+                  <thead>
+                    <tr>
+                      <th>Faaliyet Türü (Kapsam)</th>
+                      <th style="width: 12%;">Taban Puan</th>
+                      <th style="width: 12%;">Maks Puan</th>
+                      <th style="width: 12%;">Adet</th>
+                      <th style="width: 12%;">Katkı Oranı</th>
+                      <th style="width: 12%;">Hesaplanan Puan</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-activities-list">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Uploaded Evidence and forms -->
+            <div class="card">
+              <h3>Yüklenen Belgeler</h3>
+              <div class="documents-list-view">
+                <div id="detail-evidence-list">
+                  <!-- Dynamic uploaded evidence files -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Appeal Section (conditional) -->
+            <div id="detail-appeal-box" class="card border-danger hidden">
+              <h3 class="text-danger"><i class="fa-solid fa-circle-exclamation"></i> Akademisyen İtirazı</h3>
+              <div class="alert alert-danger mb-2">
+                <strong>İtiraz Gerekçesi:</strong>
+                <p id="detail-appeal-reasoning" class="mt-1 font-italic"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Actions panel -->
+          <div class="detail-sidebar">
+            <div class="card stick-card">
+              <h3>Değerlendirme Kararı</h3>
+              <div class="score-summary-box">
+                <div class="summary-line">
+                  <span>Hesaplanan Toplam Puan:</span>
+                  <strong id="detail-score-calculated" class="text-primary">0.00</strong>
+                </div>
+              </div>
+
+              <form id="admin-evaluate-form">
+                <div class="form-group">
+                  <label for="admin-eval-notes">Komisyon Değerlendirme Notu</label>
+                  <textarea id="admin-eval-notes" rows="4"
+                    aria-describedby="admin-eval-notes-help"></textarea>
+                  <span id="admin-eval-notes-help" class="field-help">Revizyon veya red kararlarında gerekçe yazılması zorunludur.</span>
+                </div>
+                
+                <div class="form-group" id="appeal-response-group" style="display: none;">
+                  <label for="admin-appeal-response">İtiraz Cevabı</label>
+                  <textarea id="admin-appeal-response" rows="3"
+                    placeholder="Lütfen itiraza verilecek karar ve açıklamayı yazın"
+                    aria-describedby="admin-appeal-response-help"></textarea>
+                  <span id="admin-appeal-response-help" class="field-help">Akademisyenin itirazına resmi yanıtınızı yazın.</span>
+                </div>
+
+                <div class="form-group">
+                  <label for="detail-score-approved">Onaylanan Puan</label>
+                  <input type="number" id="detail-score-approved" step="0.01" class="form-control text-right score-input-inline"
+                    placeholder="Lütfen onaylanan puanı girin"
+                    aria-describedby="detail-score-approved-help">
+                  <span id="detail-score-approved-help" class="field-help">Komisyon tarafından onaylanan nihai puan.</span>
+                </div>
+
+                <div class="action-buttons-vertical">
+                  <button type="submit" data-decision="approved" class="btn btn-success btn-block"><i class="fa-solid fa-check"></i> Başvuruyu Onayla</button>
+                  <button type="submit" data-decision="revision_requested" class="btn btn-warning btn-block text-white"><i class="fa-solid fa-rotate-left"></i> Revizyon İste</button>
+                  <button type="submit" data-decision="rejected" class="btn btn-danger btn-block"><i class="fa-solid fa-ban"></i> Başvuruyu Reddet</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASSWORD CHANGE MODAL -->
+    <section id="admin-user-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="admin-user-modal-title">
+      <div class="modal-content modal-content-wide">
+        <div class="modal-header">
+          <h3 id="admin-user-modal-title">Kullanıcı Ekle</h3>
+          <button type="button" id="btn-close-admin-user-modal" class="btn-close" aria-label="Pencereyi kapat">&times;</button>
+        </div>
+        <form id="admin-user-form">
+          <input type="hidden" id="admin-user-id" value="">
+          <div class="form-group" id="admin-user-role-group">
+            <label for="admin-user-role">Hesap Türü</label>
+            <select id="admin-user-role" required>
+              <option value="academic">Akademisyen</option>
+              <option value="faculty_admin">Fakülte Komisyon Yöneticisi</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="admin-user-email-group">
+              <label for="admin-user-email">E-posta</label>
+              <input type="email" id="admin-user-email" placeholder="ornek@aybu.edu.tr">
+            </div>
+            <div class="form-group hidden" id="admin-user-username-group">
+              <label for="admin-user-username">Kullanıcı Adı</label>
+              <input type="text" id="admin-user-username" placeholder="kullanici.adi">
+            </div>
+            <div class="form-group">
+              <label for="admin-user-name">Ad Soyad</label>
+              <input type="text" id="admin-user-name" placeholder="Ad Soyad" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" id="admin-user-title-group">
+              <label for="admin-user-title">Unvan</label>
+              <select id="admin-user-title">
+                <option value="Prof. Dr.">Prof. Dr.</option>
+                <option value="Doç. Dr.">Doç. Dr.</option>
+                <option value="Dr. Öğr. Üyesi">Dr. Öğr. Üyesi</option>
+                <option value="Öğr. Gör. Dr.">Öğr. Gör. Dr.</option>
+                <option value="Öğr. Gör.">Öğr. Gör.</option>
+                <option value="Arş. Gör. Dr.">Arş. Gör. Dr.</option>
+                <option value="Arş. Gör.">Arş. Gör.</option>
+                <option value="Komisyon">Komisyon</option>
+              </select>
+            </div>
+            <div class="form-group" id="admin-user-password-group">
+              <label for="admin-user-password">Şifre</label>
+              <input type="password" id="admin-user-password" placeholder="En az 6 karakter" minlength="6">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="admin-user-faculty">Fakülte / Birim</label>
+              <select id="admin-user-faculty" required>
+                <option value="" disabled selected>Fakülte seçin</option>
+              </select>
+            </div>
+            <div class="form-group" id="admin-user-dept-group">
+              <label for="admin-user-dept">Bölüm</label>
+              <select id="admin-user-dept" disabled>
+                <option value="" disabled selected>Önce fakülte seçin</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-admin-user" class="btn btn-secondary">İptal</button>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="admin-reset-password-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="admin-reset-password-title">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="admin-reset-password-title">Şifre Sıfırla</h3>
+          <button type="button" id="btn-close-admin-reset-password" class="btn-close" aria-label="Pencereyi kapat">&times;</button>
+        </div>
+        <form id="admin-reset-password-form">
+          <input type="hidden" id="admin-reset-user-id" value="">
+          <p id="admin-reset-user-label" class="text-muted mb-3"></p>
+          <div class="form-group">
+            <label for="admin-reset-new-password">Yeni Şifre</label>
+            <input type="password" id="admin-reset-new-password" placeholder="En az 6 karakter" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="admin-reset-confirm-password">Yeni Şifre (Tekrar)</label>
+            <input type="password" id="admin-reset-confirm-password" placeholder="Yeni şifreyi tekrar girin" minlength="6" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-admin-reset-password" class="btn btn-secondary">İptal</button>
+            <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="password-view" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="password-modal-title">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="password-modal-title">Şifre Değiştir</h3>
+          <button type="button" id="btn-close-password-modal" class="btn-close" aria-label="Pencereyi kapat">&times;</button>
+        </div>
+        <form id="password-form">
+          <div class="form-group">
+            <label for="current-password">Mevcut Şifre</label>
+            <input type="password" id="current-password" placeholder="Mevcut şifreniz" autocomplete="current-password" required>
+          </div>
+          <div class="form-group">
+            <label for="new-password">Yeni Şifre</label>
+            <input type="password" id="new-password" placeholder="En az 6 karakter" autocomplete="new-password" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Yeni Şifre (Tekrar)</label>
+            <input type="password" id="confirm-password" placeholder="Yeni şifrenizi tekrar girin" autocomplete="new-password" minlength="6" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-password" class="btn btn-secondary">İptal</button>
+            <button type="submit" class="btn btn-primary">Şifreyi Güncelle</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- APPEAL FORM VIEW FOR ACADEMICIAN (IF REJECTED) -->
+    <section id="appeal-view" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="appeal-modal-title" aria-describedby="appeal-modal-desc">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="appeal-modal-title">Başvuru Sonucuna İtiraz Et</h3>
+          <button type="button" id="btn-close-appeal-modal" class="btn-close" aria-label="İtiraz penceresini kapat">&times;</button>
+        </div>
+        <form id="appeal-form">
+          <p id="appeal-modal-desc">Komisyonun kararını ve notunu inceleyiniz. İtiraz etmek istiyorsanız, lütfen geçerli akademik gerekçelerinizi ve varsa ek açıklamalarınızı yazınız.</p>
+          <div class="form-group mt-3">
+            <span id="appeal-admin-notes-label" class="form-label-static">Komisyon Notu</span>
+            <div id="appeal-modal-admin-notes" class="alert alert-danger" role="note" aria-labelledby="appeal-admin-notes-label"></div>
+          </div>
+          <div class="form-group">
+            <label for="appeal-reasoning">İtiraz Gerekçeniz <span class="required" aria-hidden="true">*</span><span class="sr-only"> (zorunlu)</span></label>
+            <textarea id="appeal-reasoning" rows="4"
+              placeholder="Lütfen itiraz gerekçenizi detaylı olarak yazın"
+              aria-describedby="appeal-reasoning-help" required></textarea>
+            <span id="appeal-reasoning-help" class="field-help">İtirazınızı destekleyen akademik gerekçeleri açık ve net biçimde yazın.</span>
+          </div>
+          <div class="form-group">
+            <label>Ek Belge <span class="field-help" style="font-weight:400;">(isteğe bağlı)</span></label>
+            <div id="appeal-file-area" class="appeal-file-area">
+              <div id="appeal-no-file" class="appeal-file-placeholder">
+                <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+                <span>Belge eklemek için tıklayın</span>
+                <span class="field-help">PDF veya görsel (maks. 10 MB)</span>
+              </div>
+              <div id="appeal-file-info" class="uploaded-file-info hidden">
+                <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+                <span id="appeal-file-name" class="filename"></span>
+                <button type="button" id="btn-remove-appeal-file" class="btn-remove-file" aria-label="Eklenen belgeyi kaldır">
+                  <i class="fa-solid fa-times" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            <input type="file" id="appeal-file-input" class="visually-hidden" accept=".pdf,image/*" aria-label="İtiraz belgesi seç">
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-appeal" class="btn btn-secondary">Kapat</button>
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-circle-exclamation"></i> İtirazı Gönder</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Katkı Oranı Yardım Modalı -->
+    <section id="katki-orani-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="katki-orani-modal-title">
+      <div class="modal-content" style="max-width:860px; width:95vw;">
+        <div class="modal-header">
+          <h3 id="katki-orani-modal-title"><i class="fa-solid fa-table" aria-hidden="true"></i> Ortak Çalışmalar İçin Katkı Oranı Tablosu</h3>
+          <button type="button" id="btn-close-katki-modal" class="btn-close" aria-label="Kapat">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Aşağıdaki tablo, <strong>Akademik Yükseltilme ve Atanma Kriterleri Yönergesi Tablo 2</strong>'den alınmıştır. İsim sıranıza ve çalışmadaki toplam yazar sayısına göre katkı oranınızı bulunuz.</p>
+          <div class="table-responsive" style="margin-top:1rem;">
+            <table class="table" style="text-align:center; font-size:0.9rem;">
+              <thead>
+                <tr style="background:#eaf8fc;">
+                  <th rowspan="2" style="vertical-align:middle; text-align:left; color:#111 !important;">İsim Sırası</th>
+                  <th colspan="7" style="color:#111 !important;">Ortak Çalışmadaki Yazar Sayısı</th>
+                </tr>
+                <tr style="background:#eaf8fc;">
+                  <th style="color:#111 !important;">1</th>
+                  <th style="color:#111 !important;">2</th>
+                  <th style="color:#111 !important;">3</th>
+                  <th style="color:#111 !important;">4</th>
+                  <th style="color:#111 !important;">5</th>
+                  <th style="color:#111 !important;">6</th>
+                  <th style="color:#111 !important;">7+</th>
+                </tr>
+              </thead>
+              <tbody class="katki-tbody">
+                <tr><td style="text-align:left; font-weight:600;">1. Yazar</td><td>%100</td><td>%95</td><td>%90</td><td>%85</td><td>%80</td><td>%75</td><td>%70</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">2. Yazar</td><td>—</td><td>%90</td><td>%85</td><td>%80</td><td>%75</td><td>%70</td><td>%65</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">3. Yazar</td><td>—</td><td>—</td><td>%80</td><td>%75</td><td>%70</td><td>%65</td><td>%60</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">4. Yazar</td><td>—</td><td>—</td><td>—</td><td>%70</td><td>%65</td><td>%60</td><td>%55</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">5. Yazar</td><td>—</td><td>—</td><td>—</td><td>—</td><td>%60</td><td>%55</td><td>%50</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">6. Yazar</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>%50</td><td>%45</td></tr>
+                <tr><td style="text-align:left; font-weight:600;">7. ve sonrası</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>%40</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin-top:0.75rem; font-size:0.85rem; color:var(--text-muted);">* Hesaplanan değer tam sayı çıkmazsa standart yuvarlama uygulanır (0.5 ve üzeri yukarı, altı aşağı). Sisteme oranı ondalık olarak giriniz (örn. %90 → 0.90).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Araştırma Çoklu Ay Girişi Bilgilendirme Modali -->
+    <section id="arastirma-ay-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="arastirma-ay-modal-title">
+      <div class="modal-content" style="max-width:620px; width:95vw;">
+        <div class="modal-header">
+          <h3 id="arastirma-ay-modal-title"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Araştırma Faaliyeti — Ay Girişi Hakkında</h3>
+          <button type="button" id="btn-close-arastirma-ay-modal" class="btn-close" aria-label="Kapat">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Araştırma faaliyetleri, <strong>Taban Puan × Ay</strong> formülüyle puanlanır. Farklı sürelerde birden fazla araştırma yürüttüyseniz her birini ayrı satırda girebilirsiniz.</p>
+
+          <div style="background:#f3f6fa; border-left:4px solid var(--primary-color); border-radius:0 var(--radius-sm) var(--radius-sm) 0; padding:0.85rem 1rem; margin:1rem 0;">
+            <strong>Örnek:</strong> Yurt içinde 3 ayrı araştırma yürüttünüz — biri 4 ay, biri 6 ay, biri 8 ay.<br>
+            <span style="color:var(--text-muted); font-size:0.92rem;">
+              → İlk kutuya <strong>4</strong> yazın, <strong>+</strong> butonuna basın, <strong>6</strong> yazın, tekrar <strong>+</strong> basın, <strong>8</strong> yazın.<br>
+              → Sistem toplam <strong>18 ay</strong> olarak hesaplar: 5 × 18 = 90 puan → ancak üst sınır 60 olduğundan <strong>60.00</strong> gösterilir.
+            </span>
+          </div>
+
+          <p>Araştırmanın üniversite yönetim kurulunun izin kararıyla, en az 1 ay süreyle araştırmacının kadrosunun bulunduğu kurum dışında yürütülmüş olması ve sonuç raporunun üniversite ve çalışmanın ilgili olduğu kurum tarafından onaylanmış olması gerekir.</p>
+
+          <ul style="margin:0.5rem 0 0 1.2rem; font-size:0.93rem; color:var(--text-muted); line-height:1.7;">
+            <li>Yurt dışı araştırmalar en fazla <strong>12 ay</strong> (maks. 120 puan) puanlandırılır.</li>
+            <li>Yurt içi araştırmalar en fazla <strong>12 ay</strong> (maks. 60 puan) puanlandırılır.</li>
+            <li>Katkı oranı yalnızca ortak yürütücülük durumunda geçerlidir.</li>
+          </ul>
+
+          <p style="margin-top:0.85rem; font-size:0.85rem; color:var(--text-muted);">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+            Kaynak: <em>Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri</em>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Idle Timeout Warning Modal -->
+    <section id="idle-timeout-modal" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="idle-timeout-title" aria-describedby="idle-timeout-desc">
+      <div class="modal-content modal-content-sm">
+        <div class="modal-header">
+          <h3 id="idle-timeout-title"><i class="fa-solid fa-clock" aria-hidden="true"></i> Oturum Zaman Aşımı Uyarısı</h3>
+        </div>
+        <div class="modal-body">
+          <p id="idle-timeout-desc">Bir süredir işlem yapılmadığı için oturumunuz kapatılmak üzere.</p>
+          <p>Oturumunuz <strong><span id="idle-countdown">60</span> saniye</strong> içinde otomatik olarak kapatılacak.</p>
+          <p>Devam etmek istiyor musunuz?</p>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="btn-idle-logout" class="btn btn-danger">
+            <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Oturumu Kapat
+          </button>
+          <button type="button" id="btn-idle-stay" class="btn btn-primary">
+            <i class="fa-solid fa-check" aria-hidden="true"></i> Devam Et
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <p>&copy; 2026 Ankara Yıldırım Beyazıt Üniversitesi. AYBÜ Akademik Ödül Sistemi Web Portalı. Tüm Hakları Saklıdır.</p>
+  </footer>
+
+  <!-- App Client Logic -->
+  <script src="/js/academic-units.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    // Mouse ile tıklanınca odak halkası gizle, Tab ile gelinince göster
+    document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
+    document.addEventListener('keydown', e => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
+  </script>
+</body>
+</html>
+

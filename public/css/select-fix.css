@@ -1,0 +1,24 @@
+/* Desktop-specific select visibility fixes for login/register view */
+@media (min-width: 769px) {
+  body.login-screen-active .login-card select,
+  body.login-screen-active .login-card input[type="email"],
+  body.login-screen-active .login-card input[type="text"],
+  body.login-screen-active .login-card input[type="password"] {
+    background: #fff !important;
+    color: var(--text-main) !important;
+    border: 1px solid rgba(148, 163, 184, 0.7) !important;
+    box-shadow: inset 0 1px 2px rgba(15,23,42,0.04) !important;
+    border-radius: var(--radius-sm) !important;
+    position: relative !important;
+    z-index: 2 !important;
+  }
+  body.login-screen-active .login-card .login-input {
+    background: transparent !important;
+  }
+  /* Ensure the select's dropdown appears above any overlays
+     (native dropdowns are browser-controlled but z-index helps for some custom UIs) */
+  body.login-screen-active select {
+    -webkit-appearance: menulist !important;
+    appearance: menulist !important;
+  }
+}

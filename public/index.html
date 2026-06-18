@@ -454,6 +454,14 @@
           <span id="app-form-badge" class="badge badge-info">Yıl: 2025</span>
         </div>
 
+        <div id="application-status-notice" class="status-notice-card hidden" role="status" aria-live="polite">
+          <i id="application-status-notice-icon" class="snc-icon" aria-hidden="true"></i>
+          <div class="snc-body">
+            <strong id="application-status-notice-title"></strong>
+            <span id="application-status-notice-text"></span>
+          </div>
+        </div>
+
         <div id="application-revision-note" class="alert alert-warning hidden" role="status" aria-live="polite">
           <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
           <div>
@@ -853,6 +861,14 @@
           <span id="admin-detail-badge" class="badge badge-warning" data-i18n="badge_in_review">İnceleniyor</span>
         </div>
 
+        <div id="detail-status-notice" class="status-notice-card hidden" role="status" aria-live="polite">
+          <i id="detail-status-notice-icon" class="snc-icon" aria-hidden="true"></i>
+          <div class="snc-body">
+            <strong id="detail-status-notice-title"></strong>
+            <span id="detail-status-notice-text"></span>
+          </div>
+        </div>
+
         <div class="detail-row">
           <!-- Left side: Applicant Details & Data table -->
           <div class="detail-main">
@@ -947,6 +963,9 @@
                   <span id="detail-score-approved-help" class="field-help" data-i18n="help_approved_score">Komisyon tarafından onaylanan nihai puan.</span>
                 </div>
 
+                <div id="revision-waiting-notice" class="alert alert-warning hidden">
+                  <i class="fa-solid fa-clock"></i> <span data-i18n="notice_waiting_revision">Revizyon talep edildi. Başvurucu güncelleyip yeniden gönderdikten sonra işlem yapabilirsiniz.</span>
+                </div>
                 <div class="action-buttons-vertical">
                   <button type="submit" data-decision="approved" class="btn btn-success btn-block"><i class="fa-solid fa-check"></i> <span data-i18n="btn_approve">Başvuruyu Onayla</span></button>
                   <button type="submit" data-decision="revision_requested" class="btn btn-warning btn-block text-white"><i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_request_revision">Revizyon İste</span></button>

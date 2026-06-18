@@ -704,6 +704,8 @@ app.put('/api/applications/:id', authenticateToken, (req, res) => {
 
   const status = isDraft ? 'draft' : 'submitted';
 
+  const wasRevision = currentApp.status === 'revision_requested';
+
   db.applications[appIndex] = {
     ...currentApp,
     year: year ? parseInt(year) : currentApp.year,
@@ -714,6 +716,8 @@ app.put('/api/applications/:id', authenticateToken, (req, res) => {
     yoksisForm: yoksisForm !== undefined ? yoksisForm : currentApp.yoksisForm,
     beyanForm: beyanForm !== undefined ? beyanForm : currentApp.beyanForm,
     status,
+    // Clear admin notes when applicant resubmits after revision
+    adminNotes: (!isDraft && wasRevision) ? '' : currentApp.adminNotes,
     updatedAt: new Date().toISOString()
   };
 
@@ -728,6 +732,11 @@ app.delete('/api/applications/:id', authenticateToken, (req, res) => {
 
   if (appIndex === -1) {
     return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
+  }
+
+  const appStatus = db.applications[appIndex].status;
+  if (appStatus === 'approved' || appStatus === 'rejected') {
+    return res.status(403).json({ messageCode: 'srv_err_app_delete_approved' });
   }
 
   db.applications.splice(appIndex, 1);
@@ -1108,6 +1117,14 @@ app.post('/api/admin/applications/:id/evaluate', authenticateToken, requireAdmin
   const currentApp = db.applications[appIndex];
   if (!canAdminAccessApplication(adminUser, currentApp, db)) {
     return res.status(403).json({ messageCode: 'srv_err_eval_forbidden' });
+  }
+
+  if (currentApp.status === 'revision_requested') {
+    return res.status(403).json({ messageCode: 'srv_err_eval_revision_pending' });
+  }
+
+  if (currentApp.status === 'approved' || currentApp.status === 'rejected') {
+    return res.status(403).json({ messageCode: 'srv_err_eval_already_finalized' });
   }
 
   db.applications[appIndex] = {

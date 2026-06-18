@@ -704,7 +704,7 @@ async function loadAcademicianDashboard() {
         : t('status_draft');
 
       const total = app.summary.totalScore ? app.summary.totalScore.toFixed(2) : '0.00';
-      const approved = app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
+      const approved = app.status === 'approved' && app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
       const catName = tCat(app.category).split(':')[0];
 
       let actionButtons = '';
@@ -730,11 +730,13 @@ async function loadAcademicianDashboard() {
         `;
       }
 
-      actionButtons += `
-        <button type="button" class="btn btn-danger btn-sm btn-delete-app" data-id="${app.id}">
-          <i class="fa-solid fa-trash" aria-hidden="true"></i> ${t('btn_delete_app')}
-        </button>
-      `;
+      if (app.status !== 'approved' && app.status !== 'rejected') {
+        actionButtons += `
+          <button type="button" class="btn btn-danger btn-sm btn-delete-app" data-id="${app.id}">
+            <i class="fa-solid fa-trash" aria-hidden="true"></i> ${t('btn_delete_app')}
+          </button>
+        `;
+      }
 
       return `
         <tr>
@@ -829,7 +831,8 @@ function initApplicationForm(appId = null) {
   activeStep = 1;
   updateStepIndicator();
   toggleApplicationRevisionNote();
-  
+  showApplicationStatusNotice();
+
   document.getElementById('app-form-title').textContent = appId ? t('app_form_title_edit') : t('app_form_title_new');
   document.getElementById('app-category-select').disabled = false;
   document.getElementById('app-year').disabled = false;
@@ -839,6 +842,7 @@ function initApplicationForm(appId = null) {
     apiCall(`/api/applications/my/${appId}`).then(app => {
       currentEditingApp = app;
       toggleApplicationRevisionNote(app);
+      showApplicationStatusNotice(app);
       document.getElementById('app-year').value = app.year;
       document.getElementById('app-category-select').value = app.category;
       document.getElementById('app-category-select').disabled = true;
@@ -861,6 +865,31 @@ function initApplicationForm(appId = null) {
     goToStep(1);
     showView('application-form-view');
   }
+}
+
+function showApplicationStatusNotice(app = null) {
+  const box   = document.getElementById('application-status-notice');
+  const icon  = document.getElementById('application-status-notice-icon');
+  const title = document.getElementById('application-status-notice-title');
+  const text  = document.getElementById('application-status-notice-text');
+  if (!box) return;
+
+  const cfg = {
+    submitted:          { snc: 'snc-info',    fa: 'fa-paper-plane',      titleKey: 'status_submitted',        textKey: 'notice_app_submitted' },
+    in_review:          { snc: 'snc-info',    fa: 'fa-magnifying-glass',  titleKey: 'status_in_review',        textKey: 'notice_app_in_review' },
+    revision_requested: { snc: 'snc-warning', fa: 'fa-rotate-left',       titleKey: 'status_revision_required',textKey: 'notice_app_revision_user' },
+    approved:           { snc: 'snc-success', fa: 'fa-circle-check',      titleKey: 'status_approved',         textKey: 'notice_app_approved' },
+    rejected:           { snc: 'snc-danger',  fa: 'fa-ban',               titleKey: 'status_rejected',         textKey: 'notice_app_rejected' },
+  };
+
+  const c = cfg[app && app.status];
+  if (!c) { box.classList.add('hidden'); return; }
+
+  box.className = `status-notice-card ${c.snc}`;
+  icon.className = `fa-solid ${c.fa} snc-icon`;
+  if (title) title.textContent = t(c.titleKey);
+  text.textContent = t(c.textKey);
+  box.classList.remove('hidden');
 }
 
 function toggleApplicationRevisionNote(app = null) {
@@ -1534,18 +1563,52 @@ async function viewApplicationDetails(appId) {
     evidenceDiv.innerHTML = '';
     renderEvidenceDocuments(app, evidenceDiv);
 
+    // Status notice for applicant
+    const noticeCfg = {
+      submitted:          { snc: 'snc-info',    fa: 'fa-paper-plane',     titleKey: 'status_submitted',         textKey: 'notice_app_submitted' },
+      in_review:          { snc: 'snc-info',    fa: 'fa-magnifying-glass', titleKey: 'status_in_review',         textKey: 'notice_app_in_review' },
+      revision_requested: { snc: 'snc-warning', fa: 'fa-rotate-left',     titleKey: 'status_revision_required', textKey: 'notice_app_revision_user' },
+      approved:           { snc: 'snc-success', fa: 'fa-circle-check',    titleKey: 'status_approved',          textKey: 'notice_app_approved' },
+      rejected:           { snc: 'snc-danger',  fa: 'fa-ban',             titleKey: 'status_rejected',          textKey: 'notice_app_rejected' },
+    };
+    const noticeBox   = document.getElementById('detail-status-notice');
+    const noticeIcon  = document.getElementById('detail-status-notice-icon');
+    const noticeTitle = document.getElementById('detail-status-notice-title');
+    const noticeText  = document.getElementById('detail-status-notice-text');
+    const nc = noticeCfg[app.status];
+    if (noticeBox && nc) {
+      noticeBox.className = `status-notice-card ${nc.snc}`;
+      noticeIcon.className = `fa-solid ${nc.fa} snc-icon`;
+      if (noticeTitle) noticeTitle.textContent = t(nc.titleKey);
+      noticeText.textContent = t(nc.textKey);
+      noticeBox.classList.remove('hidden');
+    } else if (noticeBox) {
+      noticeBox.classList.add('hidden');
+    }
+
     // Score summaries - hide from applicant view
     const scoreDiv = document.querySelector('.score-summary-box');
     if (scoreDiv) scoreDiv.classList.add('hidden');
     
-    // Show approved score but disable for applicant
+    // Show approved score only when application is approved (read-only)
     const approvedScoreGroup = document.querySelector('.form-group:has(#detail-score-approved)');
-    if (approvedScoreGroup) approvedScoreGroup.classList.remove('hidden');
+    if (approvedScoreGroup) {
+      if (app.status === 'approved' && app.summary.approvedScore) {
+        approvedScoreGroup.classList.remove('hidden');
+        document.getElementById('detail-score-approved').value = app.summary.approvedScore.toFixed(2);
+        document.getElementById('detail-score-approved').disabled = true;
+      } else {
+        approvedScoreGroup.classList.add('hidden');
+      }
+    }
 
     // Notes - show only to applicant
     document.getElementById('admin-eval-notes').value = app.adminNotes || '';
-    document.getElementById('admin-eval-notes').disabled = true; // Readonly
+    document.getElementById('admin-eval-notes').disabled = true;
     document.getElementById('admin-eval-notes').setAttribute('readonly', 'readonly');
+    document.getElementById('admin-eval-notes').setAttribute('placeholder', t('placeholder_eval_notes_user'));
+    const notesHelpEl = document.getElementById('admin-eval-notes-help');
+    if (notesHelpEl) notesHelpEl.textContent = t('help_eval_notes_user');
 
     // Hide evaluating buttons
     document.getElementById('admin-detail-view').querySelector('.action-buttons-vertical').classList.add('hidden');
@@ -1814,7 +1877,7 @@ function renderAdminApplicationsList() {
     const catName = tCat(app.category).split(':')[0];
 
     const calculated = app.summary.totalScore ? app.summary.totalScore.toFixed(2) : '0.00';
-    const approved = app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
+    const approved = app.status === 'approved' && app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
 
     let actionBtn = `
       <button type="button" class="btn btn-primary btn-sm btn-admin-evaluate" data-id="${app.id}">
@@ -1905,8 +1968,12 @@ async function evaluateApplicationAdmin(appId) {
     if (app.status === 'approved') { statusTxt = t('status_approved'); document.getElementById('admin-detail-badge').className = 'badge badge-success'; }
     if (app.status === 'rejected') { statusTxt = t('status_rejected'); document.getElementById('admin-detail-badge').className = 'badge badge-danger'; }
     if (app.status === 'revision_requested') { statusTxt = t('status_revision_requested'); document.getElementById('admin-detail-badge').className = 'badge badge-warning'; }
-    
+
     document.getElementById('admin-detail-badge').textContent = statusTxt;
+
+    // Hide user-facing status notice in admin view
+    const adminNoticeBox = document.getElementById('detail-status-notice');
+    if (adminNoticeBox) adminNoticeBox.classList.add('hidden');
 
     document.getElementById('detail-name').textContent = app.personalInfo.name;
     document.getElementById('detail-title').textContent = app.personalInfo.title;
@@ -1946,19 +2013,48 @@ async function evaluateApplicationAdmin(appId) {
 
     // Notes
     document.getElementById('admin-eval-notes').value = app.adminNotes || '';
-    document.getElementById('admin-eval-notes').disabled = false; // Admin can edit
+    document.getElementById('admin-eval-notes').disabled = false;
     document.getElementById('admin-eval-notes').removeAttribute('readonly');
     document.getElementById('admin-eval-notes').setAttribute('placeholder', t('placeholder_eval_notes'));
+    const adminNotesHelpEl = document.getElementById('admin-eval-notes-help');
+    if (adminNotesHelpEl) adminNotesHelpEl.textContent = t('help_eval_notes');
 
     // Show scores (admin view)
     const scoreDiv = document.querySelector('.score-summary-box');
     if (scoreDiv) scoreDiv.classList.remove('hidden');
-    
-    const approvedScoreGroup = document.querySelector('.form-group:has(#detail-score-approved)');
-    if (approvedScoreGroup) approvedScoreGroup.classList.remove('hidden');
 
-    // Show action buttons
-    document.getElementById('admin-detail-view').querySelector('.action-buttons-vertical').classList.remove('hidden');
+    // "Onaylanan Puan" only visible when process is complete (approved or rejected), always read-only
+    const approvedScoreGroup = document.querySelector('.form-group:has(#detail-score-approved)');
+    const isComplete = app.status === 'approved' || app.status === 'rejected';
+    if (approvedScoreGroup) {
+      if (isComplete) {
+        approvedScoreGroup.classList.remove('hidden');
+        document.getElementById('detail-score-approved').value = app.summary.approvedScore
+          ? app.summary.approvedScore.toFixed(2) : '—';
+        document.getElementById('detail-score-approved').disabled = true;
+      } else {
+        approvedScoreGroup.classList.add('hidden');
+      }
+    }
+
+    // Show/hide action buttons based on status
+    const actionBtns = document.getElementById('admin-detail-view').querySelector('.action-buttons-vertical');
+    const revisionNotice = document.getElementById('revision-waiting-notice');
+    const isLocked = app.status === 'revision_requested' || app.status === 'approved' || app.status === 'rejected';
+
+    if (isLocked) {
+      actionBtns.classList.add('hidden');
+      document.getElementById('detail-score-approved').disabled = true;
+      document.getElementById('admin-eval-notes').disabled = true;
+    } else {
+      actionBtns.classList.remove('hidden');
+    }
+
+    if (app.status === 'revision_requested') {
+      if (revisionNotice) revisionNotice.classList.remove('hidden');
+    } else {
+      if (revisionNotice) revisionNotice.classList.add('hidden');
+    }
 
     // Appeal rendering
     const appealBox = document.getElementById('detail-appeal-box');

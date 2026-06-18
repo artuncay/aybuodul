@@ -1314,6 +1314,43 @@ body.login-screen-active #verify-view.active .login-card-footer {
   .dashboard-container {
     grid-template-columns: 1fr;
   }
+  .dashboard-sidebar {
+    display: none;
+  }
+  .mobile-dashboard-nav {
+    display: flex !important;
+  }
+  .dashboard-main {
+    padding-bottom: 5rem;
+  }
+}
+
+/* Mobile bottom action bar (academic dashboard) */
+.mobile-dashboard-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: #fff;
+  border-top: 2px solid var(--corporate-secondary);
+  box-shadow: 0 -4px 16px rgba(0,45,114,0.12);
+  padding: 0.5rem 1rem;
+  gap: 0.75rem;
+}
+
+.mobile-dashboard-nav .sidebar-btn.btn-accent {
+  flex: 1;
+  justify-content: center;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.88rem;
+}
+
+/* Grid item'ın varsayılan min-width:auto değeri geniş tabloları viewport dışına taşırır;
+   min-width:0 ile sütun daralabilir ve tablo içeriği hücre içinde sarılır. */
+.dashboard-main {
+  min-width: 0;
 }
 
 .dashboard-sidebar {
@@ -1484,18 +1521,36 @@ body.login-screen-active #verify-view.active .login-card-footer {
   min-width: max-content;
 }
 
-#dashboard-info-guide .table th,
-#dashboard-info-guide .table td {
-  padding: 0.55rem 0.75rem;
+#dashboard-info-guide {
+  padding: 0.5rem 0.75rem !important;
 }
 
+#dashboard-info-guide h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+}
+
+#dashboard-info-guide .mt-3 {
+  margin-top: 0.4rem !important;
+}
+
+#dashboard-info-guide .table {
+  table-layout: fixed;
+  font-size: 0.8rem;
+  margin-bottom: 0;
+}
+
+#dashboard-info-guide .table th,
 #dashboard-info-guide .table td {
+  padding: 0.28rem 0.5rem;
   vertical-align: top;
-  line-height: 1.45;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 #dashboard-info-guide .table td p {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.2rem;
 }
 
 #dashboard-info-guide .table td p:last-child {
@@ -1503,12 +1558,12 @@ body.login-screen-active #verify-view.active .login-card-footer {
 }
 
 #dashboard-info-guide .table td ul {
-  margin: 0 0 0 1.1rem;
+  margin: 0.1rem 0 0.1rem 1rem;
   padding: 0;
 }
 
 #dashboard-info-guide .table td ul li {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.1rem;
 }
 
 #dashboard-info-guide .table td strong {

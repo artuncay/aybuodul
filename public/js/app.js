@@ -2455,6 +2455,14 @@ document.getElementById('btn-logout-mobile')?.addEventListener('click', () => {
   document.getElementById('btn-logout').click();
 });
 
+document.getElementById('btn-mobile-new-app')?.addEventListener('click', () => {
+  document.getElementById('btn-sidebar-new-app').click();
+});
+
+document.getElementById('btn-mobile-my-apps')?.addEventListener('click', () => {
+  document.getElementById('btn-sidebar-my-apps').click();
+});
+
 // Sidebar toggle for mobile
 document.getElementById('btn-sidebar-toggle')?.addEventListener('click', () => {
   const sidebar = document.getElementById('sidebar-drawer');

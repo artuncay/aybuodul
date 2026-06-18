@@ -481,7 +481,8 @@ function showIdleWarning() {
   idleWarningActive = true;
 
   let remaining = IDLE_WARNING_MS;
-  document.getElementById('idle-countdown').textContent = remaining;
+  const labelEl = document.getElementById('idle-countdown-label');
+  if (labelEl) labelEl.textContent = t('idle_countdown_label', { n: remaining });
 
   const modal = document.getElementById('idle-timeout-modal');
   modal.classList.remove('hidden');
@@ -490,8 +491,8 @@ function showIdleWarning() {
   // Geri sayım başlat
   countdownTimer = setInterval(() => {
     remaining -= 1;
-    const el = document.getElementById('idle-countdown');
-    if (el) el.textContent = remaining;
+    const el = document.getElementById('idle-countdown-label');
+    if (el) el.textContent = t('idle_countdown_label', { n: remaining });
 
     if (remaining <= 0) {
       clearInterval(countdownTimer);
@@ -573,8 +574,8 @@ document.addEventListener('click', function(e) {
     const act = applicationActivities.find(a => a.activityId === tr?.dataset?.itemId);
     const entry = document.createElement('div');
     entry.className = 'multimonth-entry';
-    entry.innerHTML = `<input type="number" class="input-month" min="0" step="1" value="0" aria-label="Ek araştırma ay sayısı">
-      <button type="button" class="btn-remove-month" title="Kaldır" aria-label="Bu satırı kaldır">&times;</button>`;
+    entry.innerHTML = `<input type="number" class="input-month" min="0" step="1" value="0" aria-label="${t('aria_research_months_input')}">
+      <button type="button" class="btn-remove-month" title="${t('btn_remove_month_title')}" aria-label="${t('btn_remove_month_aria')}">&times;</button>`;
     entry.querySelector('.input-month').addEventListener('input', calculateTotalScore);
     container.appendChild(entry);
     entry.querySelector('.input-month').focus();
@@ -636,7 +637,7 @@ document.getElementById('login-password-toggle').addEventListener('click', () =>
   toggleIcon.classList.toggle('fa-eye', !isPassword);
   toggleIcon.classList.toggle('fa-eye-slash', isPassword);
   toggleButton.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
-  toggleButton.setAttribute('aria-label', isPassword ? 'Şifreyi gizle' : 'Şifreyi göster');
+  toggleButton.setAttribute('aria-label', isPassword ? t('btn_password_hide') : t('btn_password_show'));
 });
 
 // ----------------------------------------------------
@@ -659,7 +660,7 @@ async function loadAcademicianDashboard() {
 
     if (apps.length > 0) {
       newApplicationButton.dataset.blocked = 'true';
-      newApplicationButton.title = 'Farklı kategoriden başvurmak için önce mevcut başvurunuzu silin.';
+      newApplicationButton.title = t('new_app_blocked_title');
     } else {
       newApplicationButton.dataset.blocked = 'false';
       newApplicationButton.title = '';
@@ -818,7 +819,7 @@ function initApplicationForm(appId = null) {
   updateStepIndicator();
   toggleApplicationRevisionNote();
   
-  document.getElementById('app-form-title').textContent = appId ? 'Başvuruyu Düzenle' : 'Yeni Akademik Teşvik Başvurusu';
+  document.getElementById('app-form-title').textContent = appId ? t('app_form_title_edit') : t('app_form_title_new');
   document.getElementById('app-category-select').disabled = false;
   document.getElementById('app-year').disabled = false;
 
@@ -856,7 +857,7 @@ function toggleApplicationRevisionNote(app = null) {
   const revisionNoteText = document.getElementById('application-revision-note-text');
 
   if (app && app.status === 'revision_requested') {
-    revisionNoteText.textContent = app.adminNotes || 'Komisyon tarafından revizyon istendi. Lütfen başvurunuzu açıklamalara göre güncelleyin.';
+    revisionNoteText.textContent = app.adminNotes || t('revision_note_default');
     revisionNoteBox.classList.remove('hidden');
     return;
   }
@@ -1046,7 +1047,7 @@ function loadCalculatorGrid() {
       requiresRatio: item.requiresRatio,
       hasFormulaCap: item.hasFormulaCap,
       isMultiMonth: !!item.isMultiMonth,
-      unit: item.unit || 'adet',
+      unit: item.unit || t('unit_item'),
       count: initialCount,
       months: initialMonths,
       ratio: initialRatio,
@@ -1056,28 +1057,28 @@ function loadCalculatorGrid() {
     const tr = document.createElement('tr');
     tr.dataset.itemId = item.id;
 
-    const maxText = item.maxScore > 0 ? item.maxScore.toFixed(1) : 'Limit Yok';
+    const maxText = item.maxScore > 0 ? item.maxScore.toFixed(1) : t('max_text_no_limit');
     const ratioCellHtml = item.requiresRatio
-      ? `<td class="td-input"><input type="number" class="input-ratio" step="0.01" min="0.01" max="1.00" value="${initialRatio.toFixed(2)}" aria-label="${item.label} katkı oranı, 0.01 ile 1.00 arasında"></td>`
+      ? `<td class="td-input"><input type="number" class="input-ratio" step="0.01" min="0.01" max="1.00" value="${initialRatio.toFixed(2)}" aria-label="${t('aria_ratio_input', { label: item.label })}"></td>`
       : `<td class="hidden"></td>`;
 
     let countCellHtml;
-    const unit = item.unit || 'adet';
+    const unit = item.unit || t('unit_item');
     if (item.isMultiMonth) {
       countCellHtml = `<td class="td-input td-multimonth">
         <div class="multimonth-container">
           <div class="multimonth-entry">
-            <input type="number" class="input-month" min="0" step="1" value="${initialCount}" aria-label="${item.label} ay sayısı">
-            <button type="button" class="btn-add-month" title="Araştırma ekle" aria-label="Yeni araştırma satırı ekle">+</button>
+            <input type="number" class="input-month" min="0" step="1" value="${initialCount}" aria-label="${t('aria_month_input', { label: item.label })}">
+            <button type="button" class="btn-add-month" title="${t('btn_add_month_title')}" aria-label="${t('btn_add_month_aria')}">+</button>
           </div>
         </div>
       </td>`;
     } else {
-      countCellHtml = `<td class="td-input"><input type="number" class="input-count" min="0" step="1" value="${initialCount}" aria-label="${item.label} ${unit} değeri"></td>`;
+      countCellHtml = `<td class="td-input"><input type="number" class="input-count" min="0" step="1" value="${initialCount}" aria-label="${t('aria_count_input', { label: item.label, unit })}"></td>`;
     }
 
     const helpBtn = item.isMultiMonth
-      ? ` <button type="button" class="btn-row-help" data-modal="arastirma-ay-modal" aria-label="Araştırma ay girişi hakkında bilgi" title="Nasıl gireceğim?"><i class="fa-solid fa-circle-question" aria-hidden="true"></i></button>`
+      ? ` <button type="button" class="btn-row-help" data-modal="arastirma-ay-modal" aria-label="${t('th_ratio_help_aria')}" title="${t('th_ratio_help_title')}"><i class="fa-solid fa-circle-question" aria-hidden="true"></i></button>`
       : '';
 
     tr.innerHTML = `
@@ -1098,7 +1099,7 @@ function loadCalculatorGrid() {
 
   const colSpanCount = hasRatio ? 5 : 4;
   totalTr.innerHTML = `
-    <td colspan="${colSpanCount}" class="text-right">KATEGORİ TOPLAM PUANI:</td>
+    <td colspan="${colSpanCount}" class="text-right">${t('calc_grand_total_label')}</td>
     <td class="text-right" id="calculator-grand-total">0.00</td>
   `;
   tbody.appendChild(totalTr);
@@ -1164,7 +1165,7 @@ function updateSubmitButtonState() {
   const answered = document.querySelector('input[name="teşvik-applied"]:checked');
   if (!answered) {
     submitBtn.disabled = true;
-    submitBtn.title = 'Lütfen Akademik Teşvik başvurusu sorusunu cevaplayınız.';
+    submitBtn.title = t('btn_submit_title_no_tesvik');
     return;
   }
 
@@ -1183,10 +1184,10 @@ function updateSubmitButtonState() {
 
   if (missingEvidence) {
     submitBtn.disabled = true;
-    submitBtn.title = 'Kanıt yüklemeniz gereken tüm faaliyetler için dosya yükleyiniz.';
+    submitBtn.title = t('btn_submit_title_missing_evidence');
   } else {
     submitBtn.disabled = false;
-    submitBtn.title = 'Başvuruyu gönder';
+    submitBtn.title = t('btn_submit_title_ready');
   }
 }
 
@@ -1223,13 +1224,13 @@ function onTeşvikAnswerChange() {
 
   if (val === 'no') {
     // Tüm faaliyetler için kanıt zorunlu
-    helpText.textContent = 'Akademik Teşvik başvurusu yapmadığınız için girdiğiniz tüm faaliyetlerin kanıt belgesini yüklemeniz gerekmektedir (makale ilk sayfası, proje onay yazısı, patent tescil belgesi vb.).';
+    helpText.textContent = t('evidence_help_text_no');
     checklist.classList.add('hidden');
     activeActs.forEach(a => missingTeşvikProofIds.add(a.activityId));
     loadEvidenceUploaders();
   } else {
     // Hangi faaliyetler için kanıt ibraz edilmedi?
-    helpText.textContent = 'Akademik Teşvik başvurusunda kanıt ibraz etmediğiniz faaliyetleri işaretleyiniz. Yalnızca işaretlediğiniz kalemler için kanıt yüklemeniz gerekecektir.';
+    helpText.textContent = t('evidence_help_text_yes');
     checklist.classList.remove('hidden');
 
     const listDiv = document.getElementById('teşvik-checklist-items');
@@ -1265,7 +1266,7 @@ function loadEvidenceUploaders() {
   const activeActs = applicationActivities.filter(act => act.count > 0);
 
   if (activeActs.length === 0) {
-    container.innerHTML = '<div class="alert alert-warning"><i class="fa-solid fa-circle-exclamation"></i> Herhangi bir faaliyet verisi girmediniz. Lütfen geri dönüp puan alacağınız faaliyetleri doldurunuz.</div>';
+    container.innerHTML = `<div class="alert alert-warning"><i class="fa-solid fa-circle-exclamation"></i> ${t('evidence_no_activities_msg')}</div>`;
     updateSubmitButtonState();
     return;
   }
@@ -1276,7 +1277,7 @@ function loadEvidenceUploaders() {
     : activeActs.filter(a => missingTeşvikProofIds.has(a.activityId));
 
   if (val === 'yes' && uploaderActs.length === 0) {
-    container.innerHTML = '<div class="alert alert-info"><i class="fa-solid fa-circle-check"></i> Kanıt yüklemeniz gereken faaliyet bulunmuyor. Başvuruyu gönderebilirsiniz.</div>';
+    container.innerHTML = `<div class="alert alert-info"><i class="fa-solid fa-circle-check"></i> ${t('evidence_all_covered_msg')}</div>`;
     updateSubmitButtonState();
     return;
   }
@@ -1290,7 +1291,7 @@ function loadEvidenceUploaders() {
     if (!Array.isArray(act.evidenceFiles)) act.evidenceFiles = [];
     while (act.evidenceFiles.length < slotCount) act.evidenceFiles.push(null);
 
-    const unitLabel = act.isMultiMonth ? 'araştırma' : (act.unit || 'adet');
+    const unitLabel = act.isMultiMonth ? t('unit_research') : (act.unit || t('unit_item'));
     const countLabel = act.isMultiMonth
       ? `${slotCount} ${unitLabel}`
       : `${slotCount} ${unitLabel}`;
@@ -1301,7 +1302,7 @@ function loadEvidenceUploaders() {
 
     for (let i = 0; i < slotCount; i++) {
       const slotLabel = slotCount > 1
-        ? (act.isMultiMonth ? `Araştırma ${i + 1}${act.months[i] > 0 ? ' (' + act.months[i] + ' ay)' : ''}` : `${i + 1}. ${unitLabel}`)
+        ? (act.isMultiMonth ? `${t('unit_research')} ${i + 1}${act.months[i] > 0 ? ' (' + act.months[i] + ' ay)' : ''}` : `${i + 1}. ${unitLabel}`)
         : '';
 
       const div = document.createElement('div');
@@ -1467,10 +1468,10 @@ function renderEvidenceDocuments(app, container) {
       itemDiv.innerHTML = `
         <div class="doc-icon"><i class="fa-regular fa-file-image"></i></div>
         <div class="doc-details">
-          <strong>Kanıt Belgesi${slotLabel}</strong>
+          <strong>${t('evidence_doc_singular')}${slotLabel}</strong>
           <p style="color: var(--secondary-color); font-weight: 500;">${act.label}</p>
         </div>
-        <a href="${file.url}" target="_blank" class="btn btn-secondary btn-sm"><i class="fa-solid fa-eye"></i> İncele</a>
+        <a href="${file.url}" target="_blank" class="btn btn-secondary btn-sm"><i class="fa-solid fa-eye"></i> ${t('btn_view_document')}</a>
       `;
       container.appendChild(itemDiv);
     });
@@ -1507,7 +1508,7 @@ async function viewApplicationDetails(appId) {
     app.activities.forEach(act => {
       if (act.count === 0) return;
       const tr = document.createElement('tr');
-      const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : 'Limit Yok';
+      const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : t('max_text_no_limit');
       tr.innerHTML = `
         <th scope="row">${act.label}</th>
         <td class="text-center">${act.baseScore}</td>
@@ -1555,7 +1556,7 @@ async function viewApplicationDetails(appId) {
     const overrideBackBtn = document.createElement('button');
     overrideBackBtn.id = 'btn-back-override-academic';
     overrideBackBtn.className = 'btn btn-secondary btn-sm';
-    overrideBackBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Geri Dön';
+    overrideBackBtn.innerHTML = `<i class="fa-solid fa-arrow-left"></i> ${t('btn_back_override')}`;
     overrideBackBtn.onclick = () => {
       showView('academic-view');
       overrideBackBtn.remove();
@@ -1577,7 +1578,7 @@ let activeAppealAppId = null;
 function openAppealModal(appId) {
   activeAppealAppId = appId;
   apiCall(`/api/applications/my/${appId}`).then(app => {
-    document.getElementById('appeal-modal-admin-notes').textContent = app.adminNotes || 'Gerekçe belirtilmemiş.';
+    document.getElementById('appeal-modal-admin-notes').textContent = app.adminNotes || t('no_reason_provided');
     document.getElementById('appeal-reasoning').value = '';
     openModal('appeal-view', '#appeal-reasoning');
   });
@@ -1679,8 +1680,8 @@ function isSystemAdminUser(user) {
 }
 
 function getDisplayTitle(user) {
-  if (isSystemAdminUser(user)) return 'Sistem Yöneticisi';
-  if (user.role === 'admin' && user.adminScope === 'faculty') return 'Komisyon';
+  if (isSystemAdminUser(user)) return t('role_system_admin');
+  if (user.role === 'admin' && user.adminScope === 'faculty') return t('role_commission_label');
   return user.title || '';
 }
 
@@ -1717,7 +1718,7 @@ async function loadAdminDashboard() {
       usersTab.classList.add('hidden');
       if (facultyFilterGroup) facultyFilterGroup.classList.add('hidden');
       facultyBanner.classList.remove('hidden');
-      facultyBannerText.textContent = `Yalnızca ${currentUser.faculty} başvurularını görüntülüyorsunuz.`;
+      facultyBannerText.textContent = t('faculty_admin_banner', { faculty: currentUser.faculty });
     } else {
       configTab.classList.remove('hidden');
       usersTab.classList.remove('hidden');
@@ -1760,7 +1761,7 @@ function renderAdminApplicationsList() {
   });
 
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Arama kriterlerine uygun başvuru bulunamadı.</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">${t('no_results_msg')}</td></tr>`;
     return;
   }
 
@@ -1808,14 +1809,14 @@ function renderAdminApplicationsList() {
 
     let actionBtn = `
       <button type="button" class="btn btn-primary btn-sm btn-admin-evaluate" data-id="${app.id}">
-        <i class="fa-solid fa-gavel" aria-hidden="true"></i> Değerlendir
+        <i class="fa-solid fa-gavel" aria-hidden="true"></i> ${t('btn_evaluate_app')}
       </button>
     `;
 
     if (app.status === 'draft') {
       actionBtn = `
         <button type="button" class="btn btn-secondary btn-sm btn-admin-evaluate" data-id="${app.id}">
-          <i class="fa-solid fa-eye" aria-hidden="true"></i> Görüntüle
+          <i class="fa-solid fa-eye" aria-hidden="true"></i> ${t('btn_view_app')}
         </button>
       `;
     }
@@ -1823,7 +1824,7 @@ function renderAdminApplicationsList() {
     if (isSystemAdminUser(currentUser)) {
       actionBtn += `
         <button type="button" class="btn btn-danger btn-sm btn-admin-delete-app" data-id="${app.id}">
-          <i class="fa-solid fa-trash" aria-hidden="true"></i> Sil
+          <i class="fa-solid fa-trash" aria-hidden="true"></i> ${t('btn_delete_app')}
         </button>
       `;
     }
@@ -1831,7 +1832,7 @@ function renderAdminApplicationsList() {
     actionBtn = `<div class="admin-app-actions action-buttons-row">${actionBtn}</div>`;
 
     // Appeal marker
-    const appealMarker = app.appeal ? '<span class="badge badge-danger ml-2" style="font-size:0.65rem;">İTİRAZ</span>' : '';
+    const appealMarker = app.appeal ? `<span class="badge badge-danger ml-2" style="font-size:0.65rem;">${t('appeal_badge')}</span>` : '';
 
     tr.innerHTML = `
       <th scope="row"><strong>${applicantName}</strong> ${rankBadge}${appealMarker}</th>
@@ -1914,7 +1915,7 @@ async function evaluateApplicationAdmin(appId) {
     app.activities.forEach(act => {
       if (act.count === 0) return;
       const tr = document.createElement('tr');
-      const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : 'Limit Yok';
+      const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : t('max_text_no_limit');
       tr.innerHTML = `
         <th scope="row">${act.label}</th>
         <td class="text-center">${act.baseScore}</td>
@@ -1940,7 +1941,7 @@ async function evaluateApplicationAdmin(appId) {
     document.getElementById('admin-eval-notes').value = app.adminNotes || '';
     document.getElementById('admin-eval-notes').disabled = false; // Admin can edit
     document.getElementById('admin-eval-notes').removeAttribute('readonly');
-    document.getElementById('admin-eval-notes').setAttribute('placeholder', 'Lütfen revizyon, red veya onay gerekçenizi detaylıca yazın');
+    document.getElementById('admin-eval-notes').setAttribute('placeholder', t('placeholder_eval_notes'));
 
     // Show scores (admin view)
     const scoreDiv = document.querySelector('.score-summary-box');
@@ -2061,9 +2062,9 @@ document.querySelectorAll('.tab-btn').forEach((btn, index, allTabs) => {
 });
 
 function getUserRoleLabel(user) {
-  if (user.role === 'admin' && user.adminScope === 'system') return 'Sistem Yöneticisi';
-  if (user.role === 'admin' && user.adminScope === 'faculty') return 'Fakülte Komisyonu';
-  return 'Akademisyen';
+  if (user.role === 'admin' && user.adminScope === 'system') return t('role_system_admin');
+  if (user.role === 'admin' && user.adminScope === 'faculty') return t('role_faculty_admin');
+  return t('role_academic');
 }
 
 function getUserRoleKey(user) {
@@ -2116,8 +2117,8 @@ function renderSystemUsersList() {
     return matchesSearch && matchesRole && matchesFaculty;
   });
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Arama kriterlerine uygun kullanıcı bulunamadı.</td></tr>';
+    if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">${t('no_users_msg')}</td></tr>`;
     return;
   }
 
@@ -2139,10 +2140,10 @@ function renderSystemUsersList() {
       : '—';
 
     let actions = `
-      <button type="button" class="btn btn-secondary btn-sm btn-user-edit" data-id="${user.id}" title="Düzenle">
+      <button type="button" class="btn btn-secondary btn-sm btn-user-edit" data-id="${user.id}" title="${t('btn_edit_app')}">
         <i class="fa-solid fa-pen"></i>
       </button>
-      <button type="button" class="btn btn-warning btn-sm btn-user-reset-password" data-id="${user.id}" data-name="${user.name}" title="Şifre Sıfırla">
+      <button type="button" class="btn btn-warning btn-sm btn-user-reset-password" data-id="${user.id}" data-name="${user.name}" title="${t('btn_update_password')}">
         <i class="fa-solid fa-key"></i>
       </button>
     `;
@@ -2246,7 +2247,7 @@ function openAdminUserModal(userId = null) {
     const user = adminUsers.find(u => u.id === userId);
     if (!user) return;
 
-    titleEl.textContent = 'Kullanıcı Düzenle';
+    titleEl.textContent = t('modal_edit_user_title');
     document.getElementById('admin-user-name').value = user.name || '';
 
     if (user.role === 'admin' && user.adminScope === 'system') {
@@ -2271,7 +2272,7 @@ function openAdminUserModal(userId = null) {
       if (user.department) deptSelect.value = user.department;
     }
   } else {
-    titleEl.textContent = 'Yeni Kullanıcı Ekle';
+    titleEl.textContent = t('modal_new_user_title');
     roleSelect.disabled = false;
     roleSelect.value = 'academic';
   }
@@ -2290,7 +2291,7 @@ function closeAdminUserModal() {
 function openAdminResetPasswordModal(userId, userName) {
   resettingAdminUserId = userId;
   document.getElementById('admin-reset-user-id').value = userId;
-  document.getElementById('admin-reset-user-label').textContent = `${userName} hesabı için yeni şifre belirleyin.`;
+  document.getElementById('admin-reset-user-label').textContent = t('reset_password_label', { name: userName });
   document.getElementById('admin-reset-password-form').reset();
   openModal('admin-reset-password-modal', '#admin-reset-new-password');
 }

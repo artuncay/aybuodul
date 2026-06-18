@@ -33,23 +33,26 @@
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
       </button>
       <nav aria-label="" class="header-nav" data-i18n-aria="nav_user_menu_aria">
-        <span id="nav-user-info" class="user-badge" aria-live="polite"></span>
-        <button type="button" id="btn-change-password" class="btn btn-secondary btn-sm btn-desktop" aria-label="" data-i18n-aria="btn_change_password_aria">
-          <i class="fa-solid fa-key" aria-hidden="true"></i> <span class="btn-text" data-i18n="btn_change_password">Şifre Değiştir</span>
-        </button>
-        <button id="btn-logout" type="button" class="btn btn-secondary btn-sm btn-desktop" aria-label="" data-i18n-aria="btn_logout_aria">
-          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="btn-text" data-i18n="btn_logout">Çıkış Yap</span>
-        </button>
-        <div class="lang-toggle" aria-label="Language / Dil">
-          <button type="button" class="lang-btn" data-lang-btn="tr" onclick="setLanguage('tr')">TR</button>
-          <button type="button" class="lang-btn" data-lang-btn="en" onclick="setLanguage('en')">EN</button>
+        <div class="user-menu-wrapper" id="user-menu-wrapper">
+          <button type="button" class="user-badge-btn" id="btn-user-menu-toggle" aria-haspopup="true" aria-expanded="false">
+            <span id="nav-user-info" aria-live="polite"></span>
+            <i class="fa-solid fa-chevron-down user-menu-chevron" aria-hidden="true"></i>
+          </button>
+          <div class="user-dropdown" id="user-dropdown" role="menu">
+            <button type="button" id="btn-change-password" class="user-dropdown-item" role="menuitem" data-i18n-aria="btn_change_password_aria">
+              <i class="fa-solid fa-key" aria-hidden="true"></i> <span data-i18n="btn_change_password">Şifre Değiştir</span>
+            </button>
+            <div class="user-dropdown-divider"></div>
+            <button id="btn-logout" type="button" class="user-dropdown-item user-dropdown-item-danger" role="menuitem" data-i18n-aria="btn_logout_aria">
+              <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span data-i18n="btn_logout">Çıkış Yap</span>
+            </button>
+          </div>
         </div>
-        <button type="button" id="btn-change-password-mobile" class="btn btn-icon btn-mobile hidden" aria-label="" data-i18n-aria="btn_change_password_aria">
-          <i class="fa-solid fa-key" aria-hidden="true"></i>
-        </button>
-        <button type="button" id="btn-logout-mobile" class="btn btn-icon btn-mobile hidden" aria-label="" data-i18n-aria="btn_logout_aria">
-          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-        </button>
+        <div class="header-lang-switch" role="group" aria-label="Language / Dil">
+          <button type="button" class="lang-switch-btn" data-lang-btn="tr" onclick="setLanguage('tr')" onmousedown="event.preventDefault()">TR</button>
+          <span class="lang-switch-divider"></span>
+          <button type="button" class="lang-switch-btn" data-lang-btn="en" onclick="setLanguage('en')" onmousedown="event.preventDefault()">EN</button>
+        </div>
       </nav>
     </div>
   </header>
@@ -60,11 +63,12 @@
     <!-- 1. LOGIN VIEW -->
     <section id="login-view" class="view active" aria-labelledby="login-heading">
       <div class="login-shell">
-        <div class="login-lang-toggle" aria-label="Language / Dil">
-          <button type="button" class="lang-btn" data-lang-btn="tr" onclick="setLanguage('tr')">TR</button>
-          <button type="button" class="lang-btn" data-lang-btn="en" onclick="setLanguage('en')">EN</button>
-        </div>
         <div class="login-panel">
+          <div class="login-lang-switch" role="group" aria-label="Language / Dil">
+            <button type="button" class="lang-switch-btn" data-lang-btn="tr" onclick="setLanguage('tr')" onmousedown="event.preventDefault()">TR</button>
+            <span class="lang-switch-divider"></span>
+            <button type="button" class="lang-switch-btn" data-lang-btn="en" onclick="setLanguage('en')" onmousedown="event.preventDefault()">EN</button>
+          </div>
           <div class="login-card">
             <div class="login-identity-mark" aria-hidden="true">
               <img src="/img/aybu-logo.png" alt="">
@@ -96,6 +100,7 @@
               <button type="submit" class="btn btn-block login-submit">
                 <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> <span data-i18n="btn_login">Giriş Yap</span>
               </button>
+
               <a href="#" id="link-go-register" class="login-register-link-large">
                 <i class="fa-solid fa-user-plus" aria-hidden="true"></i> <span data-i18n="btn_register_link">Kayıt olun</span>
               </a>
@@ -1232,8 +1237,10 @@
   <script src="/js/academic-units.js"></script>
   <script src="/js/app.js"></script>
   <script>
-    // Mouse ile tıklanınca odak halkası gizle, Tab ile gelinince göster
+    // Sayfa yüklenince varsayılan olarak odak halkası gizli, Tab ile klavye modu açılır
+    document.body.classList.add('using-mouse');
     document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
+    document.addEventListener('touchstart', () => document.body.classList.add('using-mouse'), { passive: true });
     document.addEventListener('keydown', e => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
   </script>
 </body>

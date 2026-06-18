@@ -1,4 +1,4 @@
-// ATOSIS - Client Side Application Logic (SPA Router, Calculator & Admin Controllers)
+﻿// ATOSIS - Client Side Application Logic (SPA Router, Calculator & Admin Controllers)
 
 // State management
 let currentUser = null;
@@ -45,21 +45,23 @@ async function apiCall(endpoint, method = 'GET', body = null, isMultipart = fals
     } else {
       const text = await res.text();
       if (text.trim().startsWith('<')) {
-        throw new Error('API yanıtı alınamadı. Sunucuyu yeniden başlatıp tekrar deneyin.');
+        throw new Error('error_api_response');
       }
       try {
         data = JSON.parse(text);
       } catch {
-        throw new Error('Sunucudan beklenmeyen yanıt alındı.');
+        throw new Error('error_unexpected_response');
       }
     }
 
     if (!res.ok) {
-      throw new Error(data.message || 'API Hatası oluştu.');
+      const code = data.messageCode || data.message;
+      throw new Error(code || 'error_api_generic');
     }
     return data;
   } catch (err) {
-    showToast(err.message, 'error');
+    const msg = t(err.message) || err.message;
+    showToast(msg, 'error');
     throw err;
   }
 }
@@ -387,7 +389,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   try {
     const res = await apiCall('/api/auth/register', 'POST', { name, email, title, password, faculty, department });
     if (res.verificationRequired === false) {
-      showToast(res.message || t('toast_reg_success'), 'success');
+      showToast(t(res.messageCode) || t('toast_reg_success'), 'success');
       setTimeout(() => showView('login-view'), 1500);
       return;
     }
@@ -438,6 +440,7 @@ document.getElementById('link-back-to-register').addEventListener('click', (e) =
 
 
 document.getElementById('btn-logout').addEventListener('click', () => {
+  document.getElementById('user-menu-wrapper')?.classList.remove('open');
   performLogout(t('toast_logout'));
 });
 
@@ -612,7 +615,7 @@ document.getElementById('password-form').addEventListener('submit', async (e) =>
 
   try {
     const res = await apiCall('/api/auth/change-password', 'POST', { currentPassword, newPassword });
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     closePasswordModal();
   } catch (err) {}
 });
@@ -643,13 +646,21 @@ document.getElementById('login-password-toggle').addEventListener('click', () =>
 // ----------------------------------------------------
 // ACADEMICIAN CONTROLLERS
 // ----------------------------------------------------
+
+window.refreshProfileCard = function () {
+  if (!currentUser) return;
+  const deptEl = document.getElementById('user-profile-title-dept');
+  const facEl = document.getElementById('user-profile-faculty');
+  if (deptEl) deptEl.textContent = isSystemAdminUser(currentUser) ? '' : tUnit(currentUser.department || '');
+  if (facEl) facEl.textContent = isSystemAdminUser(currentUser) ? '' : tUnit(currentUser.faculty || '');
+};
 async function loadAcademicianDashboard() {
   // Populate Sidebar
   document.getElementById('user-profile-title').textContent = currentUser.title || '';
   document.getElementById('user-profile-name').textContent = currentUser.name || '';
   // For system administrators, do not show faculty/department (they are not attached to a unit)
-  document.getElementById('user-profile-title-dept').textContent = isSystemAdminUser(currentUser) ? '' : (currentUser.department || '');
-  document.getElementById('user-profile-faculty').textContent = isSystemAdminUser(currentUser) ? '' : (currentUser.faculty || '');
+  document.getElementById('user-profile-title-dept').textContent = isSystemAdminUser(currentUser) ? '' : tUnit(currentUser.department || '');
+  document.getElementById('user-profile-faculty').textContent = isSystemAdminUser(currentUser) ? '' : tUnit(currentUser.faculty || '');
 
   try {
     const apps = await apiCall('/api/applications/my');
@@ -694,19 +705,19 @@ async function loadAcademicianDashboard() {
 
       const total = app.summary.totalScore ? app.summary.totalScore.toFixed(2) : '0.00';
       const approved = app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
-      const catName = allCategories[app.category] ? allCategories[app.category].name.split(':')[0] : app.category;
+      const catName = tCat(app.category).split(':')[0];
 
       let actionButtons = '';
       if (app.status === 'draft' || app.status === 'revision_requested') {
         actionButtons = `
           <button type="button" class="btn btn-primary btn-sm btn-edit-app" data-id="${app.id}">
-            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Düzenle
+            <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> ${t('btn_edit_app')}
           </button>
         `;
       } else {
         actionButtons = `
           <button type="button" class="btn btn-secondary btn-sm btn-view-app" data-id="${app.id}">
-            <i class="fa-solid fa-eye" aria-hidden="true"></i> Görüntüle
+            <i class="fa-solid fa-eye" aria-hidden="true"></i> ${t('btn_view_app')}
           </button>
         `;
       }
@@ -872,7 +883,7 @@ async function deleteOwnApplication(appId) {
 
   try {
     const res = await apiCall(`/api/applications/${appId}`, 'DELETE');
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     if (currentEditingApp && currentEditingApp.id === appId) {
       currentEditingApp = null;
       applicationActivities = [];
@@ -1014,7 +1025,7 @@ function loadCalculatorGrid() {
   const category = allCategories[catId];
   const existingActivities = Array.isArray(applicationActivities) ? [...applicationActivities] : [];
   
-  document.getElementById('selected-category-title-display').textContent = category.name;
+  document.getElementById('selected-category-title-display').textContent = tCat(category.id);
   
   const thRatio = document.getElementById('th-ratio-header');
   const hasRatio = category.items.some(i => i.requiresRatio);
@@ -1041,7 +1052,7 @@ function loadCalculatorGrid() {
 
     applicationActivities.push({
       activityId: item.id,
-      label: item.label,
+      label: tItem(item.id),
       baseScore: item.baseScore,
       maxScore: item.maxScore,
       requiresRatio: item.requiresRatio,
@@ -1059,7 +1070,7 @@ function loadCalculatorGrid() {
 
     const maxText = item.maxScore > 0 ? item.maxScore.toFixed(1) : t('max_text_no_limit');
     const ratioCellHtml = item.requiresRatio
-      ? `<td class="td-input"><input type="number" class="input-ratio" step="0.01" min="0.01" max="1.00" value="${initialRatio.toFixed(2)}" aria-label="${t('aria_ratio_input', { label: item.label })}"></td>`
+      ? `<td class="td-input"><input type="number" class="input-ratio" step="0.01" min="0.01" max="1.00" value="${initialRatio.toFixed(2)}" aria-label="${t('aria_ratio_input', { label: tItem(item.id) })}"></td>`
       : `<td class="hidden"></td>`;
 
     let countCellHtml;
@@ -1068,13 +1079,13 @@ function loadCalculatorGrid() {
       countCellHtml = `<td class="td-input td-multimonth">
         <div class="multimonth-container">
           <div class="multimonth-entry">
-            <input type="number" class="input-month" min="0" step="1" value="${initialCount}" aria-label="${t('aria_month_input', { label: item.label })}">
+            <input type="number" class="input-month" min="0" step="1" value="${initialCount}" aria-label="${t('aria_month_input', { label: tItem(item.id) })}">
             <button type="button" class="btn-add-month" title="${t('btn_add_month_title')}" aria-label="${t('btn_add_month_aria')}">+</button>
           </div>
         </div>
       </td>`;
     } else {
-      countCellHtml = `<td class="td-input"><input type="number" class="input-count" min="0" step="1" value="${initialCount}" aria-label="${t('aria_count_input', { label: item.label, unit })}"></td>`;
+      countCellHtml = `<td class="td-input"><input type="number" class="input-count" min="0" step="1" value="${initialCount}" aria-label="${t('aria_count_input', { label: tItem(item.id), unit })}"></td>`;
     }
 
     const helpBtn = item.isMultiMonth
@@ -1082,7 +1093,7 @@ function loadCalculatorGrid() {
       : '';
 
     tr.innerHTML = `
-      <th scope="row">${item.label}${helpBtn}</th>
+      <th scope="row">${tItem(item.id)}${helpBtn}</th>
       <td class="text-center font-weight-bold">${item.baseScore.toFixed(1)}</td>
       <td class="text-center text-muted">${maxText}</td>
       ${countCellHtml}
@@ -1243,9 +1254,9 @@ function onTeşvikAnswerChange() {
       const label = document.createElement('label');
       label.style.cssText = 'display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; cursor:pointer;';
       const dispCount = act.isMultiMonth
-        ? `${(act.months || []).filter(m => m > 0).length} araştırma`
-        : `${Math.floor(act.count)} ${act.unit || 'adet'}`;
-      label.innerHTML = `<input type="checkbox" data-act-id="${act.activityId}" style="width:16px;height:16px;"> ${act.label} (${dispCount})`;
+        ? `${(act.months || []).filter(m => m > 0).length} ${t('unit_research')}`
+        : `${Math.floor(act.count)} ${act.unit || t('unit_item')}`;
+      label.innerHTML = `<input type="checkbox" data-act-id="${act.activityId}" style="width:16px;height:16px;"> ${tItem(act.activityId)} (${dispCount})`;
       listDiv.appendChild(label);
 
       label.querySelector('input').addEventListener('change', e => {
@@ -1302,7 +1313,7 @@ function loadEvidenceUploaders() {
 
     for (let i = 0; i < slotCount; i++) {
       const slotLabel = slotCount > 1
-        ? (act.isMultiMonth ? `${t('unit_research')} ${i + 1}${act.months[i] > 0 ? ' (' + act.months[i] + ' ay)' : ''}` : `${i + 1}. ${unitLabel}`)
+        ? (act.isMultiMonth ? `${t('unit_research')} ${i + 1}${act.months[i] > 0 ? ' (' + act.months[i] + ' ' + t('unit_month') + ')' : ''}` : `${i + 1}. ${unitLabel}`)
         : '';
 
       const div = document.createElement('div');
@@ -1317,16 +1328,16 @@ function loadEvidenceUploaders() {
           <div class="uploaded-file-info">
             <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
             <span class="filename">${file.name}</span>
-            <button type="button" class="btn-remove-evidence btn-remove-file" aria-label="Dosyayı kaldır">
+            <button type="button" class="btn-remove-evidence btn-remove-file" aria-label="${t('btn_remove_file_aria')}">
               <i class="fa-solid fa-times" aria-hidden="true"></i>
             </button>
           </div>`;
       } else {
         uploadStateHtml = `
-          <button type="button" class="btn btn-secondary btn-sm btn-trigger-upload-evidence" aria-label="${act.label} kanıt yükle">
-            <i class="fa-solid fa-upload" aria-hidden="true"></i> Dosya Yükle
+          <button type="button" class="btn btn-secondary btn-sm btn-trigger-upload-evidence" aria-label="${t('upload_evidence_aria', { label: tItem(act.activityId) })}">
+            <i class="fa-solid fa-upload" aria-hidden="true"></i> ${t('btn_upload_file')}
           </button>
-          <span class="text-muted upload-status-text">Yüklenmedi (PDF/Görsel)</span>`;
+          <span class="text-muted upload-status-text">${t('upload_status_pending')}</span>`;
       }
 
       div.innerHTML = `
@@ -1447,7 +1458,7 @@ async function saveApplication(isDraft = true) {
       result = await apiCall('/api/applications', 'POST', payload);
     }
     
-    showToast(result.message, 'success');
+    showToast(t(result.messageCode), 'success');
     showView('academic-view');
   } catch (err) {}
 }
@@ -1494,12 +1505,10 @@ async function viewApplicationDetails(appId) {
 
     document.getElementById('detail-name').textContent = app.personalInfo.name;
     document.getElementById('detail-title').textContent = app.personalInfo.title;
-    document.getElementById('detail-faculty').textContent = app.personalInfo.faculty;
-    document.getElementById('detail-dept').textContent = app.personalInfo.department;
+    document.getElementById('detail-faculty').textContent = tUnit(app.personalInfo.faculty);
+    document.getElementById('detail-dept').textContent = tUnit(app.personalInfo.department);
     document.getElementById('detail-year').textContent = app.year;
-    
-    const catName = allCategories[app.category] ? allCategories[app.category].name : app.category;
-    document.getElementById('detail-category').textContent = catName;
+    document.getElementById('detail-category').textContent = tCat(app.category);
 
     // Fill Activities Table
     const tbody = document.getElementById('detail-activities-list');
@@ -1510,7 +1519,7 @@ async function viewApplicationDetails(appId) {
       const tr = document.createElement('tr');
       const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : t('max_text_no_limit');
       tr.innerHTML = `
-        <th scope="row">${act.label}</th>
+        <th scope="row">${tItem(act.activityId)}</th>
         <td class="text-center">${act.baseScore}</td>
         <td class="text-center">${maxVal}</td>
         <td class="text-center font-weight-bold">${act.count}</td>
@@ -1624,7 +1633,7 @@ document.getElementById('appeal-form').addEventListener('submit', async (e) => {
       attachmentUrl = uploaded.fileUrl;
     }
     const res = await apiCall(`/api/applications/${activeAppealAppId}/appeal`, 'POST', { reasoning, attachmentUrl });
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     closeModal('appeal-view');
     appealAttachedFile = null;
     document.getElementById('appeal-file-input').value = '';
@@ -1802,8 +1811,8 @@ function renderAdminApplicationsList() {
     const rankBadge = isFacultyAdmin && index < 10
       ? `<span class="badge badge-rank">#${index + 1}</span>`
       : '';
-    const catName = allCategories[app.category] ? allCategories[app.category].name.split(':')[0] : app.category;
-    
+    const catName = tCat(app.category).split(':')[0];
+
     const calculated = app.summary.totalScore ? app.summary.totalScore.toFixed(2) : '0.00';
     const approved = app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
 
@@ -1865,7 +1874,7 @@ async function deleteAdminApplication(appId) {
 
   try {
     const res = await apiCall(`/api/admin/applications/${appId}`, 'DELETE');
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     await loadAdminDashboard();
     if (isSystemAdminUser(currentUser)) {
       await loadSystemUsers();
@@ -1901,12 +1910,10 @@ async function evaluateApplicationAdmin(appId) {
 
     document.getElementById('detail-name').textContent = app.personalInfo.name;
     document.getElementById('detail-title').textContent = app.personalInfo.title;
-    document.getElementById('detail-faculty').textContent = app.personalInfo.faculty;
-    document.getElementById('detail-dept').textContent = app.personalInfo.department;
+    document.getElementById('detail-faculty').textContent = tUnit(app.personalInfo.faculty);
+    document.getElementById('detail-dept').textContent = tUnit(app.personalInfo.department);
     document.getElementById('detail-year').textContent = app.year;
-    
-    const catName = allCategories[app.category] ? allCategories[app.category].name : app.category;
-    document.getElementById('detail-category').textContent = catName;
+    document.getElementById('detail-category').textContent = tCat(app.category);
 
     // Fill activities list
     const tbody = document.getElementById('detail-activities-list');
@@ -1917,7 +1924,7 @@ async function evaluateApplicationAdmin(appId) {
       const tr = document.createElement('tr');
       const maxVal = act.maxScore > 0 ? act.maxScore.toFixed(1) : t('max_text_no_limit');
       tr.innerHTML = `
-        <th scope="row">${act.label}</th>
+        <th scope="row">${tItem(act.activityId)}</th>
         <td class="text-center">${act.baseScore}</td>
         <td class="text-center">${maxVal}</td>
         <td class="text-center font-weight-bold">${act.count}</td>
@@ -2001,7 +2008,7 @@ document.getElementById('admin-evaluate-form').addEventListener('submit', async 
 
   try {
     const res = await apiCall(`/api/admin/applications/${activeEvaluatingAppId}/evaluate`, 'POST', payload);
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     showView('admin-view');
   } catch (err) {}
 });
@@ -2307,7 +2314,7 @@ async function deleteAdminUser(userId, userName) {
 
   try {
     const res = await apiCall(`/api/admin/system/users/${userId}`, 'DELETE');
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     await loadSystemUsers();
     adminApplications = await apiCall('/api/admin/applications');
     renderAdminApplicationsList();
@@ -2344,11 +2351,11 @@ document.getElementById('admin-user-form').addEventListener('submit', async (e) 
   try {
     if (editingAdminUserId) {
       const res = await apiCall(`/api/admin/system/users/${editingAdminUserId}`, 'PUT', payload);
-      showToast(res.message, 'success');
+      showToast(t(res.messageCode), 'success');
     } else {
       payload.password = password;
       const res = await apiCall('/api/admin/system/users', 'POST', payload);
-      showToast(res.message, 'success');
+      showToast(t(res.messageCode), 'success');
     }
     closeAdminUserModal();
     await loadSystemUsers();
@@ -2371,7 +2378,7 @@ document.getElementById('admin-reset-password-form').addEventListener('submit', 
 
   try {
     const res = await apiCall(`/api/admin/system/users/${resettingAdminUserId}/password`, 'PUT', { password: newPassword });
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
     closeAdminResetPasswordModal();
   } catch (err) {}
 });
@@ -2394,9 +2401,9 @@ function loadAdminConfigEditor() {
     const tr = document.createElement('tr');
     tr.dataset.itemId = item.id;
     tr.innerHTML = `
-      <th scope="row">${item.label}</th>
-      <td><input type="number" class="config-base form-control" step="0.5" value="${item.baseScore}" aria-label="${item.label} taban puanı"></td>
-      <td><input type="number" class="config-max form-control" step="1" value="${item.maxScore}" aria-label="${item.label} maksimum puan sınırı"></td>
+      <th scope="row">${tItem(item.id)}</th>
+      <td><input type="number" class="config-base form-control" step="0.5" value="${item.baseScore}" aria-label="${tItem(item.id)} ${t('config_base_aria')}"></td>
+      <td><input type="number" class="config-max form-control" step="1" value="${item.maxScore}" aria-label="${tItem(item.id)} ${t('config_max_aria')}"></td>
     `;
     tbody.appendChild(tr);
   });
@@ -2425,7 +2432,7 @@ document.getElementById('admin-config-form').addEventListener('submit', async (e
   try {
     const res = await apiCall('/api/config/categories', 'PUT', { categories: allCategories });
     allCategories = res.categories;
-    showToast(res.message, 'success');
+    showToast(t(res.messageCode), 'success');
   } catch (err) {}
 });
 
@@ -2448,14 +2455,35 @@ document.getElementById('btn-header-menu')?.addEventListener('click', (e) => {
   }
 });
 
-// Mobile icon button handlers (copy desktop button handlers)
-document.getElementById('btn-change-password-mobile')?.addEventListener('click', () => {
-  document.getElementById('btn-change-password').click();
-});
+// User menu dropdown
+(function () {
+  const wrapper = document.getElementById('user-menu-wrapper');
+  const toggle  = document.getElementById('btn-user-menu-toggle');
+  const dropdown = document.getElementById('user-dropdown');
+  if (!wrapper || !toggle || !dropdown) return;
 
-document.getElementById('btn-logout-mobile')?.addEventListener('click', () => {
-  document.getElementById('btn-logout').click();
-});
+  function openMenu() {
+    wrapper.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu() {
+    wrapper.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    wrapper.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) closeMenu();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+})();
 
 document.getElementById('btn-mobile-new-app')?.addEventListener('click', () => {
   document.getElementById('btn-sidebar-new-app').click();

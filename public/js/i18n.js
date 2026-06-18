@@ -163,6 +163,8 @@
       aria_count_input: '{label} {unit} değeri',
       unit_research: 'araştırma',
       unit_item: 'adet',
+      unit_month: 'ay',
+      upload_evidence_aria: '{label} kanıt yükle',
       evidence_doc_singular: 'Kanıt Belgesi',
       appeal_badge: 'İTİRAZ',
       btn_step3_prev: 'Önceki Adım',
@@ -444,7 +446,79 @@
       no_reason_provided: 'Gerekçe belirtilmemiş.',
       reset_password_label: '{name} hesabı için yeni şifre belirleyin.',
       faculty_admin_banner: 'Yalnızca {faculty} başvurularını görüntülüyorsunuz.',
-      admin_config_cat_select_label: 'Puanlama Kategorisi'
+      admin_config_cat_select_label: 'Puanlama Kategorisi',
+      config_base_aria: 'taban puanı',
+      config_max_aria: 'maksimum puan sınırı',
+
+      srv_reg_success: 'Kayıt işlemi başarıyla tamamlandı. Lütfen giriş yapın.',
+      srv_reg_verified: 'E-posta doğrulandı, kayıt işlemi başarıyla tamamlandı.',
+      srv_verification_sent: 'Doğrulama kodu e-posta adresinize gönderildi.',
+      srv_verification_resent: 'Doğrulama kodu yeniden gönderildi.',
+      srv_password_changed: 'Şifreniz başarıyla güncellendi.',
+      srv_app_deleted: 'Başvurunuz silindi. Artık farklı kategoriden yeniden başvuru yapabilirsiniz.',
+      srv_appeal_submitted: 'İtiraz başvurusu başarıyla yapıldı.',
+      srv_admin_app_deleted: 'Başvuru başarıyla silindi.',
+      srv_app_evaluated: 'Başvuru başarıyla değerlendirildi.',
+      srv_user_updated: 'Kullanıcı güncellendi.',
+      srv_sysadmin_updated: 'Sistem yöneticisi güncellendi.',
+      srv_user_password_updated: 'Kullanıcı şifresi güncellendi.',
+      srv_user_deleted: 'Kullanıcı ve ilişkili başvurular silindi.',
+      srv_commission_created: 'Komisyon yönetici hesabı oluşturuldu.',
+      srv_academic_created: 'Akademisyen hesabı oluşturuldu.',
+      srv_config_saved: 'Kategori yapılandırması başarıyla güncellendi.',
+      srv_app_draft_saved: 'Başvuru taslak olarak kaydedildi.',
+      srv_app_submitted: 'Başvuru başarıyla gönderildi.',
+      srv_draft_updated: 'Taslak güncellendi.',
+
+      srv_err_no_token: 'Yetkisiz erişim: Token bulunamadı.',
+      srv_err_invalid_token: 'Geçersiz veya süresi dolmuş token.',
+      srv_err_admin_required: 'Bu işlem için yönetici yetkisi gereklidir.',
+      srv_err_sysadmin_required: 'Bu işlem için sistem yöneticisi yetkisi gereklidir.',
+      srv_err_all_fields_required: 'Tüm alanları doldurmak zorunludur.',
+      srv_err_email_domain: 'Kayıt yalnızca @aybu.edu.tr uzantılı e-posta adresleri ile yapılabilir.',
+      srv_err_invalid_faculty_dept: 'Geçersiz fakülte veya bölüm seçimi. Lütfen listeden seçim yapın.',
+      srv_err_email_exists: 'Bu e-posta adresiyle kayıtlı bir kullanıcı zaten var.',
+      srv_err_admin_only_by_sysadmin: 'Yönetici hesapları yalnızca sistem yöneticisi tarafından tanımlanabilir.',
+      srv_err_verification_email_failed: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.',
+      srv_err_email_code_required: 'E-posta ve doğrulama kodu gereklidir.',
+      srv_err_no_pending_reg: 'Bekleyen bir kayıt bulunamadı. Lütfen kayıt formunu yeniden doldurun.',
+      srv_err_code_expired: 'Doğrulama kodunun süresi doldu. Lütfen kayıt formunu yeniden doldurun.',
+      srv_err_invalid_code: 'Doğrulama kodu hatalı.',
+      srv_err_email_required: 'E-posta gereklidir.',
+      srv_err_credentials_required: 'Kullanıcı adı ve şifre girin.',
+      srv_err_login_user_not_found_academic: 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı. Lütfen kayıt olun.',
+      srv_err_login_user_not_found_admin: 'Yönetici hesabı bulunamadı. Hesap tanımlaması için lütfen artuncay@aybu.edu.tr adresine mail atın.',
+      srv_err_login_wrong_password_admin: 'Şifre hatalı. Lütfen artuncay@aybu.edu.tr adresine mail atın.',
+      srv_err_login_wrong_password: 'Hatalı şifre. Kayıtlı değilseniz lütfen kayıt olun.',
+      srv_err_passwords_required: 'Mevcut şifre ve yeni şifre gereklidir.',
+      srv_err_password_too_short: 'Şifre en az 6 karakter olmalıdır.',
+      srv_err_wrong_current_password: 'Mevcut şifreniz hatalı.',
+      srv_err_user_not_found: 'Kullanıcı bulunamadı.',
+      srv_err_config_missing: 'Kategori yapılandırması eksik.',
+      srv_err_upload_failed: 'Dosya yüklenemedi.',
+      srv_err_app_not_found_or_forbidden: 'Başvuru bulunamadı veya bu başvuruya erişim yetkiniz yok.',
+      srv_err_incomplete_app: 'Eksik başvuru bilgileri.',
+      srv_err_duplicate_app: 'Sistemde kayıtlı bir başvurunuz zaten bulunuyor. Farklı kategoriden başvurmak için önce mevcut başvurunuzu silin.',
+      srv_err_app_not_found: 'Başvuru bulunamadı.',
+      srv_err_app_locked: 'Gönderilmiş ve inceleme aşamasındaki başvurular düzenlenemez.',
+      srv_err_category_locked: 'Başvuru kategorisi değiştirilemez. Farklı kategori seçmek için mevcut başvuruyu silip yeniden başvurun.',
+      srv_err_year_locked: 'Başvuru yılı değiştirilemez. Farklı başvuru oluşturmak için mevcut başvuruyu silin.',
+      srv_err_appeal_reason_required: 'İtiraz gerekçesi yazılmalıdır.',
+      srv_err_appeal_not_rejected: 'Sadece reddedilmiş başvurulara itiraz edilebilir.',
+      srv_err_admin_not_found: 'Yönetici hesabı bulunamadı.',
+      srv_err_sysadmin_cannot_create: 'Sistem yöneticisi hesabı bu panelden oluşturulamaz.',
+      srv_err_commission_fields_required: 'Komisyon hesabı için kullanıcı adı ve fakülte gereklidir.',
+      srv_err_username_taken: 'Bu kullanıcı adı zaten kullanılıyor.',
+      srv_err_invalid_faculty: 'Geçersiz fakülte seçimi.',
+      srv_err_faculty_admin_exists: 'Bu fakülte için zaten bir komisyon hesabı tanımlı.',
+      srv_err_academic_fields_required: 'Akademisyen için tüm alanlar gereklidir.',
+      srv_err_sysadmin_type_locked: 'Sistem yöneticisi hesap türü değiştirilemez.',
+      srv_err_sysadmin_cannot_assign: 'Sistem yöneticisi hesabı bu panelden atanamaz.',
+      srv_err_invalid_eval_status: 'Geçersiz değerlendirme durumu.',
+      srv_err_eval_forbidden: 'Bu başvuruyu değerlendirme yetkiniz bulunmamaktadır.',
+      srv_err_sysadmin_cannot_delete: 'Sistem yöneticisi hesabı silinemez.',
+      srv_err_cannot_delete_self: 'Kendi hesabınızı silemezsiniz.',
+      srv_err_not_found: 'API endpoint bulunamadı.'
     },
 
     en: {
@@ -602,6 +676,8 @@
       aria_count_input: '{label} {unit} value',
       unit_research: 'research',
       unit_item: 'item',
+      unit_month: 'month',
+      upload_evidence_aria: 'Upload evidence for {label}',
       evidence_doc_singular: 'Evidence Document',
       appeal_badge: 'APPEAL',
       btn_step3_prev: 'Previous Step',
@@ -883,7 +959,79 @@
       no_reason_provided: 'No reason provided.',
       reset_password_label: 'Set a new password for {name}\'s account.',
       faculty_admin_banner: 'You are viewing only {faculty} applications.',
-      admin_config_cat_select_label: 'Scoring Category'
+      admin_config_cat_select_label: 'Scoring Category',
+      config_base_aria: 'base score',
+      config_max_aria: 'maximum score cap',
+
+      srv_reg_success: 'Registration completed successfully. Please log in.',
+      srv_reg_verified: 'Email verified, registration completed successfully.',
+      srv_verification_sent: 'Verification code has been sent to your email address.',
+      srv_verification_resent: 'Verification code has been resent.',
+      srv_password_changed: 'Password updated successfully.',
+      srv_app_deleted: 'Application deleted. You can now re-apply under a different category.',
+      srv_appeal_submitted: 'Appeal submitted successfully.',
+      srv_admin_app_deleted: 'Application deleted successfully.',
+      srv_app_evaluated: 'Application evaluated successfully.',
+      srv_user_updated: 'User updated.',
+      srv_sysadmin_updated: 'System administrator updated.',
+      srv_user_password_updated: 'User password updated.',
+      srv_user_deleted: 'User and associated applications deleted.',
+      srv_commission_created: 'Faculty committee account created.',
+      srv_academic_created: 'Academician account created.',
+      srv_config_saved: 'Category configuration saved successfully.',
+      srv_app_draft_saved: 'Application saved as draft.',
+      srv_app_submitted: 'Application submitted successfully.',
+      srv_draft_updated: 'Draft updated.',
+
+      srv_err_no_token: 'Unauthorized: No token found.',
+      srv_err_invalid_token: 'Invalid or expired token.',
+      srv_err_admin_required: 'Administrator privilege required for this action.',
+      srv_err_sysadmin_required: 'System administrator privilege required for this action.',
+      srv_err_all_fields_required: 'All fields are required.',
+      srv_err_email_domain: 'Registration is only available for @aybu.edu.tr email addresses.',
+      srv_err_invalid_faculty_dept: 'Invalid faculty or department selection. Please select from the list.',
+      srv_err_email_exists: 'A user with this email address is already registered.',
+      srv_err_admin_only_by_sysadmin: 'Admin accounts can only be created by the system administrator.',
+      srv_err_verification_email_failed: 'Verification email could not be sent. Please try again later.',
+      srv_err_email_code_required: 'Email and verification code are required.',
+      srv_err_no_pending_reg: 'No pending registration found. Please fill out the registration form again.',
+      srv_err_code_expired: 'Verification code has expired. Please fill out the registration form again.',
+      srv_err_invalid_code: 'Incorrect verification code.',
+      srv_err_email_required: 'Email is required.',
+      srv_err_credentials_required: 'Enter username and password.',
+      srv_err_login_user_not_found_academic: 'No user found with this email address. Please register.',
+      srv_err_login_user_not_found_admin: 'Admin account not found. Please contact artuncay@aybu.edu.tr.',
+      srv_err_login_wrong_password_admin: 'Incorrect password. Please contact artuncay@aybu.edu.tr.',
+      srv_err_login_wrong_password: 'Incorrect password. If not registered, please sign up.',
+      srv_err_passwords_required: 'Current password and new password are required.',
+      srv_err_password_too_short: 'Password must be at least 6 characters.',
+      srv_err_wrong_current_password: 'Current password is incorrect.',
+      srv_err_user_not_found: 'User not found.',
+      srv_err_config_missing: 'Category configuration is missing.',
+      srv_err_upload_failed: 'File could not be uploaded.',
+      srv_err_app_not_found_or_forbidden: 'Application not found or you do not have access.',
+      srv_err_incomplete_app: 'Incomplete application data.',
+      srv_err_duplicate_app: 'You already have an application in the system. Delete your existing application to apply under a different category.',
+      srv_err_app_not_found: 'Application not found.',
+      srv_err_app_locked: 'Submitted and under-review applications cannot be edited.',
+      srv_err_category_locked: 'Application category cannot be changed. Delete this application and re-apply to change category.',
+      srv_err_year_locked: 'Application year cannot be changed. Delete this application to create a new one.',
+      srv_err_appeal_reason_required: 'Appeal reasoning is required.',
+      srv_err_appeal_not_rejected: 'Appeals can only be filed for rejected applications.',
+      srv_err_admin_not_found: 'Admin account not found.',
+      srv_err_sysadmin_cannot_create: 'System administrator accounts cannot be created from this panel.',
+      srv_err_commission_fields_required: 'Username and faculty are required for committee accounts.',
+      srv_err_username_taken: 'This username is already in use.',
+      srv_err_invalid_faculty: 'Invalid faculty selection.',
+      srv_err_faculty_admin_exists: 'A committee account already exists for this faculty.',
+      srv_err_academic_fields_required: 'Email, title, faculty, and department are required for academician accounts.',
+      srv_err_sysadmin_type_locked: 'System administrator account type cannot be changed.',
+      srv_err_sysadmin_cannot_assign: 'System administrator accounts cannot be assigned from this panel.',
+      srv_err_invalid_eval_status: 'Invalid evaluation status.',
+      srv_err_eval_forbidden: 'You do not have permission to evaluate this application.',
+      srv_err_sysadmin_cannot_delete: 'System administrator account cannot be deleted.',
+      srv_err_cannot_delete_self: 'You cannot delete your own account.',
+      srv_err_not_found: 'API endpoint not found.'
     }
   };
 
@@ -989,69 +1137,218 @@
       kat1: `<td data-label="Konu"><strong>Kategori 1<br>Araştırma, Yayın, Etkinlik ve Yenilikçi Tasarım</strong></td>
              <td data-label="Açıklama">
                <p><strong>Araştırma:</strong> Araştırmanın üniversite yönetim kurulunun izin kararıyla, en az 1 ay süreyle araştırmacının kadrosunun bulunduğu kurum dışında yürütülmüş olması ve sonuç raporunun hem üniversite hem de ilgili kurum tarafından onaylanmış olması gerekir. Yurt içi ve yurt dışı araştırmalar en fazla 12 ay üzerinden puanlanır; yurt dışı için aylık 10 puan (maks. 120), yurt içi için aylık 5 puan (maks. 60) verilir.</p>
-               <p><strong>Yayın:</strong> SCI, SCI Expanded, SSCI ve AHCI makalelerin Q değerleri (Q1–Q4) veya tarandığı indeks (Scopus, SPORT Discus, ESCI, TR-Dizin) esas alınır. Uluslararası kitaplar için BKCI şartı aranır; ders kitabı dışındaki özgün bilimsel kitaplar ile aynı kitaptaki bölümlerin en fazla ikisi puanlanabilir.</p>
+               <p><strong>Yayın:</strong> SCI, SCI Expanded, SSCI ve AHCI makalelerin Q değerleri (Q1–Q4) veya tarandığı indeks (Scopus, SPORT Discus, ESCI, TR-Dizin) esas alınır. Uluslararası kitaplar için BKCI şartı aranır; ders kitabı dışındaki özgün bilimsel kitaplar ile aynı kitaptaki bölümlerin en fazla ikisi puanlanabilir. Uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri belirleyicidir.</p>
                <p><strong>Yenilikçi Tasarım:</strong> Özgün Eğitim Modeli, Yenilikçi İş Akışı ve Kurumsal Yazılım girdilerinde özgünlüğün ve katkının belgelenmesi zorunludur.</p>
-               <p><strong>Katkı Oranı:</strong> Ortak çalışmalarda (çok yazarlı/çok yürütücülü) ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz.</p>
+               <p><strong>Katkı Oranı:</strong> Ortak çalışmalarda (çok yazarlı/çok yürütücülü) ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Hesaplama Akademik Yükseltilme ve Atanma Kriterleri Yönergesi Tablo 2 esas alınarak yapılır (örn. 3 yazarlı makalede: 1. yazar %90, 2. yazar %85, 3. yazar %80).</p>
                <p><strong>Formül:</strong> Taban Puan × Adet × Katkı Oranı — maksimum puan sınırı sistem tarafından otomatik uygulanır.</p>
              </td>`,
       kat2: `<td data-label="Konu"><strong>Kategori 2<br>Proje &amp; Fon</strong></td>
              <td data-label="Açıklama">
                <p>TÜBİTAK 1001, 1003, 1004, 1005, 1007, 1505, 2244, 3001, 3501, SAYEM, COST, Uluslararası İkili İşbirliği Programları, H2020 Projeleri ile ulusal veya uluslararası özel veya resmi kurum ve kuruluşlar tarafından desteklenmiş ve destek süresi dokuz aydan az olmayan Ar-Ge niteliğine haiz projeler bu kapsamda değerlendirilir.</p>
-               <p>Projelerin başarı ile sonuçlandırılmış ve sonuç raporunun onaylanmış olması zorunludur.</p>
+               <p>Projelerin başarı ile sonuçlandırılmış ve sonuç raporunun onaylanmış olması zorunludur. Uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri esas alınır. Sisteme girdiğiniz proje bilgileri otomatik olarak puanlanır.</p>
              </td>`,
       kat3: `<td data-label="Konu"><strong>Kategori 3<br>Patent &amp; Faydalı Model</strong></td>
              <td data-label="Açıklama">
                <p>Tescillenmiş uluslararası patent, ulusal patent ve faydalı modeller sisteme ayrı ayrı girilmelidir. Tescil tarihi esas alınır.</p>
+               <p>Buluş uygunluk değerlendirmesinde Akademik Teşvik Ödeneği 2025 Faaliyet Yılı Uygulama Usul ve İlkeleri esas alınır.</p>
                <ul>
                  <li><strong>Ulusal Patent:</strong> Ulusal mevzuat kapsamında başvurusu yapılan ve inceleme raporu sonucunda Türk Patent ve Marka Kurumu tarafından verilen patent.</li>
-                 <li><strong>Uluslararası Patent:</strong> Patent İşbirliği Antlaşması kapsamında yapılan ve uluslararası araştırma raporunda en az bir istemin patentlenebilirlik kriterlerini sağladığı ifade edilen başvuru ya da Avrupa Patent Ofisi tarafından verilen patent.</li>
+                 <li><strong>Uluslararası Patent:</strong> Patent İşbirliği Antlaşması kapsamında yapılan ve uluslararası araştırma raporunda en az bir istemin patentlenebilirlik kriterlerini (yenilik, buluş basamağı, sanayiye uygulanabilirlik) sağladığı ifade edilen başvuru ya da Avrupa Patent Sözleşmesi kapsamında Avrupa Patent Ofisi tarafından verilen patent.</li>
                </ul>
-               <p><strong>Katkı Oranı:</strong> Birden fazla buluş sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz.</p>
+               <p><strong>Katkı Oranı:</strong> Birden fazla buluş sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Katkı oranı girilmemesi durumunda toplam puan, buluş sahibi sayısına bölünerek hesaplanır. Sisteme girdiğiniz bilgiler otomatik olarak puanlanır.</p>
              </td>`,
       kat4: `<td data-label="Konu"><strong>Kategori 4<br>Danışmanlık &amp; Katkı</strong></td>
              <td data-label="Açıklama">
-               <p>Yüksek lisans ve doktora danışmanlıkları, yarışma/proje danışmanlığı, idari görevler ve mesleki gelişim faaliyetleri bu kategoride değerlendirilir.</p>
-               <p><strong>Mesleki Gelişim:</strong> Üniversitelere bağlı merkezler, Ulusal Ajans, TÜBİTAK gibi kamu kurumlarına bağlı merkezler ya da protokol kapsamındaki kurumlar tarafından sunulan seminer, webinar veya kurslarda <em>eğitici</em> ya da <em>öğrenici</em> olarak görev almayı kapsar.</p>
+               <p>Yüksek lisans ve doktora danışmanlıkları, yarışma/proje danışmanlığı, idari görevler ve mesleki gelişim faaliyetleri bu kategoride değerlendirilir. Uygunluk değerlendirmesinde Akademik Yükseltilme ve Atanma Kriterleri Yönergesi esas alınır; idari görevler için atama yazısı ve faaliyet raporu talep edilmektedir.</p>
+               <p><strong>Mesleki Gelişim:</strong> Üniversitelere bağlı merkezler, Ulusal Ajans, TÜBİTAK gibi kamu kurumlarına bağlı merkezler ya da protokol kapsamındaki kurumlar tarafından sunulan seminer, webinar veya kurslarda <em>eğitici</em> ya da <em>öğrenici</em> olarak görev almayı kapsar. Öğrenici rolünde sertifika alınmış olması zorunludur; uluslararası akredite kurumlar da kabul edilir. Alınan eğitim doğrultusunda yeni eğitim planlanıp yürütülmesi durumunda eğitici rolü için ayrıca girdi yapılabilir.</p>
                <p><strong>Yarışma/Proje Danışmanlığı:</strong> TÜBİTAK 2209-A ve 2209-B, ÜNİDES, ESC30 (Avrupa Dayanışma Programı), Erasmus+ Gençlik Projeleri, TEKNOFEST vb. programlardaki danışmanlık faaliyetlerini kapsar.</p>
-               <p><strong>Ders Yükü:</strong> Yıllık toplam ders saatinizi "Adet" alanına giriniz. Sistem otomatik olarak puanlar (örn. 350 saat × 1 puan = 350 puan).</p>
-               <p><strong>Öğrenci OBS Değerlendirme Formları:</strong> Yıl boyunca yürütülen derslere ait OBS değerlendirme formlarının 5 üzerinden genel ortalamasını "Katsayı" alanına giriniz.</p>
-               <p><strong>Katkı Oranı:</strong> Birden fazla katkı sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz.</p>
+               <p><strong>Ders Yükü:</strong> Yıllık toplam ders saatinizi "Adet" alanına giriniz. Sistem otomatik olarak puanlar (örn. 350 saat × 1 puan = 350 puan). Öğrenci/öğrenci grubuyla birebir çalışmayan ve haftalık programa yansımayan etkinlikler bu kapsamda değerlendirilemez.</p>
+               <p><strong>Öğrenci OBS Değerlendirme Formları:</strong> Yıl boyunca yürütülen derslere ait OBS değerlendirme formlarının 5 üzerinden genel ortalamasını "Katsayı" alanına giriniz (örn. ortalama 4/5 ise → 4 × 20 = 80 puan). Sistem puanı otomatik hesaplar.</p>
+               <p><strong>Katkı Oranı:</strong> Birden fazla katkı sahibi varsa ilgili faaliyet satırında katkı oranınızı (0.01–1.00) giriniz. Girilmemesi durumunda toplam puan kişi sayısına bölünerek hesaplanır. Maksimum puan sınırı sistem tarafından otomatik uygulanır.</p>
              </td>`
     },
     en: {
       kat1: `<td data-label="Topic"><strong>Category 1<br>Research, Publication, Events &amp; Innovative Design</strong></td>
              <td data-label="Description">
                <p><strong>Research:</strong> The research must be conducted outside the applicant's home institution for at least 1 month with university board approval, and the final report must be approved by both the university and the relevant institution. Scored for a maximum of 12 months; 10 points/month (max 120) for international, 5 points/month (max 60) for domestic.</p>
-               <p><strong>Publication:</strong> Q values (Q1–Q4) of SCI, SCI-Expanded, SSCI, and AHCI articles, or the index they are indexed in (Scopus, SPORT Discus, ESCI, TR-Dizin), are used as the basis. International books require BKCI indexing; original scientific books (excluding textbooks) and at most two chapters from the same book may be scored.</p>
+               <p><strong>Publication:</strong> Q values (Q1–Q4) of SCI, SCI-Expanded, SSCI, and AHCI articles, or the index they are indexed in (Scopus, SPORT Discus, ESCI, TR-Dizin), are used as the basis. International books require BKCI indexing; original scientific books (excluding textbooks) and at most two chapters from the same book may be scored. Eligibility is determined by the Academic Incentive Allowance 2025 Activity Year Implementation Procedures and Principles.</p>
                <p><strong>Innovative Design:</strong> For Original Educational Model, Innovative Workflow, and Institutional Software entries, documentation of originality and contribution is mandatory.</p>
-               <p><strong>Contribution Ratio:</strong> For collaborative work (multi-authored/multi-PI), enter your contribution ratio (0.01–1.00) on the relevant activity row.</p>
+               <p><strong>Contribution Ratio:</strong> For collaborative work (multi-authored/multi-PI), enter your contribution ratio (0.01–1.00) on the relevant activity row. Calculation is based on the Academic Promotion and Appointment Criteria Directive Table 2 (e.g., for a 3-author article: 1st author 90%, 2nd author 85%, 3rd author 80%).</p>
                <p><strong>Formula:</strong> Base Score × Count × Contribution Ratio — the maximum score cap is applied automatically by the system.</p>
              </td>`,
       kat2: `<td data-label="Topic"><strong>Category 2<br>Project &amp; Funding</strong></td>
              <td data-label="Description">
                <p>TÜBİTAK 1001, 1003, 1004, 1005, 1007, 1505, 2244, 3001, 3501, SAYEM, COST, International Bilateral Cooperation Programs, H2020 Projects, and R&amp;D projects supported by national or international public/private institutions lasting at least nine months are evaluated under this category.</p>
-               <p>Projects must have been successfully completed and have an approved final report.</p>
+               <p>Projects must have been successfully completed and have an approved final report. Eligibility is determined by the Academic Incentive Allowance 2025 Activity Year Implementation Procedures and Principles. Project information entered into the system is scored automatically.</p>
              </td>`,
       kat3: `<td data-label="Topic"><strong>Category 3<br>Patent &amp; Utility Model</strong></td>
              <td data-label="Description">
                <p>Registered international patents, national patents, and utility models must be entered separately. The registration date is used as the basis.</p>
+               <p>Invention eligibility is determined by the Academic Incentive Allowance 2025 Activity Year Implementation Procedures and Principles.</p>
                <ul>
                  <li><strong>National Patent:</strong> A patent filed under national legislation and granted by the Turkish Patent and Trademark Office following an examination report.</li>
-                 <li><strong>International Patent:</strong> An application filed under the Patent Cooperation Treaty where the international search report states at least one claim satisfies patentability criteria, or a patent granted by the European Patent Office.</li>
+                 <li><strong>International Patent:</strong> An application filed under the Patent Cooperation Treaty where the international search report states at least one claim satisfies patentability criteria (novelty, inventive step, industrial applicability), or a patent granted by the European Patent Office under the European Patent Convention.</li>
                </ul>
-               <p><strong>Contribution Ratio:</strong> If there are multiple inventors, enter your contribution ratio (0.01–1.00) on the relevant activity row.</p>
+               <p><strong>Contribution Ratio:</strong> If there are multiple inventors, enter your contribution ratio (0.01–1.00) on the relevant activity row. If not entered, the total score is divided by the number of inventors. Information entered into the system is scored automatically.</p>
              </td>`,
       kat4: `<td data-label="Topic"><strong>Category 4<br>Advisory &amp; Contribution</strong></td>
              <td data-label="Description">
-               <p>Master's and doctoral thesis supervision, competition/project advising, administrative duties, and professional development activities are evaluated in this category.</p>
-               <p><strong>Professional Development:</strong> Covers serving as trainer or trainee in seminars, webinars, or courses offered by university-affiliated centers, National Agency, TÜBİTAK-affiliated centers, or partner institutions.</p>
+               <p>Master's and doctoral thesis supervision, competition/project advising, administrative duties, and professional development activities are evaluated in this category. Eligibility is determined by the Academic Promotion and Appointment Criteria Directive; appointment letters and activity reports are required for administrative roles.</p>
+               <p><strong>Professional Development:</strong> Covers serving as trainer or trainee in seminars, webinars, or courses offered by university-affiliated centers, National Agency, TÜBİTAK-affiliated centers, or partner institutions. A certificate is required for the trainee role; internationally accredited institutions are also accepted. If new training is planned and delivered based on the training received, a separate entry may be made for the trainer role.</p>
                <p><strong>Competition/Project Advisory:</strong> Covers advisory activities in TÜBİTAK 2209-A and 2209-B, ÜNİDES, ESC30 (European Solidarity Programme), Erasmus+ Youth Projects, TEKNOFEST, etc.</p>
-               <p><strong>Course Load:</strong> Enter your total annual teaching hours in the "Count" field. The system scores automatically (e.g., 350 hours × 1 point = 350 points).</p>
-               <p><strong>Student OBS Evaluation Forms:</strong> Enter the overall average of OBS evaluation forms for courses taught throughout the year (out of 5) in the "Coefficient" field.</p>
-               <p><strong>Contribution Ratio:</strong> If there are multiple contributors, enter your contribution ratio (0.01–1.00) on the relevant activity row.</p>
+               <p><strong>Course Load:</strong> Enter your total annual teaching hours in the "Count" field. The system scores automatically (e.g., 350 hours × 1 point = 350 points). Activities that do not involve direct one-on-one work with students and are not reflected in the weekly schedule cannot be evaluated under this category.</p>
+               <p><strong>Student OBS Evaluation Forms:</strong> Enter the overall average of OBS evaluation forms for courses taught throughout the year (out of 5) in the "Coefficient" field (e.g., average 4/5 → 4 × 20 = 80 points). The system calculates the score automatically.</p>
+               <p><strong>Contribution Ratio:</strong> If there are multiple contributors, enter your contribution ratio (0.01–1.00) on the relevant activity row. If not entered, the total score is divided by the number of contributors. The maximum score cap is applied automatically by the system.</p>
              </td>`
     }
   };
+
+  // ----------------------------------------------------------
+  // CATEGORY & ITEM LABEL TRANSLATIONS
+  // ----------------------------------------------------------
+  const CAT_NAMES = {
+    kat1: { tr: 'Kategori 1: Araştırma, Yayın, Etkinlik ve Yenilikçi Tasarım', en: 'Category 1: Research, Publication, Events & Innovative Design' },
+    kat2: { tr: 'Kategori 2: Proje (Tamamlanmış)', en: 'Category 2: Project (Completed)' },
+    kat3: { tr: 'Kategori 3: Patent ve Faydalı Model', en: 'Category 3: Patent & Utility Model' },
+    kat4: { tr: 'Kategori 4: Akademik Danışmanlık, Eğitim ve Kurumsal Katkı', en: 'Category 4: Academic Advisory, Training & Institutional Contribution' },
+  };
+
+  const ITEM_LABELS = {
+    kat1_row1:  { tr: 'Araştırma: Yurt Dışı (Taban Puan × Ay)', en: 'Research Abroad (Base Score × Month)' },
+    kat1_row2:  { tr: 'Araştırma: Yurt İçi (Taban Puan × Ay)', en: 'Research Domestic (Base Score × Month)' },
+    kat1_row3:  { tr: 'Makale: Q1 dergiler (SCI, SCI-E, SSCI, AHCI)', en: 'Article: Q1 Journals (SCI, SCI-E, SSCI, AHCI)' },
+    kat1_row4:  { tr: 'Makale: WoS Q2 dergiler (SCI, SCI-E, SSCI, AHCI)', en: 'Article: WoS Q2 Journals (SCI, SCI-E, SSCI, AHCI)' },
+    kat1_row5:  { tr: 'Makale: WoS Q3 dergiler (SCI, SCI-E, SSCI, AHCI)', en: 'Article: WoS Q3 Journals (SCI, SCI-E, SSCI, AHCI)' },
+    kat1_row6:  { tr: 'Makale: WoS Q4 dergiler (SCI, SCI-E, SSCI, AHCI)', en: 'Article: WoS Q4 Journals (SCI, SCI-E, SSCI, AHCI)' },
+    kat1_row7:  { tr: 'Makale: Scopus, SPORT Discus, ESCI Dergileri', en: 'Article: Scopus, SPORT Discus, ESCI-Index Journals' },
+    kat1_row8:  { tr: 'Makale: TR-Dizin Dergileri', en: 'Article: TR-Index Journals' },
+    kat1_row9:  { tr: 'Makale: Diğer Uluslararası/Ulusal Hakemli Dergiler', en: 'Article: Other Intl./National Peer-Reviewed Journals' },
+    kat1_row10: { tr: 'Uluslararası Bilimsel Kitap (BKCI)', en: 'Intl. Scientific Book (BKCI)' },
+    kat1_row11: { tr: 'Uluslararası Bilimsel Kitap Bölümü (BKCI)', en: 'Intl. Book Chapter (BKCI)' },
+    kat1_row12: { tr: 'Diğer Ulusl./Ulusal Bilimsel Kitap', en: 'Other Intl./National Scientific Book' },
+    kat1_row13: { tr: 'Diğer Ulusl./Ulusal Bilimsel Kitap Bölümü', en: 'Other Intl./National Book Chapter' },
+    kat1_row14: { tr: 'Özgün Eğitim Modeli, Yenilikçi İş Akışı, Kurumsal Yazılım', en: 'Original Education Model, Innovative Workflow, Institutional Software' },
+    kat1_row15: { tr: 'Uluslararası Kişisel Sergi, Özgün Tasarım, Birincilik Ödülü', en: 'Intl. Solo Exhibition, Original Design, First Place Award' },
+    kat1_row16: { tr: 'Ulusal Kişisel Sergi, Özgün Tasarım, Birincilik Ödülü', en: 'National Solo Exhibition, Original Design, First Place Award' },
+    kat1_row17: { tr: 'Uluslararası Karma Sergi, Bienal vb. Katılım', en: 'Intl. Group Exhibition, Biennial, etc. Participation' },
+    kat1_row18: { tr: 'Ulusal Karma Sergi, Alanlara Özgü Grup Etkinliği', en: 'National Group Exhibition or Discipline-Specific Group Event' },
+    kat2_row1:  { tr: 'Projede Yürütücü', en: 'Project Principal Investigator' },
+    kat2_row2:  { tr: 'Projede Araştırmacı', en: 'Co-Investigator' },
+    kat2_row3:  { tr: 'Projede Danışman', en: 'Project Consultant' },
+    kat2_row4:  { tr: 'Projede Bursiyer', en: 'Project Scholar' },
+    kat3_row1:  { tr: 'Uluslararası Tescillenmiş Patent', en: 'International Registered Patent' },
+    kat3_row2:  { tr: 'Ulusal Tescillenmiş Patent', en: 'National Registered Patent' },
+    kat3_row3:  { tr: 'Uluslararası Faydalı Model', en: 'International Utility Model' },
+    kat3_row4:  { tr: 'Ulusal Faydalı Model', en: 'National Utility Model' },
+    kat4_row1:  { tr: 'Mezun Edilen Doktora Öğrencisi', en: 'Graduated PhD Student' },
+    kat4_row2:  { tr: 'Mezun Edilen Y. Lisans Öğrencisi', en: 'Graduated MA/MS Student' },
+    kat4_row3:  { tr: 'Öğrenci Yarışma Derecesi/Proje Danışmanlığı', en: 'Student Competition Award/Project Advising' },
+    kat4_row4:  { tr: 'Mesleki Gelişim (Eğitim Veren Rolü)', en: 'Professional Development (Instructor Role)' },
+    kat4_row5:  { tr: 'Mesleki Gelişim (Eğitim Alan Rolü)', en: 'Professional Development (Learner Role)' },
+    kat4_row6:  { tr: 'Ders Yükü (Taban Puan × Yıllık Toplam Ders Saati)', en: 'Course Load (Base Score × Total Annual Course Hours)' },
+    kat4_row7:  { tr: 'Öğrenci OBS Değerlendirme Formları (Taban Puan × Anket Ort. Puan)', en: 'Student OBS Evaluation Forms (Base Score × Survey Avg. Score)' },
+    kat4_row8:  { tr: 'Kurumsal Koordinatörlük-Komite Görevi', en: 'Institutional Coordinator-Committee Role' },
+  };
+
+  function tItem(id) {
+    const entry = ITEM_LABELS[id];
+    if (!entry) return id;
+    return entry[currentLang] || entry.tr;
+  }
+
+  function tCat(id) {
+    const entry = CAT_NAMES[id];
+    if (!entry) return id;
+    return entry[currentLang] || entry.tr;
+  }
+
+  // ----------------------------------------------------------
+  // ACADEMIC UNIT NAME TRANSLATIONS (TR → EN)
+  // ----------------------------------------------------------
+  const UNIT_NAMES_EN = {
+    // Faculties & Schools
+    'Diş Hekimliği Fakültesi': 'Faculty of Dentistry',
+    'Fen Bilimleri Enstitüsü': 'Institute of Natural and Applied Sciences',
+    'Halk Sağlığı Enstitüsü': 'Institute of Public Health',
+    'Havacılık ve Uzay Bilimleri Fakültesi': 'Faculty of Aviation and Space Sciences',
+    'Hukuk Fakültesi': 'Faculty of Law',
+    'İlahiyat Fakültesi': 'Faculty of Theology',
+    'İletişim Fakültesi': 'Faculty of Communication',
+    'İnsan ve Toplum Bilimleri Fakültesi': 'Faculty of Humanities and Social Sciences',
+    'İşletme Fakültesi': 'Faculty of Business Administration',
+    'Mimarlık ve Güzel Sanatlar Fakültesi': 'Faculty of Architecture and Fine Arts',
+    'Mühendislik ve Doğa Bilimleri Fakültesi': 'Faculty of Engineering and Natural Sciences',
+    'Sağlık Bilimleri Enstitüsü': 'Institute of Health Sciences',
+    'Sağlık Bilimleri Fakültesi': 'Faculty of Health Sciences',
+    'Sağlık Hizmetleri Meslek Yüksekokulu': 'Vocational School of Health Services',
+    'Siyasal Bilgiler Fakültesi': 'Faculty of Political Sciences',
+    'Sosyal Bilimler Enstitüsü': 'Institute of Social Sciences',
+    'Sosyal Bilimler Meslek Yüksekokulu': 'Vocational School of Social Sciences',
+    'Spor Bilimleri Fakültesi': 'Faculty of Sport Sciences',
+    'Şereflikoçhisar Berat Cömertoğlu Meslek Yüksekokulu': 'Şereflikoçhisar Berat Cömertoğlu Vocational School',
+    'Şereflikoçhisar Uygulamalı Bilimler Fakültesi': 'Şereflikoçhisar Faculty of Applied Sciences',
+    'Teknik Bilimler Meslek Yüksekokulu': 'Vocational School of Technical Sciences',
+    'Tıp Fakültesi': 'Faculty of Medicine',
+    'Türk Sanat Müziği ve Devlet Konservatuvarı': 'Turkish Classical Music and State Conservatory',
+    'Uluslararası İlişkiler ve Stratejik Araştırmalar Enstitüsü': 'Institute of International Relations and Strategic Research',
+    'Yabancı Diller Yüksekokulu': 'School of Foreign Languages',
+    'Rektörlük': 'Rectorate',
+    // Departments
+    'Diş Hekimliği': 'Dentistry',
+    'Havacılık ve Uzay Bilimleri': 'Aviation and Space Sciences',
+    'Hukuk': 'Law',
+    'İlahiyat': 'Theology',
+    'İletişim': 'Communication',
+    'Bilgi ve Belge Yönetimi': 'Information and Records Management',
+    'Bilim Tarihi': 'History of Science',
+    'Doğu Dilleri ve Edebiyatı': 'Eastern Languages and Literatures',
+    'Felsefe': 'Philosophy',
+    'Mütercim ve Tercümanlık': 'Translation and Interpretation',
+    'Psikoloji': 'Psychology',
+    'Sanat Tarihi': 'Art History',
+    'Sosyoloji': 'Sociology',
+    'Tarih': 'History',
+    'Türk Dili ve Edebiyatı': 'Turkish Language and Literature',
+    'İşletme': 'Business Administration',
+    'Uluslararası Ticaret ve İşletmecilik': 'International Trade and Business',
+    'Yönetim Bilişim Sistemleri': 'Management Information Systems',
+    'Dijital Oyun Tasarımı': 'Digital Game Design',
+    'Endüstriyel Tasarım': 'Industrial Design',
+    'Görsel İletişim Tasarımı': 'Visual Communication Design',
+    'Mimarlık': 'Architecture',
+    'Bilgisayar Mühendisliği': 'Computer Engineering',
+    'Elektrik Elektronik Mühendisliği': 'Electrical and Electronics Engineering',
+    'Endüstri Mühendisliği': 'Industrial Engineering',
+    'Enerji Sistemleri Mühendisliği': 'Energy Systems Engineering',
+    'İnşaat Mühendisliği': 'Civil Engineering',
+    'Makine Mühendisliği': 'Mechanical Engineering',
+    'Matematik': 'Mathematics',
+    'Metalurji ve Malzeme Mühendisliği': 'Metallurgical and Materials Engineering',
+    'Yazılım Mühendisliği': 'Software Engineering',
+    'Beslenme ve Diyetetik': 'Nutrition and Dietetics',
+    'Çocuk Gelişimi': 'Child Development',
+    'Dil ve Konuşma Terapisi': 'Speech and Language Therapy',
+    'Fizyoterapi ve Rehabilitasyon': 'Physiotherapy and Rehabilitation',
+    'Hemşirelik': 'Nursing',
+    'Odyoloji': 'Audiology',
+    'Sağlık Yönetimi': 'Health Management',
+    'Sosyal Hizmet': 'Social Work',
+    'İktisat': 'Economics',
+    'Maliye': 'Public Finance',
+    'Siyaset Bilimi ve Kamu Yönetimi': 'Political Science and Public Administration',
+    'Uluslararası İlişkiler': 'International Relations',
+    'Antrenörlük Eğitimi': 'Coaching Education',
+    'Egzersiz ve Spor Bilimleri': 'Exercise and Sport Sciences',
+    'Spor Yöneticiliği': 'Sport Management',
+    'Tıp': 'Medicine',
+    'Ödül Değerlendirme Komisyonu': 'Award Evaluation Committee',
+  };
+
+  function tUnit(name) {
+    if (!name) return name;
+    if (currentLang === 'en') return UNIT_NAMES_EN[name] || name;
+    return name;
+  }
 
   // ----------------------------------------------------------
   // ENGINE
@@ -1092,6 +1389,7 @@
     renderGuideTable();
     renderCatInfoRows();
     updateLangButtons();
+    if (typeof window.refreshProfileCard === 'function') window.refreshProfileCard();
   }
 
   function renderGuideTable() {
@@ -1138,10 +1436,14 @@
   window.setLanguage = setLanguage;
   window.applyTranslations = applyTranslations;
   window.getCurrentLang = function () { return currentLang; };
+  window.tUnit = tUnit;
+  window.tItem = tItem;
+  window.tCat = tCat;
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyTranslations);
+    document.addEventListener('DOMContentLoaded', () => { applyTranslations(); setTimeout(() => document.activeElement?.blur(), 0); });
   } else {
     applyTranslations();
+    setTimeout(() => document.activeElement?.blur(), 0);
   }
 })();

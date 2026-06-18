@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
@@ -73,21 +73,15 @@ function isAcademicLogin(login) {
   return isAllowedAybuEmail(login) || login.includes('@');
 }
 
-function getLoginErrorMessage(db, login, user, passwordValid) {
+function getLoginErrorCode(db, login, user, passwordValid) {
   if (!user) {
-    if (isAcademicLogin(login)) {
-      return 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı. Lütfen kayıt olun.';
-    }
-    return 'Yönetici hesabı bulunamadı. Hesap tanımlaması için lütfen artuncay@aybu.edu.tr adresine mail atın.';
+    if (isAcademicLogin(login)) return 'srv_err_login_user_not_found_academic';
+    return 'srv_err_login_user_not_found_admin';
   }
-
   if (!passwordValid) {
-    if (user.role === 'admin') {
-      return 'Şifre hatalı. Lütfen artuncay@aybu.edu.tr adresine mail atın.';
-    }
-    return 'Hatalı şifre. Kayıtlı değilseniz lütfen kayıt olun.';
+    if (user.role === 'admin') return 'srv_err_login_wrong_password_admin';
+    return 'srv_err_login_wrong_password';
   }
-
   return null;
 }
 
@@ -340,10 +334,10 @@ function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   
-  if (!token) return res.status(401).json({ message: 'Yetkisiz erişim: Token bulunamadı.' });
+  if (!token) return res.status(401).json({ messageCode: 'srv_err_no_token' });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.status(403).json({ message: 'Geçersiz veya süresi dolmuş token.' });
+    if (err) return res.status(403).json({ messageCode: 'srv_err_invalid_token' });
     req.user = user;
     next();
   });
@@ -351,14 +345,14 @@ function authenticateToken(req, res, next) {
 
 function requireAdmin(req, res, next) {
   if (req.user.role !== 'admin') {
-    return res.status(403).json({ message: 'Bu işlem için yönetici yetkisi gereklidir.' });
+    return res.status(403).json({ messageCode: 'srv_err_admin_required' });
   }
   next();
 }
 
 function requireSystemAdmin(req, res, next) {
   if (req.user.role !== 'admin' || getAdminScope(req.user) !== 'system') {
-    return res.status(403).json({ message: 'Bu işlem için sistem yöneticisi yetkisi gereklidir.' });
+    return res.status(403).json({ messageCode: 'srv_err_sysadmin_required' });
   }
   next();
 }
@@ -380,26 +374,26 @@ function generateVerificationCode() {
 app.post('/api/auth/register', async (req, res) => {
   const { email, password, name, faculty, department, title } = req.body;
   if (!email || !password || !name || !faculty || !department || !title) {
-    return res.status(400).json({ message: 'Tüm alanları doldurmak zorunludur.' });
+    return res.status(400).json({ messageCode: 'srv_err_all_fields_required' });
   }
 
   const db = readDb();
   const lowerEmail = email.toLowerCase().trim();
 
   if (!isAllowedAybuEmail(lowerEmail)) {
-    return res.status(400).json({ message: 'Kayıt yalnızca @aybu.edu.tr uzantılı e-posta adresleri ile yapılabilir.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_domain' });
   }
 
   if (!isValidFacultyDepartment(faculty, department)) {
-    return res.status(400).json({ message: 'Geçersiz fakülte veya bölüm seçimi. Lütfen listeden seçim yapın.' });
+    return res.status(400).json({ messageCode: 'srv_err_invalid_faculty_dept' });
   }
 
   if (db.users.find(u => u.email === lowerEmail)) {
-    return res.status(400).json({ message: 'Bu e-posta adresiyle kayıtlı bir kullanıcı zaten var.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_exists' });
   }
 
   if (req.body.role && req.body.role !== 'user') {
-    return res.status(403).json({ message: 'Yönetici hesapları yalnızca sistem yöneticisi tarafından tanımlanabilir.' });
+    return res.status(403).json({ messageCode: 'srv_err_admin_only_by_sysadmin' });
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -419,7 +413,7 @@ app.post('/api/auth/register', async (req, res) => {
     });
     writeDb(db);
     return res.status(201).json({
-      message: 'Kayıt işlemi başarıyla tamamlandı. Lütfen giriş yapın.',
+      messageCode: 'srv_reg_success',
       verificationRequired: false
     });
   }
@@ -443,11 +437,11 @@ app.post('/api/auth/register', async (req, res) => {
     await sendVerificationEmail(lowerEmail, code);
   } catch (err) {
     console.error('Doğrulama e-postası gönderilemedi:', err);
-    return res.status(500).json({ message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
+    return res.status(500).json({ messageCode: 'srv_err_verification_email_failed' });
   }
 
   res.status(200).json({
-    message: 'Doğrulama kodu e-posta adresinize gönderildi.',
+    messageCode: 'srv_verification_sent',
     email: lowerEmail,
     verificationRequired: true
   });
@@ -456,7 +450,7 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/register/verify', (req, res) => {
   const { email, code } = req.body;
   if (!email || !code) {
-    return res.status(400).json({ message: 'E-posta ve doğrulama kodu gereklidir.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_code_required' });
   }
 
   const db = readDb();
@@ -464,7 +458,7 @@ app.post('/api/auth/register/verify', (req, res) => {
   const pendingIndex = db.pendingRegistrations.findIndex(p => p.email === lowerEmail);
 
   if (pendingIndex === -1) {
-    return res.status(400).json({ message: 'Bekleyen bir kayıt bulunamadı. Lütfen kayıt formunu yeniden doldurun.' });
+    return res.status(400).json({ messageCode: 'srv_err_no_pending_reg' });
   }
 
   const pending = db.pendingRegistrations[pendingIndex];
@@ -472,17 +466,17 @@ app.post('/api/auth/register/verify', (req, res) => {
   if (Date.now() > pending.expiresAt) {
     db.pendingRegistrations.splice(pendingIndex, 1);
     writeDb(db);
-    return res.status(400).json({ message: 'Doğrulama kodunun süresi doldu. Lütfen kayıt formunu yeniden doldurun.' });
+    return res.status(400).json({ messageCode: 'srv_err_code_expired' });
   }
 
   if (pending.code !== String(code).trim()) {
-    return res.status(400).json({ message: 'Doğrulama kodu hatalı.' });
+    return res.status(400).json({ messageCode: 'srv_err_invalid_code' });
   }
 
   if (db.users.find(u => u.email === lowerEmail)) {
     db.pendingRegistrations.splice(pendingIndex, 1);
     writeDb(db);
-    return res.status(400).json({ message: 'Bu e-posta adresiyle kayıtlı bir kullanıcı zaten var.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_exists' });
   }
 
   const newUser = {
@@ -500,13 +494,13 @@ app.post('/api/auth/register/verify', (req, res) => {
   db.pendingRegistrations.splice(pendingIndex, 1);
   writeDb(db);
 
-  res.status(201).json({ message: 'E-posta doğrulandı, kayıt işlemi başarıyla tamamlandı.' });
+  res.status(201).json({ messageCode: 'srv_reg_verified' });
 });
 
 app.post('/api/auth/register/resend', async (req, res) => {
   const { email } = req.body;
   if (!email) {
-    return res.status(400).json({ message: 'E-posta gereklidir.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_required' });
   }
 
   const db = readDb();
@@ -514,7 +508,7 @@ app.post('/api/auth/register/resend', async (req, res) => {
   const pending = db.pendingRegistrations.find(p => p.email === lowerEmail);
 
   if (!pending) {
-    return res.status(400).json({ message: 'Bekleyen bir kayıt bulunamadı. Lütfen kayıt formunu yeniden doldurun.' });
+    return res.status(400).json({ messageCode: 'srv_err_no_pending_reg' });
   }
 
   pending.code = generateVerificationCode();
@@ -525,26 +519,26 @@ app.post('/api/auth/register/resend', async (req, res) => {
     await sendVerificationEmail(lowerEmail, pending.code);
   } catch (err) {
     console.error('Doğrulama e-postası gönderilemedi:', err);
-    return res.status(500).json({ message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
+    return res.status(500).json({ messageCode: 'srv_err_verification_email_failed' });
   }
 
-  res.json({ message: 'Doğrulama kodu yeniden gönderildi.' });
+  res.json({ messageCode: 'srv_verification_resent' });
 });
 
 app.post('/api/auth/login', (req, res) => {
   const login = (req.body.login || req.body.email || req.body.username || '').trim();
   const password = req.body.password || '';
   if (!login || !password) {
-    return res.status(400).json({ message: 'Kullanıcı adı ve şifre girin.' });
+    return res.status(400).json({ messageCode: 'srv_err_credentials_required' });
   }
 
   const db = readDb();
   const user = findUserByLogin(db, login);
   const passwordValid = user ? bcrypt.compareSync(password, user.password) : false;
-  const loginError = getLoginErrorMessage(db, login.toLowerCase().trim(), user, passwordValid);
+  const loginError = getLoginErrorCode(db, login.toLowerCase().trim(), user, passwordValid);
 
   if (loginError) {
-    return res.status(400).json({ message: loginError });
+    return res.status(400).json({ messageCode: loginError });
   }
 
   const token = jwt.sign(buildAuthPayload(user), JWT_SECRET, { expiresIn: '24h' });
@@ -559,31 +553,31 @@ app.post('/api/auth/change-password', authenticateToken, (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
   if (!currentPassword || !newPassword) {
-    return res.status(400).json({ message: 'Mevcut şifre ve yeni şifre gereklidir.' });
+    return res.status(400).json({ messageCode: 'srv_err_passwords_required' });
   }
 
   if (newPassword.length < 6) {
-    return res.status(400).json({ message: 'Yeni şifre en az 6 karakter olmalıdır.' });
+    return res.status(400).json({ messageCode: 'srv_err_password_too_short' });
   }
 
   const db = readDb();
   const user = findUserById(db, req.user.id);
 
   if (!user || !bcrypt.compareSync(currentPassword, user.password)) {
-    return res.status(400).json({ message: 'Mevcut şifreniz hatalı.' });
+    return res.status(400).json({ messageCode: 'srv_err_wrong_current_password' });
   }
 
   user.password = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
   writeDb(db);
 
-  res.json({ message: 'Şifreniz başarıyla güncellendi.' });
+  res.json({ messageCode: 'srv_password_changed' });
 });
 
 app.get('/api/auth/me', authenticateToken, (req, res) => {
   const db = readDb();
   const user = findUserById(db, req.user.id);
   if (!user) {
-    return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_user_not_found' });
   }
   res.json({ user: buildAuthPayload(user) });
 });
@@ -597,19 +591,19 @@ app.get('/api/config/categories', (req, res) => {
 app.put('/api/config/categories', authenticateToken, requireSystemAdmin, (req, res) => {
   const { categories } = req.body;
   if (!categories) {
-    return res.status(400).json({ message: 'Kategori yapılandırması eksik.' });
+    return res.status(400).json({ messageCode: 'srv_err_config_missing' });
   }
 
   const db = readDb();
   db.categories = categories;
   writeDb(db);
-  res.json({ message: 'Kategori yapılandırması başarıyla güncellendi.', categories: db.categories });
+  res.json({ messageCode: 'srv_config_saved', categories: db.categories });
 });
 
 // 3. File Upload Middleware for Evidence Documents and Forms
 app.post('/api/upload', authenticateToken, upload.single('file'), (req, res) => {
   if (!req.file) {
-    return res.status(400).json({ message: 'Dosya yüklenemedi.' });
+    return res.status(400).json({ messageCode: 'srv_err_upload_failed' });
   }
   // Return relative path for client consumption
   const fileUrl = `/uploads/${req.file.filename}`;
@@ -627,7 +621,7 @@ app.get('/api/applications/my/:id', authenticateToken, (req, res) => {
   const db = readDb();
   const application = db.applications.find(app => app.id === req.params.id && app.userId === req.user.id);
   if (!application) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı veya bu başvuruya erişim yetkiniz yok.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found_or_forbidden' });
   }
   res.json(application);
 });
@@ -636,7 +630,7 @@ app.post('/api/applications', authenticateToken, (req, res) => {
   const { year, category, personalInfo, activities, summary, yoksisForm, beyanForm, isDraft } = req.body;
   
   if (!year || !category || !personalInfo) {
-    return res.status(400).json({ message: 'Eksik başvuru bilgileri.' });
+    return res.status(400).json({ messageCode: 'srv_err_incomplete_app' });
   }
 
   const db = readDb();
@@ -644,7 +638,7 @@ app.post('/api/applications', authenticateToken, (req, res) => {
   const existingApplication = findUserApplication(db, req.user.id);
   if (existingApplication) {
     return res.status(400).json({
-      message: 'Sistemde kayıtlı bir başvurunuz zaten bulunuyor. Farklı kategoriden başvurmak için önce mevcut başvurunuzu silin.'
+      messageCode: 'srv_err_duplicate_app'
     });
   }
 
@@ -669,7 +663,7 @@ app.post('/api/applications', authenticateToken, (req, res) => {
   db.applications.push(newApp);
   writeDb(db);
 
-  res.status(201).json({ message: isDraft ? 'Başvuru taslak olarak kaydedildi.' : 'Başvuru başarıyla gönderildi.', application: newApp });
+  res.status(201).json({ messageCode: isDraft ? 'srv_app_draft_saved' : 'srv_app_submitted', application: newApp });
 });
 
 app.put('/api/applications/:id', authenticateToken, (req, res) => {
@@ -677,14 +671,14 @@ app.put('/api/applications/:id', authenticateToken, (req, res) => {
   const appIndex = db.applications.findIndex(a => a.id === req.params.id && a.userId === req.user.id);
 
   if (appIndex === -1) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
   }
 
   const currentApp = db.applications[appIndex];
   
   // Can only edit draft or revision_requested applications
   if (currentApp.status !== 'draft' && currentApp.status !== 'revision_requested') {
-    return res.status(400).json({ message: 'Gönderilmiş ve inceleme aşamasındaki başvurular düzenlenemez.' });
+    return res.status(400).json({ messageCode: 'srv_err_app_locked' });
   }
 
   const { year, category, personalInfo, activities, summary, yoksisForm, beyanForm, isDraft } = req.body;
@@ -692,19 +686,19 @@ app.put('/api/applications/:id', authenticateToken, (req, res) => {
   const anotherApplication = findUserApplication(db, req.user.id, currentApp.id);
   if (anotherApplication) {
     return res.status(400).json({
-      message: 'Aynı kullanıcı için birden fazla başvuru bulunamaz. Devam etmek için diğer başvurunuzu silin.'
+      messageCode: 'srv_err_duplicate_app'
     });
   }
 
   if (category && category !== currentApp.category) {
     return res.status(400).json({
-      message: 'Başvuru kategorisi değiştirilemez. Farklı kategori seçmek için mevcut başvuruyu silip yeniden başvurun.'
+      messageCode: 'srv_err_category_locked'
     });
   }
 
   if (year && parseInt(year) !== currentApp.year) {
     return res.status(400).json({
-      message: 'Başvuru yılı değiştirilemez. Farklı başvuru oluşturmak için mevcut başvuruyu silin.'
+      messageCode: 'srv_err_year_locked'
     });
   }
 
@@ -725,7 +719,7 @@ app.put('/api/applications/:id', authenticateToken, (req, res) => {
 
   writeDb(db);
 
-  res.json({ message: isDraft ? 'Taslak güncellendi.' : 'Başvuru başarıyla gönderildi.', application: db.applications[appIndex] });
+  res.json({ messageCode: isDraft ? 'srv_draft_updated' : 'srv_app_submitted', application: db.applications[appIndex] });
 });
 
 app.delete('/api/applications/:id', authenticateToken, (req, res) => {
@@ -733,30 +727,30 @@ app.delete('/api/applications/:id', authenticateToken, (req, res) => {
   const appIndex = db.applications.findIndex(a => a.id === req.params.id && a.userId === req.user.id);
 
   if (appIndex === -1) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
   }
 
   db.applications.splice(appIndex, 1);
   writeDb(db);
-  res.json({ message: 'Başvurunuz silindi. Artık farklı kategoriden yeniden başvuru yapabilirsiniz.' });
+  res.json({ messageCode: 'srv_app_deleted' });
 });
 
 // Appeal application
 app.post('/api/applications/:id/appeal', authenticateToken, (req, res) => {
   const { reasoning } = req.body;
   if (!reasoning) {
-    return res.status(400).json({ message: 'İtiraz gerekçesi yazılmalıdır.' });
+    return res.status(400).json({ messageCode: 'srv_err_appeal_reason_required' });
   }
 
   const db = readDb();
   const appIndex = db.applications.findIndex(a => a.id === req.params.id && a.userId === req.user.id);
   if (appIndex === -1) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
   }
 
   const currentApp = db.applications[appIndex];
   if (currentApp.status !== 'rejected') {
-    return res.status(400).json({ message: 'Sadece reddedilmiş başvurulara itiraz edilebilir.' });
+    return res.status(400).json({ messageCode: 'srv_err_appeal_not_rejected' });
   }
 
   db.applications[appIndex] = {
@@ -771,7 +765,7 @@ app.post('/api/applications/:id/appeal', authenticateToken, (req, res) => {
   };
 
   writeDb(db);
-  res.json({ message: 'İtiraz başvurusu başarıyla yapıldı.', application: db.applications[appIndex] });
+  res.json({ messageCode: 'srv_appeal_submitted', application: db.applications[appIndex] });
 });
 
 // 5. Admin API (Admin Panel)
@@ -779,7 +773,7 @@ app.get('/api/admin/applications', authenticateToken, requireAdmin, (req, res) =
   const db = readDb();
   const adminUser = findUserById(db, req.user.id);
   if (!adminUser) {
-    return res.status(404).json({ message: 'Yönetici hesabı bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_admin_not_found' });
   }
 
   const extendedApps = db.applications
@@ -812,12 +806,12 @@ app.delete('/api/admin/applications/:id', authenticateToken, requireSystemAdmin,
   const db = readDb();
   const appIndex = db.applications.findIndex(a => a.id === req.params.id);
   if (appIndex === -1) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
   }
 
   db.applications.splice(appIndex, 1);
   writeDb(db);
-  res.json({ message: 'Başvuru başarıyla silindi.' });
+  res.json({ messageCode: 'srv_admin_app_deleted' });
 });
 
 app.get('/api/admin/users', authenticateToken, requireSystemAdmin, (req, res) => {
@@ -853,28 +847,28 @@ app.post('/api/admin/system/users', authenticateToken, requireSystemAdmin, (req,
   } = req.body;
 
   if (!password || password.length < 6) {
-    return res.status(400).json({ message: 'Şifre en az 6 karakter olmalıdır.' });
+    return res.status(400).json({ messageCode: 'srv_err_password_too_short' });
   }
 
   if (role === 'system') {
-    return res.status(403).json({ message: 'Sistem yöneticisi hesabı bu panelden oluşturulamaz.' });
+    return res.status(403).json({ messageCode: 'srv_err_sysadmin_cannot_create' });
   }
 
   const db = readDb();
 
   if (role === 'admin') {
     if (!username || !faculty) {
-      return res.status(400).json({ message: 'Komisyon hesabı için kullanıcı adı ve fakülte gereklidir.' });
+      return res.status(400).json({ messageCode: 'srv_err_commission_fields_required' });
     }
     const normalizedUsername = username.toLowerCase().trim();
     if (isLoginTaken(db, normalizedUsername)) {
-      return res.status(400).json({ message: 'Bu kullanıcı adı zaten kullanılıyor.' });
+      return res.status(400).json({ messageCode: 'srv_err_username_taken' });
     }
     if (!academicUnits[faculty]) {
-      return res.status(400).json({ message: 'Geçersiz fakülte seçimi.' });
+      return res.status(400).json({ messageCode: 'srv_err_invalid_faculty' });
     }
     if (db.users.some(u => u.role === 'admin' && u.adminScope === 'faculty' && u.faculty === faculty)) {
-      return res.status(400).json({ message: 'Bu fakülte için zaten bir komisyon hesabı tanımlı.' });
+      return res.status(400).json({ messageCode: 'srv_err_faculty_admin_exists' });
     }
 
     const newAdmin = {
@@ -891,24 +885,24 @@ app.post('/api/admin/system/users', authenticateToken, requireSystemAdmin, (req,
     db.users.push(newAdmin);
     writeDb(db);
     return res.status(201).json({
-      message: 'Komisyon yönetici hesabı oluşturuldu.',
+      messageCode: 'srv_commission_created',
       user: sanitizeUser(newAdmin, db)
     });
   }
 
   if (!email || !name || !title || !faculty || !department) {
-    return res.status(400).json({ message: 'Akademisyen için tüm alanlar gereklidir.' });
+    return res.status(400).json({ messageCode: 'srv_err_academic_fields_required' });
   }
 
   const lowerEmail = email.toLowerCase().trim();
   if (!isAllowedAybuEmail(lowerEmail)) {
-    return res.status(400).json({ message: 'E-posta @aybu.edu.tr uzantılı olmalıdır.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_domain' });
   }
   if (!isValidFacultyDepartment(faculty, department)) {
-    return res.status(400).json({ message: 'Geçersiz fakülte veya bölüm seçimi.' });
+    return res.status(400).json({ messageCode: 'srv_err_invalid_faculty_dept' });
   }
   if (isLoginTaken(db, lowerEmail)) {
-    return res.status(400).json({ message: 'Bu e-posta adresi zaten kayıtlı.' });
+    return res.status(400).json({ messageCode: 'srv_err_email_exists' });
   }
 
   const newUser = {
@@ -924,7 +918,7 @@ app.post('/api/admin/system/users', authenticateToken, requireSystemAdmin, (req,
   db.users.push(newUser);
   writeDb(db);
   res.status(201).json({
-    message: 'Akademisyen hesabı oluşturuldu.',
+    messageCode: 'srv_academic_created',
     user: sanitizeUser(newUser, db)
   });
 });
@@ -933,7 +927,7 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
   const db = readDb();
   const userIndex = db.users.findIndex(u => u.id === req.params.id);
   if (userIndex === -1) {
-    return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_user_not_found' });
   }
 
   const user = db.users[userIndex];
@@ -941,16 +935,16 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
 
   if (getAdminScope(user) === 'system') {
     if (role && role !== 'admin') {
-      return res.status(403).json({ message: 'Sistem yöneticisi hesap türü değiştirilemez.' });
+      return res.status(403).json({ messageCode: 'srv_err_sysadmin_type_locked' });
     }
     if (name) user.name = name;
     if (title) user.title = title;
     writeDb(db);
-    return res.json({ message: 'Sistem yöneticisi güncellendi.', user: sanitizeUser(user, db) });
+    return res.json({ messageCode: 'srv_sysadmin_updated', user: sanitizeUser(user, db) });
   }
 
   if (role === 'system') {
-    return res.status(403).json({ message: 'Sistem yöneticisi hesabı bu panelden atanamaz.' });
+    return res.status(403).json({ messageCode: 'srv_err_sysadmin_cannot_assign' });
   }
 
   const targetIsFacultyAdmin = role === 'admin';
@@ -960,20 +954,20 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
 
   if (targetIsFacultyAdmin && roleChanging) {
     if (!username || !faculty) {
-      return res.status(400).json({ message: 'Komisyon hesabı için kullanıcı adı ve fakülte gereklidir.' });
+      return res.status(400).json({ messageCode: 'srv_err_commission_fields_required' });
     }
     const normalizedUsername = username.toLowerCase().trim();
     if (isLoginTaken(db, normalizedUsername, user.id)) {
-      return res.status(400).json({ message: 'Bu kullanıcı adı başka bir hesapta kullanılıyor.' });
+      return res.status(400).json({ messageCode: 'srv_err_username_taken' });
     }
     if (!academicUnits[faculty]) {
-      return res.status(400).json({ message: 'Geçersiz fakülte seçimi.' });
+      return res.status(400).json({ messageCode: 'srv_err_invalid_faculty' });
     }
     const duplicateFacultyAdmin = db.users.find(
       u => u.id !== user.id && u.role === 'admin' && u.adminScope === 'faculty' && u.faculty === faculty
     );
     if (duplicateFacultyAdmin) {
-      return res.status(400).json({ message: 'Bu fakülte için zaten bir komisyon hesabı var.' });
+      return res.status(400).json({ messageCode: 'srv_err_faculty_admin_exists' });
     }
 
     user.role = 'admin';
@@ -986,17 +980,17 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
     delete user.email;
   } else if (targetIsAcademic && roleChanging) {
     if (!email || !title || !faculty || !department) {
-      return res.status(400).json({ message: 'Akademisyen için e-posta, unvan, fakülte ve bölüm gereklidir.' });
+      return res.status(400).json({ messageCode: 'srv_err_academic_fields_required' });
     }
     const lowerEmail = email.toLowerCase().trim();
     if (!isAllowedAybuEmail(lowerEmail)) {
-      return res.status(400).json({ message: 'E-posta @aybu.edu.tr uzantılı olmalıdır.' });
+      return res.status(400).json({ messageCode: 'srv_err_email_domain' });
     }
     if (!isValidFacultyDepartment(faculty, department)) {
-      return res.status(400).json({ message: 'Geçersiz fakülte veya bölüm seçimi.' });
+      return res.status(400).json({ messageCode: 'srv_err_invalid_faculty_dept' });
     }
     if (isLoginTaken(db, lowerEmail, user.id)) {
-      return res.status(400).json({ message: 'Bu e-posta adresi başka bir hesapta kullanılıyor.' });
+      return res.status(400).json({ messageCode: 'srv_err_email_exists' });
     }
 
     user.role = 'user';
@@ -1015,16 +1009,16 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
       if (email) {
         const lowerEmail = email.toLowerCase().trim();
         if (!isAllowedAybuEmail(lowerEmail)) {
-          return res.status(400).json({ message: 'E-posta @aybu.edu.tr uzantılı olmalıdır.' });
+          return res.status(400).json({ messageCode: 'srv_err_email_domain' });
         }
         if (isLoginTaken(db, lowerEmail, user.id)) {
-          return res.status(400).json({ message: 'Bu e-posta adresi başka bir hesapta kullanılıyor.' });
+          return res.status(400).json({ messageCode: 'srv_err_email_exists' });
         }
         user.email = lowerEmail;
       }
       if (faculty && department) {
         if (!isValidFacultyDepartment(faculty, department)) {
-          return res.status(400).json({ message: 'Geçersiz fakülte veya bölüm seçimi.' });
+          return res.status(400).json({ messageCode: 'srv_err_invalid_faculty_dept' });
         }
         user.faculty = faculty;
         user.department = department;
@@ -1035,19 +1029,19 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
       if (username) {
         const normalizedUsername = username.toLowerCase().trim();
         if (isLoginTaken(db, normalizedUsername, user.id)) {
-          return res.status(400).json({ message: 'Bu kullanıcı adı başka bir hesapta kullanılıyor.' });
+          return res.status(400).json({ messageCode: 'srv_err_username_taken' });
         }
         user.username = normalizedUsername;
       }
       if (faculty) {
         if (!academicUnits[faculty]) {
-          return res.status(400).json({ message: 'Geçersiz fakülte seçimi.' });
+          return res.status(400).json({ messageCode: 'srv_err_invalid_faculty' });
         }
         const duplicateFacultyAdmin = db.users.find(
           u => u.id !== user.id && u.role === 'admin' && u.adminScope === 'faculty' && u.faculty === faculty
         );
         if (duplicateFacultyAdmin) {
-          return res.status(400).json({ message: 'Bu fakülte için zaten bir komisyon hesabı var.' });
+          return res.status(400).json({ messageCode: 'srv_err_faculty_admin_exists' });
         }
         user.faculty = faculty;
         user.name = name || `${faculty} Ödül Komisyonu`;
@@ -1057,63 +1051,63 @@ app.put('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (r
 
   db.users[userIndex] = user;
   writeDb(db);
-  res.json({ message: 'Kullanıcı güncellendi.', user: sanitizeUser(user, db) });
+  res.json({ messageCode: 'srv_user_updated', user: sanitizeUser(user, db) });
 });
 
 app.put('/api/admin/system/users/:id/password', authenticateToken, requireSystemAdmin, (req, res) => {
   const { password } = req.body;
   if (!password || password.length < 6) {
-    return res.status(400).json({ message: 'Yeni şifre en az 6 karakter olmalıdır.' });
+    return res.status(400).json({ messageCode: 'srv_err_password_too_short' });
   }
 
   const db = readDb();
   const user = findUserById(db, req.params.id);
   if (!user) {
-    return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_user_not_found' });
   }
 
   user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   writeDb(db);
-  res.json({ message: 'Kullanıcı şifresi güncellendi.' });
+  res.json({ messageCode: 'srv_user_password_updated' });
 });
 
 app.delete('/api/admin/system/users/:id', authenticateToken, requireSystemAdmin, (req, res) => {
   const db = readDb();
   const userIndex = db.users.findIndex(u => u.id === req.params.id);
   if (userIndex === -1) {
-    return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_user_not_found' });
   }
 
   const user = db.users[userIndex];
   if (getAdminScope(user) === 'system') {
-    return res.status(403).json({ message: 'Sistem yöneticisi hesabı silinemez.' });
+    return res.status(403).json({ messageCode: 'srv_err_sysadmin_cannot_delete' });
   }
   if (user.id === req.user.id) {
-    return res.status(403).json({ message: 'Kendi hesabınızı silemezsiniz.' });
+    return res.status(403).json({ messageCode: 'srv_err_cannot_delete_self' });
   }
 
   db.applications = db.applications.filter(app => app.userId !== user.id);
   db.users.splice(userIndex, 1);
   writeDb(db);
-  res.json({ message: 'Kullanıcı ve ilişkili başvurular silindi.' });
+  res.json({ messageCode: 'srv_user_deleted' });
 });
 
 app.post('/api/admin/applications/:id/evaluate', authenticateToken, requireAdmin, (req, res) => {
   const { status, adminNotes, approvedScore, appealResponse } = req.body;
   if (!['approved', 'rejected', 'revision_requested'].includes(status)) {
-    return res.status(400).json({ message: 'Geçersiz değerlendirme durumu.' });
+    return res.status(400).json({ messageCode: 'srv_err_invalid_eval_status' });
   }
 
   const db = readDb();
   const adminUser = findUserById(db, req.user.id);
   const appIndex = db.applications.findIndex(a => a.id === req.params.id);
   if (appIndex === -1) {
-    return res.status(404).json({ message: 'Başvuru bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_app_not_found' });
   }
 
   const currentApp = db.applications[appIndex];
   if (!canAdminAccessApplication(adminUser, currentApp, db)) {
-    return res.status(403).json({ message: 'Bu başvuruyu değerlendirme yetkiniz bulunmamaktadır.' });
+    return res.status(403).json({ messageCode: 'srv_err_eval_forbidden' });
   }
 
   db.applications[appIndex] = {
@@ -1136,13 +1130,13 @@ app.post('/api/admin/applications/:id/evaluate', authenticateToken, requireAdmin
   }
 
   writeDb(db);
-  res.json({ message: 'Başvuru başarıyla değerlendirildi.', application: db.applications[appIndex] });
+  res.json({ messageCode: 'srv_app_evaluated', application: db.applications[appIndex] });
 });
 
 // Fallback HTML router
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) {
-    return res.status(404).json({ message: 'API endpoint bulunamadı.' });
+    return res.status(404).json({ messageCode: 'srv_err_not_found' });
   }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

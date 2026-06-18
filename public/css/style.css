@@ -1326,6 +1326,56 @@ body.login-screen-active #verify-view.active .login-card-footer {
 }
 
 /* Mobile bottom action bar (academic dashboard) */
+/* Language toggle */
+.lang-toggle {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  background: rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.lang-btn:hover {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.lang-btn.lang-active {
+  background: #fff;
+  color: var(--corporate-secondary);
+}
+
+/* Login screen lang toggle (outside header) */
+.login-lang-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 2px;
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  z-index: 10;
+}
+
+.login-lang-toggle .lang-btn {
+  color: rgba(255,255,255,0.8);
+}
+
 .mobile-dashboard-nav {
   display: none;
   position: fixed;

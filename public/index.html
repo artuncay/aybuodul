@@ -38,8 +38,12 @@
           <i class="fa-solid fa-key" aria-hidden="true"></i> <span class="btn-text">Şifre Değiştir</span>
         </button>
         <button id="btn-logout" type="button" class="btn btn-secondary btn-sm btn-desktop" aria-label="Oturumu kapat">
-          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="btn-text">Çıkış Yap</span>
+          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> <span class="btn-text" data-i18n="btn_logout">Çıkış Yap</span>
         </button>
+        <div class="lang-toggle" aria-label="Language / Dil">
+          <button type="button" class="lang-btn" data-lang-btn="tr" onclick="setLanguage('tr')">TR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" onclick="setLanguage('en')">EN</button>
+        </div>
         <button type="button" id="btn-change-password-mobile" class="btn btn-icon btn-mobile hidden" aria-label="Şifre değiştir">
           <i class="fa-solid fa-key" aria-hidden="true"></i>
         </button>
@@ -56,6 +60,10 @@
     <!-- 1. LOGIN VIEW -->
     <section id="login-view" class="view active" aria-labelledby="login-heading">
       <div class="login-shell">
+        <div class="login-lang-toggle" aria-label="Language / Dil">
+          <button type="button" class="lang-btn" data-lang-btn="tr" onclick="setLanguage('tr')">TR</button>
+          <button type="button" class="lang-btn" data-lang-btn="en" onclick="setLanguage('en')">EN</button>
+        </div>
         <div class="login-panel">
           <div class="login-card">
             <div class="login-identity-mark" aria-hidden="true">
@@ -63,42 +71,42 @@
             </div>
 
             <div class="login-header login-header-centered">
-              <h1 id="login-heading">Ankara Yıldırım Beyazıt Üniversitesi</h1>
-              <p>Akademik Ödül Sistemi</p>
+              <h1 id="login-heading" data-i18n="login_university_name">Ankara Yıldırım Beyazıt Üniversitesi</h1>
+              <p data-i18n="login_system_name">Akademik Ödül Sistemi</p>
             </div>
 
             <form id="login-form" class="auth-form login-form-panel" method="post" action="/api/auth/login" novalidate>
               <div class="form-group">
-                <label for="login-id"><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-posta</label>
+                <label for="login-id"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-i18n="label_email">E-posta</span></label>
                 <div class="login-input login-input-plain">
                   <input type="text" id="login-id" name="login" autocomplete="username"
-                    placeholder="E-posta adresinizi girin" required>
+                    placeholder="E-posta adresinizi girin" data-i18n-placeholder="placeholder_email" required>
                 </div>
               </div>
               <div class="form-group">
-                <label for="login-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre</label>
+                <label for="login-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> <span data-i18n="label_password">Şifre</span></label>
                 <div class="login-input login-input-password">
                   <input type="password" id="login-password" name="password" autocomplete="current-password"
-                    placeholder="Şifrenizi girin" required>
-                  <button type="button" class="login-password-toggle" id="login-password-toggle" aria-label="Şifreyi göster veya gizle" aria-pressed="false">
+                    placeholder="Şifrenizi girin" data-i18n-placeholder="placeholder_password" required>
+                  <button type="button" class="login-password-toggle" id="login-password-toggle" aria-label="Şifreyi göster veya gizle" data-i18n-aria="btn_toggle_password_aria" aria-pressed="false">
                     <i class="fa-regular fa-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
               <button type="submit" class="btn btn-block login-submit">
-                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Giriş Yap
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> <span data-i18n="btn_login">Giriş Yap</span>
               </button>
               <a href="#" id="link-go-register" class="login-register-link-large">
-                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Kayıt olun
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> <span data-i18n="btn_register_link">Kayıt olun</span>
               </a>
-              <p class="login-register-note">İlk defa giriş yapıyorsanız kayıt olun</p>
+              <p class="login-register-note" data-i18n="login_register_note">İlk defa giriş yapıyorsanız kayıt olun</p>
             </form>
 
             <div class="login-links login-links-stacked">
-              <a href="mailto:artuncay@aybu.edu.tr?subject=Akademik%20%C3%96d%C3%BCl%20Sistemi%20Giri%C5%9F%20Sorunu" class="login-inline-link login-inline-link-accent"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> Giriş sorunu mu yaşıyorsunuz?</a>
+              <a href="mailto:artuncay@aybu.edu.tr?subject=Akademik%20%C3%96d%C3%BCl%20Sistemi%20Giri%C5%9F%20Sorunu" class="login-inline-link login-inline-link-accent"><i class="fa-solid fa-circle-question" aria-hidden="true"></i> <span data-i18n="login_help_link">Giriş sorunu mu yaşıyorsunuz?</span></a>
             </div>
 
-            <p class="login-card-footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
+            <p class="login-card-footer" data-i18n="login_footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
           </div>
         </div>
       </div>
@@ -114,38 +122,38 @@
             </div>
 
             <div class="login-header login-header-centered">
-              <h1 id="register-heading">Ankara Yıldırım Beyazıt Üniversitesi</h1>
-              <p>Akademik Ödül Sistemi Kayıt Formu</p>
+              <h1 id="register-heading" data-i18n="register_heading">Ankara Yıldırım Beyazıt Üniversitesi</h1>
+              <p data-i18n="register_subtitle">Akademik Ödül Sistemi Kayıt Formu</p>
             </div>
 
             <form id="register-form" class="auth-form login-form-panel register-form-panel" method="post" action="/api/auth/register" novalidate>
               <div class="form-row form-row-3">
                 <div class="form-group">
-                  <label for="reg-firstname"><i class="fa-solid fa-user" aria-hidden="true"></i> Ad</label>
+                  <label for="reg-firstname"><i class="fa-solid fa-user" aria-hidden="true"></i> <span data-i18n="label_firstname">Ad</span></label>
                   <div class="login-input login-input-plain">
                     <input type="text" id="reg-firstname" name="firstname" autocomplete="given-name"
-                      placeholder="Adınız" required>
+                      placeholder="Adınız" data-i18n-placeholder="placeholder_firstname" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="reg-lastname"><i class="fa-solid fa-user" aria-hidden="true"></i> Soyad</label>
+                  <label for="reg-lastname"><i class="fa-solid fa-user" aria-hidden="true"></i> <span data-i18n="label_lastname">Soyad</span></label>
                   <div class="login-input login-input-plain">
                     <input type="text" id="reg-lastname" name="lastname" autocomplete="family-name"
-                      placeholder="Soyadınız" required>
+                      placeholder="Soyadınız" data-i18n-placeholder="placeholder_lastname" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="reg-title"><i class="fa-solid fa-award" aria-hidden="true"></i> Unvan</label>
+                  <label for="reg-title"><i class="fa-solid fa-award" aria-hidden="true"></i> <span data-i18n="label_title">Unvan</span></label>
                   <div class="login-input login-input-plain">
                     <select id="reg-title" name="title" required>
-                      <option value="" disabled selected>Unvan seçin</option>
+                      <option value="" disabled selected data-i18n="placeholder_title_select">Unvan seçin</option>
                       <option value="Prof. Dr.">Prof. Dr.</option>
-                      <option value="Doç. Dr.">Doç. Dr.</option>
-                      <option value="Dr. Öğr. Üyesi">Dr. Öğr. Üyesi</option>
-                      <option value="Öğr. Gör. Dr.">Öğr. Gör. Dr.</option>
-                      <option value="Öğr. Gör.">Öğr. Gör.</option>
-                      <option value="Arş. Gör. Dr.">Arş. Gör. Dr.</option>
-                      <option value="Arş. Gör.">Arş. Gör.</option>
+                      <option value="Doç. Dr." data-i18n="title_doc_dr">Doç. Dr.</option>
+                      <option value="Dr. Öğr. Üyesi" data-i18n="title_dr_ogr_uyesi">Dr. Öğr. Üyesi</option>
+                      <option value="Öğr. Gör. Dr." data-i18n="title_ogr_gor_dr">Öğr. Gör. Dr.</option>
+                      <option value="Öğr. Gör." data-i18n="title_ogr_gor">Öğr. Gör.</option>
+                      <option value="Arş. Gör. Dr." data-i18n="title_ars_gor_dr">Arş. Gör. Dr.</option>
+                      <option value="Arş. Gör." data-i18n="title_ars_gor">Arş. Gör.</option>
                     </select>
                   </div>
                 </div>
@@ -153,60 +161,60 @@
 
               <div class="form-row form-row-3">
                 <div class="form-group">
-                  <label for="reg-email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> E-posta</label>
+                  <label for="reg-email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span data-i18n="label_email">E-posta</span></label>
                   <div class="login-input login-input-plain">
                     <input type="email" id="reg-email" name="email" autocomplete="email"
                       placeholder="@aybu.edu.tr"
                       pattern="[^\s@]+@aybu\.edu\.tr"
-                      title="Sadece @aybu.edu.tr uzantılı e-posta adresleri kabul edilir." required>
+                      title="Sadece @aybu.edu.tr uzantılı e-posta adresleri kabul edilir." data-i18n-title="label_email_note" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="reg-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre</label>
+                  <label for="reg-password"><i class="fa-solid fa-lock" aria-hidden="true"></i> <span data-i18n="label_reg_password">Şifre</span></label>
                   <div class="login-input login-input-plain">
                     <input type="password" id="reg-password" name="password" autocomplete="new-password"
-                      placeholder="En az 6 karakter" minlength="6" required>
+                      placeholder="En az 6 karakter" data-i18n-placeholder="placeholder_reg_password" minlength="6" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="reg-password-confirm"><i class="fa-solid fa-lock" aria-hidden="true"></i> Şifre (Tekrar)</label>
+                  <label for="reg-password-confirm"><i class="fa-solid fa-lock" aria-hidden="true"></i> <span data-i18n="label_reg_password_confirm">Şifre (Tekrar)</span></label>
                   <div class="login-input login-input-plain">
                     <input type="password" id="reg-password-confirm" name="password_confirm" autocomplete="new-password"
-                      placeholder="Şifreyi tekrar girin" minlength="6" required>
+                      placeholder="Şifreyi tekrar girin" data-i18n-placeholder="placeholder_reg_password_confirm" minlength="6" required>
                   </div>
                 </div>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label for="reg-faculty"><i class="fa-solid fa-building-columns" aria-hidden="true"></i> Fakülte / Birim</label>
+                  <label for="reg-faculty"><i class="fa-solid fa-building-columns" aria-hidden="true"></i> <span data-i18n="label_faculty">Fakülte / Birim</span></label>
                   <div class="login-input login-input-plain">
                     <select id="reg-faculty" name="faculty" required>
-                      <option value="" disabled selected>Fakülte seçin</option>
+                      <option value="" disabled selected data-i18n="placeholder_faculty_select">Fakülte seçin</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="reg-dept"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> Bölüm</label>
+                  <label for="reg-dept"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> <span data-i18n="label_dept">Bölüm</span></label>
                   <div class="login-input login-input-plain">
                     <select id="reg-dept" name="department" required>
-                      <option value="" disabled selected>Seçiniz</option>
+                      <option value="" disabled selected data-i18n="placeholder_dept_select">Seçiniz</option>
                     </select>
                   </div>
                 </div>
               </div>
               <button type="submit" class="btn btn-block login-submit">
-                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> Kayıt Ol
+                <i class="fa-solid fa-user-plus" aria-hidden="true"></i> <span data-i18n="btn_register">Kayıt Ol</span>
               </button>
             </form>
 
             <div class="login-links login-links-stacked register-login-links">
               <a href="#" id="link-go-login" class="login-inline-link login-inline-link-accent">
-                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Zaten hesabınız var mı? Giriş yapın
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> <span data-i18n="link_go_login">Zaten hesabınız var mı? Giriş yapın</span>
               </a>
             </div>
 
-            <p class="login-card-footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
+            <p class="login-card-footer" data-i18n="login_footer">AÖS v1.0.0 © 2026 Ankara Yıldırım Beyazıt Üniversitesi</p>
           </div>
         </div>
       </div>
@@ -222,29 +230,29 @@
             </div>
 
             <div class="login-header login-header-centered">
-              <h1 id="verify-heading">E-posta Doğrulama</h1>
-              <p>Kayıt e-postanıza gönderdiğimiz 6 haneli kodu girin.</p>
+              <h1 id="verify-heading" data-i18n="verify_heading">E-posta Doğrulama</h1>
+              <p data-i18n="verify_subtitle">Kayıt e-postanıza gönderdiğimiz 6 haneli kodu girin.</p>
             </div>
 
             <form id="verify-form" class="auth-form login-form-panel register-form-panel" novalidate>
               <div class="form-group">
-                <label for="verify-code"><i class="fa-solid fa-key" aria-hidden="true"></i> Doğrulama Kodu</label>
+                <label for="verify-code"><i class="fa-solid fa-key" aria-hidden="true"></i> <span data-i18n="label_verify_code">Doğrulama Kodu</span></label>
                 <div class="login-input login-input-plain">
                   <input type="text" id="verify-code" name="code" inputmode="numeric" pattern="[0-9]{6}"
                     maxlength="6" placeholder="123456" autocomplete="one-time-code" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-block login-submit">
-                <i class="fa-solid fa-circle-check" aria-hidden="true"></i> Doğrula ve Kaydı Tamamla
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span data-i18n="btn_verify">Doğrula ve Kaydı Tamamla</span>
               </button>
             </form>
 
             <div class="login-links login-links-stacked register-login-links">
               <a href="#" id="link-resend-code" class="login-inline-link login-inline-link-accent">
-                <i class="fa-solid fa-rotate" aria-hidden="true"></i> Kodu yeniden gönder
+                <i class="fa-solid fa-rotate" aria-hidden="true"></i> <span data-i18n="link_resend_code">Kodu yeniden gönder</span>
               </a>
               <a href="#" id="link-back-to-register" class="login-inline-link">
-                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Kayıt formuna geri dön
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span data-i18n="link_back_to_register">Kayıt formuna geri dön</span>
               </a>
             </div>
 
@@ -269,27 +277,27 @@
             <p id="user-profile-faculty" class="faculty-label">Mühendislik Fakültesi</p>
             <p id="user-profile-title-dept" class="title-dept">Bilgisayar Müh.</p>
           </div>
-          <div class="sidebar-nav" aria-label="Panel menüsü">
-            <button type="button" id="btn-sidebar-dashboard" class="sidebar-btn active"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Genel Bakış</button>
-            <button type="button" id="btn-sidebar-new-app" class="sidebar-btn btn-accent"><i class="fa-solid fa-plus" aria-hidden="true"></i> Yeni Başvuru Oluştur</button>
-            <button type="button" id="btn-sidebar-my-apps" class="sidebar-btn btn-accent"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Başvurularım</button>
+          <div class="sidebar-nav" aria-label="Panel menüsü" data-i18n-aria="sidebar_panel_aria">
+            <button type="button" id="btn-sidebar-dashboard" class="sidebar-btn active"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> <span data-i18n="btn_sidebar_dashboard">Genel Bakış</span></button>
+            <button type="button" id="btn-sidebar-new-app" class="sidebar-btn btn-accent"><i class="fa-solid fa-plus" aria-hidden="true"></i> <span data-i18n="btn_sidebar_new_app">Yeni Başvuru Oluştur</span></button>
+            <button type="button" id="btn-sidebar-my-apps" class="sidebar-btn btn-accent"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> <span data-i18n="btn_sidebar_my_apps">Başvurularım</span></button>
           </div>
         </aside>
 
         <!-- Main dashboard content -->
         <div class="dashboard-main">
           <div class="card" id="dashboard-info-guide" style="padding: 0.7rem 0.9rem;">
-            <h3><i class="fa-solid fa-circle-info" aria-hidden="true"></i> Hesaplama Rehberi ve Uygulama Esasları</h3>
+            <h3><i class="fa-solid fa-circle-info" aria-hidden="true"></i> <span data-i18n="guide_card_heading">Hesaplama Rehberi ve Uygulama Esasları</span></h3>
             <div class="table-responsive mt-3">
               <table class="table table-mobile-stack" aria-describedby="info-guide-desc">
-                <caption id="info-guide-desc" class="sr-only">Hesaplama rehberi ve uygulama esasları tablosu</caption>
+                <caption id="info-guide-desc" class="sr-only" data-i18n="guide_table_caption">Hesaplama rehberi ve uygulama esasları tablosu</caption>
                 <thead>
                   <tr>
-                    <th style="width: 22%;">Konu</th>
-                    <th style="width: 78%;">Açıklama</th>
+                    <th style="width: 22%;" data-i18n="guide_col_topic">Konu</th>
+                    <th style="width: 78%;" data-i18n="guide_col_description">Açıklama</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="guide-table-body">
                   <tr>
                     <td data-label="Konu"><strong>Genel İşleyiş</strong></td>
                     <td data-label="Açıklama">
@@ -344,10 +352,10 @@
           </div>
 
           <div id="dashboard-applications-section" class="hidden">
-            <button type="button" id="btn-back-to-info-from-apps" class="btn btn-secondary btn-sm mb-3"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Panele Dön</button>
+            <button type="button" id="btn-back-to-info-from-apps" class="btn btn-secondary btn-sm mb-3"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <span data-i18n="btn_back_to_panel">Panele Dön</span></button>
             <div class="section-header">
-              <h2>Başvurularım</h2>
-              <p id="my-apps-desc">Akademik ödül başvuru geçmişiniz ve güncel durumunuz.</p>
+              <h2 data-i18n="my_apps_heading">Başvurularım</h2>
+              <p id="my-apps-desc" data-i18n="my_apps_desc">Akademik ödül başvuru geçmişiniz ve güncel durumunuz.</p>
             </div>
 
             <!-- Applications list -->
@@ -380,9 +388,9 @@
         </div>
       </div>
       <!-- Mobile bottom nav: shown only on ≤992px -->
-      <nav class="mobile-dashboard-nav" aria-label="Hızlı erişim">
-        <button type="button" id="btn-mobile-new-app" class="sidebar-btn btn-accent"><i class="fa-solid fa-plus" aria-hidden="true"></i> Yeni Başvuru</button>
-        <button type="button" id="btn-mobile-my-apps" class="sidebar-btn btn-accent"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Başvurularım</button>
+      <nav class="mobile-dashboard-nav" aria-label="Hızlı erişim" data-i18n-aria="mobile_nav_aria">
+        <button type="button" id="btn-mobile-new-app" class="sidebar-btn btn-accent"><i class="fa-solid fa-plus" aria-hidden="true"></i> <span data-i18n="btn_mobile_new_app">Yeni Başvuru</span></button>
+        <button type="button" id="btn-mobile-my-apps" class="sidebar-btn btn-accent"><i class="fa-solid fa-folder-open" aria-hidden="true"></i> <span data-i18n="btn_mobile_my_apps">Başvurularım</span></button>
       </nav>
     </section>
 
@@ -1221,6 +1229,7 @@
   </footer>
 
   <!-- App Client Logic -->
+  <script src="/js/i18n.js"></script>
   <script src="/js/academic-units.js"></script>
   <script src="/js/app.js"></script>
   <script>

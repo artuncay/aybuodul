@@ -300,18 +300,18 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
   const isEmailLogin = login.includes('@');
 
   if (!login) {
-    showToast('E-posta adresi veya yönetici kullanıcı adı girin.', 'error');
+    showToast(t('error_email_required'), 'error');
     return;
   }
   if (isEmailLogin && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login)) {
-    showToast('Geçerli bir e-posta adresi girin.', 'error');
+    showToast(t('error_invalid_email'), 'error');
     return;
   }
   if (!password) {
-    showToast('Şifre girin.', 'error');
+    showToast(t('error_password_required'), 'error');
     return;
   }
-  
+
   try {
     const data = await apiCall('/api/auth/login', 'POST', { login, email: login, username: login, password });
     localStorage.setItem('atosis_token', data.token);
@@ -320,7 +320,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     currentToken = data.token;
     currentUser = data.user;
 
-    showToast(`Hoş geldiniz, ${getDisplayTitle(currentUser)} ${currentUser.name}!`, 'success');
+    showToast(t('toast_welcome', { title: getDisplayTitle(currentUser), name: currentUser.name }), 'success');
 
     // Refresh full user profile from server to ensure role/adminScope/faculty are populated
     try {
@@ -354,45 +354,45 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const department = document.getElementById('reg-dept').value;
 
   if (!form.checkValidity()) {
-    showToast('Lütfen kayıt formundaki tüm alanları doğru şekilde doldurun.', 'error');
+    showToast(t('error_form_invalid'), 'error');
     return;
   }
 
   if (password.length < 6) {
-    showToast('Şifre en az 6 karakter olmalıdır.', 'error');
+    showToast(t('error_password_too_short'), 'error');
     return;
   }
 
   if (password !== confirmPassword) {
-    showToast('Girdiğiniz şifreler eşleşmiyor. Lütfen aynı şifreyi iki kutuya da girin.', 'error');
+    showToast(t('error_passwords_mismatch'), 'error');
     return;
   }
 
   if (!/^[^\s@]+@aybu\.edu\.tr$/i.test(email)) {
-    showToast('Kayıt yalnızca @aybu.edu.tr uzantılı e-posta adresleri ile yapılabilir.', 'error');
+    showToast(t('error_email_domain'), 'error');
     return;
   }
 
   if (!faculty || !department) {
-    showToast('Lütfen fakülte ve bölümünüzü listeden seçin.', 'error');
+    showToast(t('error_faculty_dept_required'), 'error');
     return;
   }
 
   const validDepartments = getDepartmentsForFaculty(faculty);
   if (!validDepartments.includes(department)) {
-    showToast('Seçilen bölüm, fakülte ile eşleşmiyor. Lütfen tekrar seçin.', 'error');
+    showToast(t('error_dept_mismatch'), 'error');
     return;
   }
 
   try {
     const res = await apiCall('/api/auth/register', 'POST', { name, email, title, password, faculty, department });
     if (res.verificationRequired === false) {
-      showToast(res.message || 'Kayıt başarılı! Lütfen giriş yapın.', 'success');
+      showToast(res.message || t('toast_reg_success'), 'success');
       setTimeout(() => showView('login-view'), 1500);
       return;
     }
     pendingVerificationEmail = email;
-    showToast('Doğrulama kodu e-posta adresinize gönderildi.', 'success');
+    showToast(t('toast_verification_sent'), 'success');
     showView('verify-view');
   } catch (err) {}
 });
@@ -404,14 +404,14 @@ document.getElementById('verify-form').addEventListener('submit', async (e) => {
   const code = document.getElementById('verify-code').value.trim();
 
   if (!pendingVerificationEmail) {
-    showToast('Lütfen önce kayıt formunu doldurun.', 'error');
+    showToast(t('error_verify_no_email'), 'error');
     showView('register-view');
     return;
   }
 
   try {
     await apiCall('/api/auth/register/verify', 'POST', { email: pendingVerificationEmail, code });
-    showToast('Kayıt başarılı! Lütfen giriş yapın.', 'success');
+    showToast(t('toast_reg_success'), 'success');
     pendingVerificationEmail = '';
     setTimeout(() => showView('login-view'), 1500);
   } catch (err) {}
@@ -420,13 +420,13 @@ document.getElementById('verify-form').addEventListener('submit', async (e) => {
 document.getElementById('link-resend-code').addEventListener('click', async (e) => {
   e.preventDefault();
   if (!pendingVerificationEmail) {
-    showToast('Lütfen önce kayıt formunu doldurun.', 'error');
+    showToast(t('error_verify_no_email'), 'error');
     showView('register-view');
     return;
   }
   try {
     await apiCall('/api/auth/register/resend', 'POST', { email: pendingVerificationEmail });
-    showToast('Doğrulama kodu yeniden gönderildi.', 'success');
+    showToast(t('toast_verification_resent'), 'success');
   } catch (err) {}
 });
 
@@ -438,7 +438,7 @@ document.getElementById('link-back-to-register').addEventListener('click', (e) =
 
 
 document.getElementById('btn-logout').addEventListener('click', () => {
-  performLogout('Oturum kapatıldı.');
+  performLogout(t('toast_logout'));
 });
 
 // ── Idle Session Timeout ──────────────────────────────────────────────────────
@@ -449,7 +449,8 @@ let idleTimer = null;
 let countdownTimer = null;
 let idleWarningActive = false;
 
-function performLogout(message = 'Oturum kapatıldı.') {
+function performLogout(message) {
+  if (!message) message = t('toast_logout');
   clearIdleTimers();
   localStorage.removeItem('atosis_token');
   localStorage.removeItem('atosis_user');
@@ -495,7 +496,7 @@ function showIdleWarning() {
     if (remaining <= 0) {
       clearInterval(countdownTimer);
       countdownTimer = null;
-      performLogout('Hareketsizlik nedeniyle oturum otomatik kapatıldı.');
+      performLogout(t('toast_idle_logout'));
     }
   }, 1000);
 
@@ -522,7 +523,7 @@ document.getElementById('btn-idle-stay').addEventListener('click', () => {
 document.getElementById('btn-idle-logout').addEventListener('click', () => {
   clearInterval(countdownTimer);
   countdownTimer = null;
-  performLogout('Oturum kapatıldı.');
+  performLogout(t('toast_logout'));
 });
 
 // Kullanıcı aktivite olaylarını dinle
@@ -604,7 +605,7 @@ document.getElementById('password-form').addEventListener('submit', async (e) =>
   const confirmPassword = document.getElementById('confirm-password').value;
 
   if (newPassword !== confirmPassword) {
-    showToast('Yeni şifreler eşleşmiyor.', 'error');
+    showToast(t('error_new_passwords_mismatch'), 'error');
     return;
   }
 
@@ -683,12 +684,12 @@ async function loadAcademicianDashboard() {
         : app.status === 'revision_requested' ? 'badge-warning'
         : 'badge-draft';
 
-      const statusText = app.status === 'submitted' ? 'Gönderildi'
-        : app.status === 'in_review' ? 'İnceleniyor'
-        : app.status === 'approved' ? 'Onaylandı'
-        : app.status === 'rejected' ? 'Reddedildi'
-        : app.status === 'revision_requested' ? 'Revizyon Gerekli'
-        : 'Taslak';
+      const statusText = app.status === 'submitted' ? t('status_submitted')
+        : app.status === 'in_review' ? t('status_in_review')
+        : app.status === 'approved' ? t('status_approved')
+        : app.status === 'rejected' ? t('status_rejected')
+        : app.status === 'revision_requested' ? t('status_revision_required')
+        : t('status_draft');
 
       const total = app.summary.totalScore ? app.summary.totalScore.toFixed(2) : '0.00';
       const approved = app.summary.approvedScore ? app.summary.approvedScore.toFixed(2) : '—';
@@ -712,14 +713,14 @@ async function loadAcademicianDashboard() {
       if (app.status === 'rejected' && !app.appeal) {
         actionButtons += `
           <button type="button" class="btn btn-warning btn-sm btn-appeal-app" data-id="${app.id}">
-            <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> İtiraz Et
+            <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> ${t('btn_appeal_app')}
           </button>
         `;
       }
 
       actionButtons += `
         <button type="button" class="btn btn-danger btn-sm btn-delete-app" data-id="${app.id}">
-          <i class="fa-solid fa-trash" aria-hidden="true"></i> Sil
+          <i class="fa-solid fa-trash" aria-hidden="true"></i> ${t('btn_delete_app')}
         </button>
       `;
 
@@ -777,7 +778,7 @@ document.getElementById('btn-back-to-info-from-apps').addEventListener('click', 
 
 document.getElementById('btn-sidebar-new-app').addEventListener('click', () => {
   if (currentUserApplications.length > 0) {
-    showToast('Farklı kategoriden başvuru yapamazsınız. Eski başvurunuzu silip yeniden yapın.', 'warning');
+    showToast(t('toast_blocked_new_app'), 'warning');
     return;
   }
   initApplicationForm();
@@ -800,7 +801,7 @@ document.getElementById('btn-sidebar-my-apps').addEventListener('click', () => {
       table.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }).catch(() => {
-    showToast('Başvurular yüklenirken bir hata oluştu.', 'error');
+    showToast(t('error_apps_load_failed'), 'error');
   });
 });
 
@@ -865,7 +866,7 @@ function toggleApplicationRevisionNote(app = null) {
 }
 
 async function deleteOwnApplication(appId) {
-  const confirmed = window.confirm('Bu başvuruyu silmek istediğinize emin misiniz? Sildikten sonra farklı kategoriden yeniden başvuru yapabilirsiniz.');
+  const confirmed = window.confirm(t('confirm_delete_own_app'));
   if (!confirmed) return;
 
   try {
@@ -950,9 +951,9 @@ function updateStep1NextState() {
   const allChecked = categorySelect.value && categoryInfoAckCheckbox.checked && avesisAckCheckbox.checked;
   btnStep1Next.disabled = !allChecked;
   btnStep1Next.title = !categorySelect.value
-    ? 'Kategori seçmelisiniz'
-    : (!categoryInfoAckCheckbox.checked ? 'Kategori bilgilendirmesini onaylamalısınız'
-    : (!avesisAckCheckbox.checked ? 'AVESİS beyanını onaylamalısınız' : 'Sonraki Adıma Git'));
+    ? t('tooltip_select_category')
+    : (!categoryInfoAckCheckbox.checked ? t('tooltip_ack_category_info')
+    : (!avesisAckCheckbox.checked ? t('tooltip_ack_avesis') : t('tooltip_next_step')));
 }
 
 // Show category info inline and require acknowledgement before allowing the next step
@@ -987,11 +988,11 @@ avesisAckCheckbox.addEventListener('change', updateStep1NextState);
 btnStep1Next.addEventListener('click', () => {
   const cat = categorySelect.value;
   if (!cat) {
-    showToast('Lütfen başvuru yapacağınız kategoriyi seçiniz.', 'warning');
+    showToast(t('error_category_required'), 'warning');
     return;
   }
   if (!categoryInfoAckCheckbox.checked) {
-    showToast('Devam etmeden önce kategori bilgilendirmesini onaylamalısınız.', 'warning');
+    showToast(t('error_category_ack_required'), 'warning');
     return;
   }
   goToStep(2);
@@ -1370,7 +1371,7 @@ async function uploadEvidenceFile(e, activityId, slotIndex) {
       if (!Array.isArray(act.evidenceFiles)) act.evidenceFiles = [];
       act.evidenceFiles[slotIndex] = { name: file.name, url: data.fileUrl };
     }
-    showToast('Kanıt dosyası başarıyla yüklendi.', 'success');
+    showToast(t('toast_evidence_uploaded'), 'success');
     loadEvidenceUploaders();
     updateSubmitButtonState();
   } catch (err) {}
@@ -1386,21 +1387,21 @@ async function saveApplication(isDraft = true) {
 
   // Always validate category is selected
   if (!category) {
-    showToast('Lütfen başvuru yapacağınız kategoriyi seçiniz.', 'error');
+    showToast(t('error_category_required'), 'error');
     return;
   }
 
   // Validate that at least one activity has data entered
   const hasAnyActivityData = applicationActivities.some(act => act.count > 0);
   if (!hasAnyActivityData) {
-    showToast('Lütfen en az bir akademik faaliyetin adet veya saatini giriniz.', 'error');
+    showToast(t('error_no_activity_data'), 'error');
     return;
   }
 
   if (!isDraft) {
     const answered = document.querySelector('input[name="teşvik-applied"]:checked');
     if (!answered) {
-      showToast('Lütfen Akademik Teşvik başvurusu sorusunu cevaplayınız.', 'error');
+      showToast(t('error_tesvik_question'), 'error');
       return;
     }
     const missingEvidence = applicationActivities.some(act => {
@@ -1413,7 +1414,7 @@ async function saveApplication(isDraft = true) {
       return false;
     });
     if (missingEvidence) {
-      showToast('Kanıt yüklemeniz gereken tüm faaliyetler için dosya yükleyiniz.', 'error');
+      showToast(t('error_missing_evidence'), 'error');
       return;
     }
   }
@@ -1483,10 +1484,10 @@ async function viewApplicationDetails(appId) {
     
     document.getElementById('admin-detail-badge').className = 'badge badge-info';
     
-    let statusTxt = 'Gönderildi';
-    if (app.status === 'in_review') statusTxt = 'İnceleniyor';
-    if (app.status === 'approved') { statusTxt = 'Onaylandı'; document.getElementById('admin-detail-badge').className = 'badge badge-success'; }
-    if (app.status === 'rejected') { statusTxt = 'Reddedildi'; document.getElementById('admin-detail-badge').className = 'badge badge-danger'; }
+    let statusTxt = t('status_submitted');
+    if (app.status === 'in_review') statusTxt = t('status_in_review');
+    if (app.status === 'approved') { statusTxt = t('status_approved'); document.getElementById('admin-detail-badge').className = 'badge badge-success'; }
+    if (app.status === 'rejected') { statusTxt = t('status_rejected'); document.getElementById('admin-detail-badge').className = 'badge badge-danger'; }
     
     document.getElementById('admin-detail-badge').textContent = statusTxt;
 
@@ -1787,12 +1788,12 @@ function renderAdminApplicationsList() {
     }
     
     let badgeClass = 'badge-draft';
-    let statusText = 'Taslak';
-    if (app.status === 'submitted') { badgeClass = 'badge-info'; statusText = 'İnceleme Bekliyor'; }
-    if (app.status === 'in_review') { badgeClass = 'badge-warning'; statusText = 'İtiraz / İncelemede'; }
-    if (app.status === 'approved') { badgeClass = 'badge-success'; statusText = 'Onaylandı'; }
-    if (app.status === 'rejected') { badgeClass = 'badge-danger'; statusText = 'Reddedildi'; }
-    if (app.status === 'revision_requested') { badgeClass = 'badge-warning'; statusText = 'Revizyon İstendi'; }
+    let statusText = t('status_draft');
+    if (app.status === 'submitted') { badgeClass = 'badge-info'; statusText = t('status_submitted'); }
+    if (app.status === 'in_review') { badgeClass = 'badge-warning'; statusText = t('status_in_review'); }
+    if (app.status === 'approved') { badgeClass = 'badge-success'; statusText = t('status_approved'); }
+    if (app.status === 'rejected') { badgeClass = 'badge-danger'; statusText = t('status_rejected'); }
+    if (app.status === 'revision_requested') { badgeClass = 'badge-warning'; statusText = t('status_revision_requested'); }
 
     const applicantName = getApplicationApplicantName(app);
     const facultyName = getApplicationFaculty(app);
@@ -1858,7 +1859,7 @@ function renderAdminApplicationsList() {
 async function deleteAdminApplication(appId) {
   const app = adminApplications.find(a => a.id === appId);
   const applicantName = app ? getApplicationApplicantName(app) : 'Bu';
-  const confirmed = window.confirm(`${applicantName} adlı başvuruyu kalıcı olarak silmek istediğinize emin misiniz?`);
+  const confirmed = window.confirm(t('confirm_delete_admin_app', { name: applicantName }));
   if (!confirmed) return;
 
   try {
@@ -1890,10 +1891,10 @@ async function evaluateApplicationAdmin(appId) {
     const app = apps.find(a => a.id === appId);
 
     document.getElementById('admin-detail-badge').className = 'badge badge-warning';
-    let statusTxt = 'Değerlendirmede';
-    if (app.status === 'approved') { statusTxt = 'Onaylandı'; document.getElementById('admin-detail-badge').className = 'badge badge-success'; }
-    if (app.status === 'rejected') { statusTxt = 'Reddedildi'; document.getElementById('admin-detail-badge').className = 'badge badge-danger'; }
-    if (app.status === 'revision_requested') { statusTxt = 'Revizyon İstendi'; document.getElementById('admin-detail-badge').className = 'badge badge-warning'; }
+    let statusTxt = t('status_evaluating');
+    if (app.status === 'approved') { statusTxt = t('status_approved'); document.getElementById('admin-detail-badge').className = 'badge badge-success'; }
+    if (app.status === 'rejected') { statusTxt = t('status_rejected'); document.getElementById('admin-detail-badge').className = 'badge badge-danger'; }
+    if (app.status === 'revision_requested') { statusTxt = t('status_revision_requested'); document.getElementById('admin-detail-badge').className = 'badge badge-warning'; }
     
     document.getElementById('admin-detail-badge').textContent = statusTxt;
 
@@ -1986,7 +1987,7 @@ document.getElementById('admin-evaluate-form').addEventListener('submit', async 
   const appealResponse = document.getElementById('admin-appeal-response').value;
 
   if ((clickedDecision === 'rejected' || clickedDecision === 'revision_requested') && !adminNotes.trim()) {
-    showToast('Red veya Revizyon kararları için Değerlendirme Notu yazılması zorunludur.', 'warning');
+    showToast(t('error_revision_required'), 'warning');
     return;
   }
 
@@ -2300,7 +2301,7 @@ function closeAdminResetPasswordModal() {
 }
 
 async function deleteAdminUser(userId, userName) {
-  const confirmed = window.confirm(`${userName} hesabını ve ilişkili tüm başvurularını silmek istediğinize emin misiniz?`);
+  const confirmed = window.confirm(t('confirm_delete_user', { name: userName }));
   if (!confirmed) return;
 
   try {
@@ -2363,7 +2364,7 @@ document.getElementById('admin-reset-password-form').addEventListener('submit', 
   const confirmPassword = document.getElementById('admin-reset-confirm-password').value;
 
   if (newPassword !== confirmPassword) {
-    showToast('Yeni şifreler eşleşmiyor.', 'error');
+    showToast(t('error_new_passwords_mismatch'), 'error');
     return;
   }
 
